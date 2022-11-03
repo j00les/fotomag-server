@@ -1,5 +1,4 @@
-// const {} = require("");
-
+let {} = require("../models");
 class Controller {
   static async register(req, res, next) {
     // try {
@@ -46,7 +45,7 @@ class Controller {
     // }
   }
 
-  static async getCustomers(req, res, next) {
+  static async getServicers(req, res, next) {
     // try {
     //   const dataCustomer = await Customer.findAll();
     //   res.status(200).json(dataCustomer);
@@ -54,7 +53,7 @@ class Controller {
     //   next(error);
     // }
   }
-  static async getCostumer(req, res, next) {
+  static async getServicer(req, res, next) {
     // try {
     //   const { id } = req.params;
     //   const dataCustomer = await Customer.findOne({
@@ -68,4 +67,5 @@ class Controller {
     // }
   }
 }
+
 module.exports = Controller;
