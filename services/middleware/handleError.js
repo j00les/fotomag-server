@@ -4,7 +4,7 @@ const handleErrors = (err, req, res, next) => {
 
   if (
     err.name === "SequelizeValidationError" ||
-    eer.name == "SequelizeUniqueConstraintError"
+    err.name === "SequelizeUniqueConstraintError"
   ) {
     code = 400;
     message = [];

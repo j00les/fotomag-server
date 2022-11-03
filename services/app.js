@@ -1,5 +1,6 @@
 const cors = require("cors");
 const express = require("express");
+const handleErrors = require("./middleware/handleError");
 const router = require("./routes");
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/", router);
+app.use(handleErrors);
 
 app.listen(port, () => {
   console.log(`Bisa bisa`);

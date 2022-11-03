@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       location: {
-        type: DataTypes.GEOMETRY,
+        type: DataTypes.GEOMETRY("POINT"),
         allowNull: false,
         validate: {
           notEmpty: {
