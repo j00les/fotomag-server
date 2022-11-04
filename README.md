@@ -15,4 +15,8 @@ servicer ==>
 http://localhost:3000/servicer/register
 http://localhost:3000/servicer/login
 
+Courier ===>
+http://localhost:3000/courier/register
+http://localhost:3000/courier/login
+http://localhost:3000/courier/
  -->

@@ -1,10 +1,22 @@
 const { comparePassword, createAccessToken } = require("../helper/helper");
-let { User } = require("../models/index");
+let { User, ATK, Sequelize } = require("../models/index");
 class Controller {
   static async register(req, res, next) {
     try {
       console.log("register");
-      let { name, email, password, address } = req.body;
+      // client bakal milih map, dapet long latnya
+      // req.body
+      let {
+        name,
+        email,
+        password,
+        address,
+        atkName,
+        atkAddress,
+        priceColor,
+        priceBlack,
+        priceJilid,
+      } = req.body;
       const dataUser = await User.create({
         name,
         email,
@@ -12,6 +24,19 @@ class Controller {
         address,
         balance: 0,
         role: "Servicer",
+      });
+
+      const datAtk = await ATK.create({
+        name: atkName,
+        address: atkAddress,
+        priceColor,
+        priceBlack,
+        priceJilid,
+        location: Sequelize.fn(
+          "ST_GeomFromText",
+          "POINT(107.59422277037818 -6.937911900280693)"
+        ),
+        UserId: dataUser.id,
       });
       res.status(201).json({
         id: dataUser.id,

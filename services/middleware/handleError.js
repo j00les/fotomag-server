@@ -29,6 +29,10 @@ const handleErrors = (err, req, res, next) => {
   } else if (err.name === "Forbidden") {
     code = 403;
     message = "You are not authorized";
+  } else if (err.name === "Phone Number is required") {
+    (code = 400), (message = "Phone Number is required");
+  } else if (err.name === "Invalid phoneNumber") {
+    (code = 400), (message = "Invalid phoneNumber");
   }
   res.status(code).json({
     message: message,
