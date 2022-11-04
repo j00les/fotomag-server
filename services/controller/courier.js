@@ -1,12 +1,14 @@
+const { comparePassword, createAccessToken } = require("../helper/helper");
 const { Courier, Sequelize } = require("../models/index");
 
 class Controller {
   static async register(req, res, next) {
     try {
-      const { name, phoneNumber } = req.body;
+      const { name, email, password } = req.body;
       const dataKurir = await Courier.create({
         name,
-        phoneNumber,
+        email,
+        password,
         location: Sequelize.fn(
           "ST_GeomFromText",
           "POINT(107.59422277037818 -6.937911900280693)"
@@ -25,32 +27,39 @@ class Controller {
 
   static async login(req, res, next) {
     try {
-      const { phoneNumber } = req.body;
+      const { email, password } = req.body;
       const dataCourier = await Courier.findOne({
         where: {
-          phoneNumber,
+          email,
         },
       });
 
-      const data = await Courier.findOne({
-        where: {
-          phoneNumber,
-        },
-      });
+      if (!email) {
+        throw { name: "Email is required" };
+      }
 
-      if (!phoneNumber) {
-        throw { name: "Phone Number is required" };
+      if (!password) {
+        throw { name: "Password is required" };
       }
 
       if (!dataCourier) {
-        throw { name: "Invalid phoneNumber" };
+        throw { name: "Invalid email/password" };
       }
 
+      if (!comparePassword(password, dataCourier.password)) {
+        throw { name: "Invalid email/password" };
+      }
+
+      const payload = {
+        id: dataCourier.id,
+      };
+
+      const access_token = createAccessToken(payload);
+
       res.status(200).json({
-        message: `Welcome mr.${data.name}`,
+        access_token,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

@@ -140,5 +140,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Transaction",
     }
   );
+
   return Transaction;
 };

@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { hashingPassword } = require("../helper/helper");
 module.exports = (sequelize, DataTypes) => {
   class Courier extends Model {
     /**
@@ -25,15 +26,27 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      phoneNumber: {
+      email: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "Phone Number is required",
+            msg: "Email is required",
           },
           notNull: {
-            msg: "Phone Number is required",
+            msg: "Email is required",
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Password is required",
+          },
+          notNull: {
+            msg: "Password is required",
           },
         },
       },
@@ -67,5 +80,8 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Courier",
     }
   );
+  Courier.beforeCreate((data) => {
+    data.password = hashingPassword(data.password);
+  });
   return Courier;
 };
