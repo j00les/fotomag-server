@@ -228,25 +228,5 @@ class Controller {
       next(error);
     }
   }
-
-  static async changeStatusByCustomer(req, res, next) {
-    try {
-      const { id } = req.params;
-      const { status } = req.body;
-      const dataTransaction = await Transaction.update(
-        {
-          status,
-        },
-        {
-          where: {
-            id,
-          },
-        }
-      );
-      // proses masuk uang ke atk
-    } catch (error) {
-      next(error);
-    }
-  }
 }
 module.exports = Controller;
