@@ -57,7 +57,6 @@ module.exports = {
       },
       CourierId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
           model: "Couriers",
           key: "id",

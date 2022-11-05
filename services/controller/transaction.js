@@ -19,7 +19,6 @@ class Controller {
         isJilid,
         address,
         UserId, //customer Id dapat dari req.user setelah login di authen
-        CourierId,
       } = req.body;
 
       let totalPages = 100; //masih hardcode
@@ -58,7 +57,6 @@ class Controller {
             "POINT(107.59422277037818 -6.937911900280693)"
           ),
           UserId, // ini dari customer yg dari authen
-          CourierId, // ini nanti pakai select option
           totalPrice: totalPrice,
         },
         { transaction: t }
@@ -129,12 +127,14 @@ class Controller {
             },
           }
         );
+        // untuk medapatkan nominal nya
         const dataMutasi = await BalanceMutation.findOne({
           where: {
             TransactionId: id,
           },
         });
 
+        // ini untuk dapatin transaksi nya yg mana
         const dataCustomer = await Transaction.findOne({
           where: {
             id: dataMutasi.TransactionId,
@@ -199,6 +199,7 @@ class Controller {
             },
           }
         );
+        // ini untuk mendapatkan nominal
         const dataMutasi = await BalanceMutation.findOne({
           where: {
             TransactionId: id,
@@ -211,12 +212,13 @@ class Controller {
           },
         });
 
-        const dataAtk = await User.findOne({
+        const dataAtk = await ATK.findOne({
           where: {
             id: dataCustomer.UserId,
           },
         });
-        await dataAtk.increment("balance", { by: dataMutasi.nominal });
+        const dataUserAtk = await User.findByPk(dataAtk.UserId);
+        await dataUserAtk.increment("balance", { by: dataMutasi.nominal });
       }
       res.status(200).json({
         message: `Transaction is ${status}`,
