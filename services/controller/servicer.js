@@ -1,4 +1,3 @@
-const { comparePassword, createAccessToken } = require("../helper/helper");
 let { User, ATK, sequelize } = require("../models/index");
 class Controller {
   static async register(req, res, next) {
@@ -51,40 +50,6 @@ class Controller {
     } catch (error) {
       console.log(error);
       await t.rollback();
-      next(error);
-    }
-  }
-
-  static async login(req, res, next) {
-    try {
-      const { email, password } = req.body;
-      const dataUser = await User.findOne({
-        where: {
-          email,
-        },
-      });
-      if (!email) {
-        throw { name: "Email is required" };
-      }
-      if (!password) {
-        throw { name: "Password is required" };
-      }
-      if (!dataUser) {
-        throw { name: "Invalid email/password" };
-      }
-      if (!comparePassword(password, dataUser.password)) {
-        throw { name: "Invalid email/password" };
-      }
-      const payload = {
-        id: dataUser.id,
-        role: dataUser.role,
-      };
-      const access_token = createAccessToken(payload);
-      res.status(200).json({
-        access_token: access_token,
-        role: dataUser.role,
-      });
-    } catch (error) {
       next(error);
     }
   }
