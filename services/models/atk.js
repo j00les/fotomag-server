@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      ATK.belongsTo(models.User, {
+        foreignKey: "UserId"
+      })
+      ATK.hasMany(models.Courier, {
+        foreignKey: "AtkId"
+      })
     }
   }
   ATK.init(

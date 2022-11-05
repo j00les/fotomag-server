@@ -11,6 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasOne(models.ATK, {
+        foreignKey: "UserId"
+      })
+      User.hasOne(models.BalanceMutation, {
+        foreignKey: "UserId"
+      })
+      User.hasMany(models.Transaction, {
+        foreignKey: "UserId"
+      })
     }
   }
   User.init(
