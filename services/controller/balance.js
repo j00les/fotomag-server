@@ -44,6 +44,12 @@ class Controller {
       };
 
       const transactionToken = await snap.createTransaction(parameter);
+      const dataUser = await User.findOne({
+        where: {
+          id: 1, // dari authen
+        },
+      });
+      await dataUser.increment("balance", { by: nominal });
       res.status(201).json(transactionToken);
     } catch (error) {
       next(error);
