@@ -6,9 +6,9 @@ const loginRouter = require("./login");
 const servicesRouter = require("./servicer");
 const transactionRouter = require("./transaction");
 
-router.use("/login", loginRouter)
+router.use("/login", loginRouter);
 router.use("/customer", customerRouter);
-router.use("/servicer", servicesRouter);
+router.use("/merchant", servicesRouter);
 router.use("/courier", courierRouter);
 router.use("/balance", balanceRouter);
 router.use("/transaction", transactionRouter);
