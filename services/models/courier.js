@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Courier.belongsTo(models.ATK, {
-        foreignKey: "AtkId"
-      })
+        foreignKey: "AtkId",
+      });
       Courier.hasMany(models.Transaction, {
-        foreignKey: "CourierId"
-      })
+        foreignKey: "CourierId",
+      });
     }
   }
   Courier.init(
