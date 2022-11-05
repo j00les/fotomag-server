@@ -2,8 +2,8 @@ const { comparePassword, createAccessToken } = require("../helper/helper");
 let { User, ATK, Sequelize } = require("../models/index");
 class Controller {
   static async register(req, res, next) {
-    const t = await Sequelize.transaction();
     try {
+      console.log("register");
       // client bakal milih map, dapet long latnya
       // req.body
       let {
@@ -17,17 +17,14 @@ class Controller {
         priceBlack,
         priceJilid,
       } = req.body;
-      const dataUser = await User.create(
-        {
-          name,
-          email,
-          password,
-          address,
-          balance: 0,
-          role: "Servicer",
-        },
-        { transaction: t }
-      );
+      const dataUser = await User.create({
+        name,
+        email,
+        password,
+        address,
+        balance: 0,
+        role: "Servicer",
+      });
 
       const datAtk = await ATK.create({
         name: atkName,
