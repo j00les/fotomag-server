@@ -4,7 +4,6 @@ class Controller {
   static async register(req, res, next) {
     const t = await Sequelize.transaction();
     try {
-      console.log("register");
       // client bakal milih map, dapet long latnya
       // req.body
       let {
