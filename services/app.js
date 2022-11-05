@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 const cors = require("cors");
 const express = require("express");
@@ -15,6 +15,7 @@ app.use(express.json());
 
 app.use("/", router);
 app.use(handleErrors);
+
 
 // app.listen(port, () => {
 //   console.log(`Bisa bisa`);
