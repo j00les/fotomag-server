@@ -2,20 +2,17 @@ const { User } = require("../models/index");
 class Controller {
   static async topUp(req, res, next) {
     try {
+      let { id } = req.params;
       let { topUp } = req.body;
       //   let { id } = req.user;
-      const dataTopUp = await User.update(
-        {
-          balance: topUp,
+      const dataUser = await User.findOne({
+        where: {
+          id,
         },
-        {
-          where: {
-            id: 1,
-          },
-        }
-      );
+      });
+      await dataUser.increment("balance", { by: topUp });
       res.status(200).json({
-        message: `Berhasil top up user id  sebanyak Rp.${topUp}`,
+        message: `Berhasil top up user id ${id} sebanyak Rp.${topUp}`,
       });
     } catch (error) {
       next(error);

@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Transaction.belongsTo(models.User, {
-        foreignKey: "UserId"
-      })
+        foreignKey: "UserId",
+      });
       Transaction.hasOne(models.BalanceMutation, {
-        foreignKey: "TransactionId"
-      })
+        foreignKey: "TransactionId",
+      });
       Transaction.belongsTo(models.Courier, {
-        foreignKey: "CourierId"
-      })
+        foreignKey: "CourierId",
+      });
     }
   }
   Transaction.init(
@@ -131,9 +131,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      CourierId: {
-        type: DataTypes.INTEGER,
-      },
+      CourierId: DataTypes.INTEGER,
     },
     {
       sequelize,

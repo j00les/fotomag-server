@@ -33,6 +33,8 @@ const handleErrors = (err, req, res, next) => {
     (code = 400), (message = "Phone Number is required");
   } else if (err.name === "Invalid phoneNumber") {
     (code = 400), (message = "Invalid phoneNumber");
+  } else if (err.name === "Your balance is less") {
+    (code = 400), (message = "Your balance is less");
   }
   res.status(code).json({
     message: message,
