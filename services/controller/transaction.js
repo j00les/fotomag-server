@@ -163,9 +163,11 @@ class Controller {
       }
       // ubah status jadi Dilevery
       else if (status === "Delivery") {
+        // const {id} = req.user
         const dataTransaction = await Transaction.update(
           {
             status,
+            CourierId: 1, // ini dapat dari authenl, dari req.user abang kurir
           },
           {
             where: {
@@ -225,6 +227,69 @@ class Controller {
       });
     } catch (error) {
       console.log(error);
+      next(error);
+    }
+  }
+
+  static async history(req, res, next) {
+    try {
+      const { id } = req.params;
+      // const { id } = req.user;
+
+      const data = await Transaction.findAll({
+        where: {
+          status: ["Success", "Reject"],
+          UserId: id,
+        },
+      });
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+      console.log(error);
+    }
+  }
+
+  static async listTransaction(req, res, next) {
+    try {
+      const { id } = req.params;
+      // const { id } = req.user;
+
+      const data = await Transaction.findAll({
+        where: {
+          status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
+          UserId: id,
+        },
+      });
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async listCourier(req, res, next) {
+    try {
+      // const { id } = req.params;
+      // const { id } = req.user;
+      const data = await Transaction.findAll({
+        where: {
+          status: ["Done", "Delivery", "Delivered"],
+          CourierId: id,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async listCustomer(req, res, next) {
+    try {
+      // const { id } = req.user;
+      const data = await Transaction.findAll({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
       next(error);
     }
   }
