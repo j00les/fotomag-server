@@ -9,6 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Transaction.belongsTo(models.User, {
+        foreignKey: "UserId"
+      })
+      Transaction.hasOne(models.BalanceMutation, {
+        foreignKey: "TransactionId"
+      })
+      Transaction.belongsTo(models.Courier, {
+        foreignKey: "CourierId"
+      })
     }
   }
   Transaction.init(
@@ -124,15 +133,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       CourierId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Courier Id is required",
-          },
-          notNull: {
-            msg: "Courier Id is required",
-          },
-        },
       },
     },
     {
