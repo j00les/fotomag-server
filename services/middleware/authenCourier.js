@@ -1,7 +1,7 @@
 const { verifyAccessToken } = require("../helper/helper");
 const { Courier } = require("../models/index");
 
-const Authentication = async (req, res, next) => {
+const AuthenCourier = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
@@ -21,4 +21,4 @@ const Authentication = async (req, res, next) => {
   }
 };
 
-module.exports = Authentication;
+module.exports = AuthenCourier;

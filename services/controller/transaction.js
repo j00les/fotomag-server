@@ -91,7 +91,7 @@ class Controller {
 
   static async changeStatus(req, res, next) {
     try {
-      let { id } = req.params;
+      let id = req.params.transactionId;
       let { status } = req.query; // string (Reject atau Progres)
 
       // ubah status progress
@@ -278,8 +278,7 @@ class Controller {
 
   static async listCourier(req, res, next) {
     try {
-      // const { id } = req.params;
-      // const { id } = req.user;
+      const { id } = req.user;
       const data = await Transaction.findAll({
         where: {
           status: ["Done", "Delivery", "Delivered"],
@@ -293,13 +292,16 @@ class Controller {
 
   static async listCustomer(req, res, next) {
     try {
-      // const { id } = req.user;
+      const { id } = req.user;
+      console.log(id);
       const data = await Transaction.findAll({
         where: {
-          id,
+          CourierId: id,
         },
       });
+      res.status(200).json(data);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
