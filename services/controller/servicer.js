@@ -1,4 +1,5 @@
 let { User, ATK, sequelize } = require("../models/index");
+
 class Controller {
   static async register(req, res, next) {
     const t = await sequelize.transaction();
