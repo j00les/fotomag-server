@@ -17,7 +17,7 @@ app.use("/", router);
 app.use(handleErrors);
 
 
-// app.listen(port, () => {
-//   console.log(`Bisa bisa`);
-// });
-module.exports = app
+app.listen(port, () => {
+  console.log(`Bisa bisa`);
+});
+// module.exports = app
