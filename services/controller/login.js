@@ -5,7 +5,6 @@ class Controller {
   static async isLogin(req, res, next) {
     try {
       const { email, password } = req.body;
-      // console.log(email, password);
       let dataPayload = {};
       if (!email) {
         throw { name: "Email is required" };
@@ -27,27 +26,20 @@ class Controller {
         };
         dataPayload = payload;
       } else {
-        console.log(email, password, "ini ketika mau di find one");
         const dataCourier = await Courier.findOne({
           where: { email },
         });
-<<<<<<< HEAD
-        console.log(dataCourier, "data courier");
-=======
-        if(!dataCourier) {
-            throw { name: "Invalid email/password" };
+        if (!dataCourier) {
+          throw { name: "Invalid email/password" };
         }
->>>>>>> ddb7a06637cb8dca24fdb6ec8d1570b446a62259
         if (!comparePassword(password, dataCourier.password)) {
           throw { name: "Invalid email/password" };
         }
-        console.log("setelah di kompeer");
         const payload = {
           id: dataCourier.id,
         };
         dataPayload = payload;
       }
-      console.log(dataPayload);
       const access_token = createAccessToken(dataPayload);
       res.status(200).json({
         access_token: access_token,
