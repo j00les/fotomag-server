@@ -131,6 +131,18 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      AtkId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Atk Id is required",
+          },
+          notNull: {
+            msg: "Atk Id is required",
+          },
+        },
+      },
       CourierId: DataTypes.INTEGER,
     },
     {

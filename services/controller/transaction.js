@@ -11,15 +11,10 @@ class Controller {
   static async createTransaction(req, res, next) {
     const t = await sequelize.transaction();
     try {
+      const { id } = req.user;
+      console.log(id);
       let { idAtk } = req.params;
-      let {
-        fileName,
-        colorVariant,
-        duplicate,
-        isJilid,
-        address,
-        UserId, //customer Id dapat dari req.user setelah login di authen
-      } = req.body;
+      let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
 
       let totalPages = 100; //masih hardcode
 
@@ -56,14 +51,15 @@ class Controller {
             "ST_GeomFromText",
             "POINT(107.59422277037818 -6.937911900280693)"
           ),
-          UserId, // ini dari customer yg dari authen
+          UserId: id,
           totalPrice: totalPrice,
+          AtkId: idAtk,
         },
         { transaction: t }
       );
 
       // mengurangi balance dari user yg melakukan transaction
-      const dataUser = await User.findByPk(UserId); //  ini dapat dari req.user.id dari authen
+      const dataUser = await User.findByPk(id); //  ini dapat dari req.user.id dari authen
 
       // nge cek, apabila uang nya kurang dari total harga yg harus dibayar, maka akan error
       if (dataUser.balance < totalPrice) {
@@ -233,13 +229,21 @@ class Controller {
 
   static async history(req, res, next) {
     try {
-      const { id } = req.params;
-      // const { id } = req.user;
+      // const { id } = req.params;
+      const { id } = req.user;
+      console.log(id, ".. aidi yg toko yg login");
 
+      const dataUser = await User.findOne({
+        where: {
+          id,
+        },
+        include: ATK,
+      });
+      // console.log(dataUser.ATK);
       const data = await Transaction.findAll({
         where: {
           status: ["Success", "Reject"],
-          UserId: id,
+          AtkId: dataUser.ATK.id,
         },
       });
       res.status(200).json(data);
@@ -251,13 +255,19 @@ class Controller {
 
   static async listTransaction(req, res, next) {
     try {
-      const { id } = req.params;
-      // const { id } = req.user;
+      // const { id } = req.params;
+      const { id } = req.user;
+      const dataUser = await User.findOne({
+        where: {
+          id,
+        },
+        include: ATK,
+      });
 
       const data = await Transaction.findAll({
         where: {
           status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
-          UserId: id,
+          AtkId: dataUser.ATK.id,
         },
       });
       res.status(200).json(data);

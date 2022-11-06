@@ -1,7 +1,8 @@
 const Controller = require("../controller/balance");
+const Authentication = require("../middleware/authentication");
 const balanceRouter = require("express").Router();
 
 balanceRouter.patch("/topUp/:id", Controller.changeBalance);
-balanceRouter.post("/pay", Controller.topUp);
+balanceRouter.post("/pay", Authentication, Controller.topUp);
 
 module.exports = balanceRouter;

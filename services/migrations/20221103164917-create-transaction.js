@@ -45,6 +45,10 @@ module.exports = {
         type: Sequelize.GEOMETRY,
         allowNull: false,
       },
+      AtkId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,

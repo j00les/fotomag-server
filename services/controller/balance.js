@@ -22,8 +22,9 @@ class Controller {
 
   static async topUp(req, res, next) {
     try {
-      const id = Math.random();
+      const idMitrants = Math.random();
       const { nominal } = req.body;
+      const { id } = req.user;
       let snap = new midtransClient.Snap({
         isProduction: false,
         serverKey: "SB-Mid-server-JbrhEhGAfzWMT_Gvh4f15Cti",
@@ -31,7 +32,7 @@ class Controller {
 
       let parameter = {
         transaction_details: {
-          order_id: id,
+          order_id: idMitrants,
           gross_amount: nominal,
         },
 
@@ -46,7 +47,7 @@ class Controller {
       const transactionToken = await snap.createTransaction(parameter);
       const dataUser = await User.findOne({
         where: {
-          id: 1, // dari authen
+          id: id, // dari authen
         },
       });
       await dataUser.increment("balance", { by: nominal });

@@ -1,10 +1,8 @@
 let { User, ATK, sequelize } = require("../models/index");
 class Controller {
   static async register(req, res, next) {
-
     const t = await sequelize.transaction();
     try {
-      console.log("register");
       // client bakal milih map, dapet long latnya
       // req.body
       let {
@@ -24,7 +22,7 @@ class Controller {
         password,
         address,
         balance: 0,
-        role: "Servicer",
+        role: "Merchant",
       });
 
       const datAtk = await ATK.create(
@@ -66,12 +64,9 @@ class Controller {
   static async getServicer(req, res, next) {
     try {
       const { id } = req.params;
-      // console.log(id);
-      // console.log("masuk sini");
       const dataATK = await ATK.findByPk(id);
       res.status(200).json(dataATK);
     } catch (error) {
-      // console.log(error);
       next(error);
     }
   }
@@ -79,13 +74,12 @@ class Controller {
   static async editServicer(req, res, next) {
     try {
       const { id } = req.params;
-      console.log("masuk edit");
       let { priceColor, priceBlack, priceJilid } = req.body;
       await ATK.update(
         { priceColor, priceBlack, priceJilid },
         { where: { id: id } }
       );
-      res.status(200).json({message: "You're success update"})
+      res.status(200).json({ message: "You're success update" });
     } catch (error) {
       console.log(error);
       next(error);
