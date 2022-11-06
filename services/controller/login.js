@@ -32,6 +32,9 @@ class Controller {
         const dataCourier = await Courier.findOne({
           where: { email },
         });
+        if(!dataCourier) {
+            throw { name: "Invalid email/password" };
+        }
         if (!comparePassword(password, dataCourier.password)) {
           throw { name: "Invalid email/password" };
         }
