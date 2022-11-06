@@ -16,15 +16,7 @@ app.use(express.json());
 app.use("/", router);
 app.use(handleErrors);
 
-<<<<<<< HEAD
-
 app.listen(port, () => {
   console.log(`Bisa bisa`);
 });
 // module.exports = app
-=======
-app.listen(port, () => {
-  console.log(`Bisa bisa`);
-});
-// module.exports = app;
->>>>>>> ea2cb5cfa2b76fe0919383f30f7a95b1efe8c8b3
