@@ -22,15 +22,15 @@ module.exports = (sequelize, DataTypes) => {
   }
   Transaction.init(
     {
-      fileName: {
+      fileURL: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "File Name is required",
+            msg: "File URL is required",
           },
           notNull: {
-            msg: "File Name is required",
+            msg: "File URL is required",
           },
         },
       },
@@ -82,7 +82,18 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      isJilid: DataTypes.BOOLEAN,
+      isJilid: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Is Jilid is required",
+          },
+          notNull: {
+            msg: "Is Jilid is required",
+          },
+        },
+      },
       address: {
         type: DataTypes.STRING,
         allowNull: false,

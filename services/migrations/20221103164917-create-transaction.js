@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      fileName: {
+      fileURL: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -30,7 +30,7 @@ module.exports = {
         allowNull: false,
       },
       isJilid: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       address: {
