@@ -160,7 +160,7 @@ describe("Login to app as a customer", () => {
 
   test('Login as customer with wrong password', () => {
     return request(app)
-    .post('customer/login')
+    .post('/login')
     .send({
       email: "ucok2@mail.com",
       password: "asd1234"

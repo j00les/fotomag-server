@@ -5,7 +5,7 @@ const transactionRouter = require("express").Router();
 
 
 
-// transactionRouter.post("/:idAtk", Authentication, Controller.createTransaction);
+// transactionRouter.post("/:idAtk", [Authentication,upload.single('fileName')], Controller.createTransaction);
 transactionRouter.use(Authentication)
 transactionRouter.post("/:idAtk", upload.single('fileName'), Controller.createTransaction);
 transactionRouter.patch("/:id", Controller.changeStatus);
