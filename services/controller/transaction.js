@@ -4,6 +4,7 @@ const {
   BalanceMutation,
   User,
   ATK,
+  Courier,
   sequelize,
 } = require("../models/index");
 const pdf = require("pdf-page-counter");
@@ -19,7 +20,7 @@ class Controller {
       const { id } = req.user;
       let { atkId } = req.params;
 
-      let {colorVariant, duplicate, isJilid, address } = req.body;
+      let { colorVariant, duplicate, isJilid, address } = req.body;
       if (!req.file) {
         return res.status(400).json({ message: "Uploaded PDF is required" });
       }
@@ -58,7 +59,7 @@ class Controller {
       }
 
       // mendapatkan total price
-      let totalPrice = pdfPages * harga + hargaJilid;
+      let totalPrice = pdfPages * duplicate * harga + hargaJilid;
       // console.log(pdfPages);
       // console.log(harga);
       // console.log(hargaJilid);
@@ -130,7 +131,7 @@ class Controller {
       );
 
       res.status(200).json({
-        message: `Transaction is Progress}`,
+        message: `Transaction is Progress`,
       });
     } catch (error) {
       next(error);
@@ -228,8 +229,11 @@ class Controller {
         }
       );
 
+      const dataCourier = await Courier.findByPk(CourierId);
+
       res.status(200).json({
         message: `Transaction is Delivery`,
+        CourierName: dataCourier.name,
       });
     } catch (error) {
       next(error);
@@ -251,8 +255,8 @@ class Controller {
           },
         }
       );
-      if(!dataTransaction) {
-        return res.status(400).json({message: 'ERROR DI DATA TRANSACTION'})
+      if (!dataTransaction) {
+        return res.status(400).json({ message: "ERROR DI DATA TRANSACTION" });
       }
 
       res.status(200).json({
@@ -267,7 +271,6 @@ class Controller {
   static async changeStatusSuccess(req, res, next) {
     try {
       let id = req.params.transactionId;
-      console.log(id, '//////////// INI ID')
       const dataTransaction = await Transaction.update(
         {
           status: "Success",
@@ -278,14 +281,14 @@ class Controller {
           },
         }
       );
-      console.log(dataTransaction, '>>>>>>>>> INI DATA TRANSACTION')
+
       const dataMutasi = await BalanceMutation.findOne({
         where: {
           TransactionId: id,
         },
       });
-      if(!dataMutasi) {
-        return res.status(400).json({message: 'ERROR DI DATA MUTASI'})
+      if (!dataMutasi) {
+        return res.status(400).json({ message: "ERROR DI DATA MUTASI" });
       }
 
       const dataCustomer = await Transaction.findOne({
@@ -294,7 +297,7 @@ class Controller {
         },
       });
       if (!dataCustomer) {
-        return res.status(400).json({message: 'ERROR DI DATA CUSTOMER'})
+        return res.status(400).json({ message: "ERROR DI DATA CUSTOMER" });
       }
 
       const dataAtk = await ATK.findOne({
@@ -302,14 +305,12 @@ class Controller {
           id: dataCustomer.UserId,
         },
       });
-      if(!dataAtk) {
-        return res.status(400).json({message: "ERROR DI DATA ATK"})
+      if (!dataAtk) {
+        return res.status(400).json({ message: "ERROR DI DATA ATK" });
       }
-      console.log(dataAtk, '<><><><><><> INI DATA ATK')
-      console.log(dataAtk.UserId, '<><><><><>< INI DATA ATK USER ID')
       const dataUserAtk = await User.findByPk(dataAtk.UserId);
-      if(!dataUserAtk) {
-        return res.status(400).json({message: "ERROR DI DATA USER ATK"})
+      if (!dataUserAtk) {
+        return res.status(400).json({ message: "ERROR DI DATA USER ATK" });
       }
       await dataUserAtk.increment("balance", { by: dataMutasi.nominal });
 
@@ -320,7 +321,6 @@ class Controller {
       next(error);
     }
   }
-
 
   static async historyTransactionMerchant(req, res, next) {
     try {

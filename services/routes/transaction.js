@@ -1,8 +1,8 @@
 const Controller = require("../controller/transaction");
 const AuthenCourier = require("../middleware/authenCourier");
 const Authentication = require("../middleware/authentication");
+const authorStatusSuccess = require("../middleware/authorStatusSuccess");
 const courierAuthor = require("../middleware/courierAuthor");
-const customerAuthor = require("../middleware/customerAuthor");
 const merchanAuthor = require("../middleware/merchantAuthor");
 const upload = require("../middleware/multer");
 const transactionRouter = require("express").Router();
@@ -30,7 +30,6 @@ transactionRouter.patch(
 transactionRouter.patch(
   "/delivery/:transactionId",
   AuthenCourier,
-  courierAuthor,
   Controller.changeStatusDelivery
 );
 transactionRouter.patch(
@@ -42,7 +41,7 @@ transactionRouter.patch(
 transactionRouter.patch(
   "/success/:transactionId",
   Authentication,
-  customerAuthor,
+  authorStatusSuccess,
   Controller.changeStatusSuccess
 );
 
