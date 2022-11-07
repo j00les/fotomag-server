@@ -1,7 +1,7 @@
 const handleErrors = (err, req, res, next) => {
   let code = 500;
   let message = "Internal Server Error";
-  console.log(err)
+  console.log(err);
 
   if (
     err.name === "SequelizeValidationError" ||
@@ -36,6 +36,8 @@ const handleErrors = (err, req, res, next) => {
     (code = 400), (message = "Invalid phoneNumber");
   } else if (err.name === "Your balance is less") {
     (code = 400), (message = "Your balance is less");
+  } else if (err.name === "Nominal is required") {
+    (code = 400), (message = "Nominal is required");
   }
   res.status(code).json({
     message: message,

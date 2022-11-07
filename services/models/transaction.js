@@ -87,10 +87,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "Is Jilid is required",
+            msg: "Jilid is required",
           },
           notNull: {
-            msg: "Is Jilid is required",
+            msg: "Jilid is required",
           },
         },
       },
