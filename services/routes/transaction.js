@@ -1,7 +1,7 @@
 const Controller = require("../controller/transaction");
 const AuthenCourier = require("../middleware/authenCourier");
 const Authentication = require("../middleware/authentication");
-
+const upload = require('../middleware/multer')
 const transactionRouter = require("express").Router();
 
 transactionRouter.post("/:atkId", Authentication, Controller.createTransaction);
@@ -11,6 +11,9 @@ transactionRouter.patch("/done/:transactionId", Controller.changeStatus);
 transactionRouter.patch("/delivery/:transactionId", Controller.changeStatus);
 transactionRouter.patch("/delivered/:transactionId", Controller.changeStatus);
 transactionRouter.patch("/succcess/:transactionId", Controller.changeStatus);
+
+transactionRouter.patch("/:id", Controller.changeStatus);
+
 transactionRouter.get("/history", Authentication, Controller.history);
 transactionRouter.get(
   "/listTransaction/",
@@ -19,5 +22,8 @@ transactionRouter.get(
 );
 transactionRouter.get("/courier", AuthenCourier, Controller.listCourier);
 transactionRouter.get("/customer", Authentication, Controller.listCustomer);
+
+transactionRouter.use(Authentication)
+transactionRouter.post("/:idAtk", upload.single('fileName'), Controller.createTransaction);
 
 module.exports = transactionRouter;

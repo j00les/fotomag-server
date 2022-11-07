@@ -6,16 +6,47 @@ const {
   ATK,
   sequelize,
 } = require("../models/index");
+const pdf = require("pdf-page-counter");
+const cloudinary = require("cloudinary").v2;
+const UploadApiResponse = require("cloudinary").v2;
+const fs = require("fs");
 
 class Controller {
   static async createTransaction(req, res, next) {
+    // console.log('CREATE TRANSAKSI DI CONTROLLER <><><><><><><><>')
+    // console.log(req.file, '============== INI REQ.FILE')
     const t = await sequelize.transaction();
     try {
       const { id } = req.user;
       let { atkId } = req.params;
-      let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
 
-      let totalPages = 100; //masih hardcode
+      let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
+      if (!req.file) {
+        return res.status(400).json({ message: "Uploaded PDF is required" });
+      }
+      // console.log(req.file, '??????? INI REQ.FILE');
+      const dataBuffer = fs.readFileSync(req.file.path);
+      const pdfData = await pdf(dataBuffer);
+      const pdfPages = pdfData.numpages;
+      // console.log(pdfPages, '@@@@@@@@@ JUMLAH HALAMAN PDF')
+      let uploadedFile = UploadApiResponse;
+      // uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+      //   folder: 'fotomagPDF',
+      //   resource_type: 'auto'
+      // })
+      try {
+        uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+          folder: "fotomagPDF",
+          resource_type: "auto",
+        });
+        // console.log('UPLOAD KE CLOUDINARY SUKSES [[[[[[[[[[[]]]]]]]]]]')
+      } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+      const { originalname } = req.file;
+      const { secure_url, bytes, format } = uploadedFile;
+      // let totalPages = 100; //masih hardcode
 
       const dataATK = await ATK.findByPk(atkId); // untuk mendapatkan harga dari ATK nya supaya dinamis
 
@@ -34,13 +65,13 @@ class Controller {
         hargaJilid = hargaJilid + 0;
       }
       // mendapatkan total price
-      let totalPrice = totalPages * harga + hargaJilid;
+      let totalPrice = pdfPages * harga + hargaJilid;
 
       // create transaction
       const dataTransaction = await Transaction.create(
         {
-          fileName,
-          totalPages,
+          fileName: secure_url,
+          totalPages: pdfPages,
           colorVariant,
           duplicate,
           isJilid,
@@ -83,7 +114,7 @@ class Controller {
       });
     } catch (error) {
       await t.rollback();
-      console.log(error);
+      // console.log(error);
       next(error);
     }
   }
