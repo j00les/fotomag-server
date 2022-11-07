@@ -44,6 +44,8 @@ const handleErrors = (err, req, res, next) => {
     (code = 401), (message = "This is not your jurisdiction");
   } else if (err.name === "Transaction not found") {
     (code = 400), (message = "Transaction not found");
+  } else if (err.name === "Toko not found") {
+    (code = 404), (message = "Toko not found");
   }
 
   res.status(code).json({

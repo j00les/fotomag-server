@@ -68,6 +68,10 @@ class Controller {
           id: atkId,
         },
       });
+
+      if (!dataATK) {
+        throw { name: "Toko not found" };
+      }
       res.status(200).json(dataATK);
     } catch (error) {
       next(error);
@@ -78,11 +82,27 @@ class Controller {
     try {
       const { atkId } = req.params;
       let { priceColor, priceBlack, priceJilid } = req.body;
+
       await ATK.update(
         { priceColor, priceBlack, priceJilid },
         { where: { id: atkId } }
       );
-      res.status(200).json({ message: "You're success update" });
+
+      const dataATK = await ATK.findOne({
+        where: {
+          id: atkId,
+        },
+      });
+
+      if (!dataATK) {
+        throw { name: "Toko not found" };
+      }
+      res.status(200).json({
+        message: "You're success update",
+        priceColor: dataATK.priceColor,
+        priceBlack: dataATK.priceBlack,
+        priceJilid: dataATK.priceJilid,
+      });
     } catch (error) {
       console.log(error);
       next(error);
