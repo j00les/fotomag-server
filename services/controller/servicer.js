@@ -4,8 +4,6 @@ class Controller {
   static async register(req, res, next) {
     const t = await sequelize.transaction();
     try {
-      // client bakal milih map, dapet long latnya
-      // req.body
       let {
         name,
         email,
@@ -26,7 +24,7 @@ class Controller {
         role: "Merchant",
       });
 
-      const datAtk = await ATK.create(
+      const dataAtk = await ATK.create(
         {
           name: atkName,
           address: atkAddress,
@@ -42,8 +40,8 @@ class Controller {
         { transaction: t }
       );
       res.status(201).json({
-        id: dataUser.id,
-        email: dataUser.email,
+        nameCustomet: dataUser.name,
+        namaToko: dataAtk.name,
       });
       await t.commit();
     } catch (error) {
@@ -64,8 +62,12 @@ class Controller {
 
   static async getServicer(req, res, next) {
     try {
-      const { id } = req.params;
-      const dataATK = await ATK.findByPk(id);
+      const { atkId } = req.params;
+      const dataATK = await ATK.findOne({
+        where: {
+          id: atkId,
+        },
+      });
       res.status(200).json(dataATK);
     } catch (error) {
       next(error);
@@ -74,11 +76,11 @@ class Controller {
 
   static async editServicer(req, res, next) {
     try {
-      const { id } = req.params;
+      const { atkId } = req.params;
       let { priceColor, priceBlack, priceJilid } = req.body;
       await ATK.update(
         { priceColor, priceBlack, priceJilid },
-        { where: { id: id } }
+        { where: { id: atkId } }
       );
       res.status(200).json({ message: "You're success update" });
     } catch (error) {

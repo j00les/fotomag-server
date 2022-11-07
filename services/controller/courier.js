@@ -4,7 +4,7 @@ class Controller {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-      const { id } = req.params
+      const { atkId } = req.params;
       const dataKurir = await Courier.create({
         name,
         email,
@@ -21,15 +21,6 @@ class Controller {
       });
     } catch (error) {
       console.log(error);
-      next(error);
-    }
-  }
-
-  static async getCourier(req, res, next) {
-    try {
-      const dataCourier = await Courier.findAll();
-      res.status(200).json(dataCourier);
-    } catch (error) {
       next(error);
     }
   }

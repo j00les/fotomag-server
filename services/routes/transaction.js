@@ -4,14 +4,31 @@ const Authentication = require("../middleware/authentication");
 const upload = require("../middleware/multer");
 const transactionRouter = require("express").Router();
 
-transactionRouter.patch("/progress/:transactionId", Controller.changeStatus);
-transactionRouter.patch("/reject/:transactionId", Controller.changeStatus);
-transactionRouter.patch("/done/:transactionId", Controller.changeStatus);
-transactionRouter.patch("/delivery/:transactionId", Controller.changeStatus);
-transactionRouter.patch("/delivered/:transactionId", Controller.changeStatus);
-transactionRouter.patch("/succcess/:transactionId", Controller.changeStatus);
+transactionRouter.patch(
+  "/progress/:transactionId",
+  Controller.changeStatusProgress
+);
 
-transactionRouter.patch("/:id", Controller.changeStatus);
+transactionRouter.patch(
+  "/reject/:transactionId",
+  Controller.changeStatusReject
+);
+
+transactionRouter.patch("/done/:transactionId", Controller.changeStatusDone);
+transactionRouter.patch(
+  "/delivery/:transactionId",
+  Controller.changeStatusDelivery
+);
+transactionRouter.patch(
+  "/delivered/:transactionId",
+  Controller.changeStatusDelivered
+);
+transactionRouter.patch(
+  "/succcess/:transactionId",
+  Controller.changeStatusSuccess
+);
+
+// transactionRouter.patch("/:id", Controller.changeStatus);
 
 transactionRouter.get("/history", Authentication, Controller.history);
 transactionRouter.get(
