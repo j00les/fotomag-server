@@ -19,7 +19,7 @@ class Controller {
       const { id } = req.user;
       let { atkId } = req.params;
 
-      let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
+      let {colorVariant, duplicate, isJilid, address } = req.body;
       if (!req.file) {
         return res.status(400).json({ message: "Uploaded PDF is required" });
       }
@@ -67,7 +67,7 @@ class Controller {
       // create transaction
       const dataTransaction = await Transaction.create(
         {
-          fileName: secure_url,
+          fileURL: secure_url,
           totalPages: pdfPages,
           colorVariant,
           duplicate,
