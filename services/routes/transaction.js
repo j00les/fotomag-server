@@ -46,22 +46,22 @@ transactionRouter.patch(
 );
 
 transactionRouter.get(
-  "/history",
+  "/historyTransactionMerchant",
   Authentication,
   Controller.historyTransactionMerchant
 );
 transactionRouter.get(
-  "/listTransaction/",
+  "/listTransactionMerchant",
   Authentication,
   Controller.listTransactionMerchant
 );
 transactionRouter.get(
-  "/courier",
+  "/listTransactionCourier",
   AuthenCourier,
   Controller.listTransactionCourier
 );
 transactionRouter.get(
-  "/customer",
+  "/listTransactionCustomer",
   Authentication,
   Controller.listTransactionCustomer
 );
