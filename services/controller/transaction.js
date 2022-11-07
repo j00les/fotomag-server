@@ -59,10 +59,10 @@ class Controller {
 
       // mendapatkan total price
       let totalPrice = pdfPages * harga + hargaJilid;
-      console.log(pdfPages);
-      console.log(harga);
-      console.log(hargaJilid);
-      console.log(totalPrice);
+      // console.log(pdfPages);
+      // console.log(harga);
+      // console.log(hargaJilid);
+      // console.log(totalPrice);
 
       // create transaction
       const dataTransaction = await Transaction.create(
@@ -441,18 +441,16 @@ class Controller {
   //   }
   // }
 
-  static async history(req, res, next) {
+  static async historyTransactionMerchant(req, res, next) {
     try {
       const { id } = req.user;
-      console.log(id, ".. aidi yg toko yg login");
-
       const dataUser = await User.findOne({
         where: {
           id,
         },
         include: ATK,
       });
-      // console.log(dataUser.ATK);
+
       const data = await Transaction.findAll({
         where: {
           status: ["Success", "Reject"],
@@ -466,9 +464,8 @@ class Controller {
     }
   }
 
-  static async listTransaction(req, res, next) {
+  static async listTransactionMerchant(req, res, next) {
     try {
-      // const { id } = req.params;
       const { id } = req.user;
       const dataUser = await User.findOne({
         where: {
@@ -489,7 +486,7 @@ class Controller {
     }
   }
 
-  static async listCourier(req, res, next) {
+  static async listTransactionCourier(req, res, next) {
     try {
       const { id } = req.user;
       const data = await Transaction.findAll({
@@ -503,7 +500,7 @@ class Controller {
     }
   }
 
-  static async listCustomer(req, res, next) {
+  static async listTransactionCustomer(req, res, next) {
     try {
       const { id } = req.user;
       console.log(id);
