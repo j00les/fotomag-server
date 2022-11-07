@@ -4,7 +4,7 @@ class Controller {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-      const { atkId } = req.params;
+      const { id } = req.params
       const dataKurir = await Courier.create({
         name,
         email,
