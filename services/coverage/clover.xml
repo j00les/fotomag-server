@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1667822009718" clover="3.2.0">
-  <project timestamp="1667822009718" name="All files">
-    <metrics statements="428" coveredstatements="224" conditionals="75" coveredconditionals="26" methods="42" coveredmethods="22" elements="545" coveredelements="272" complexity="0" loc="428" ncloc="428" packages="7" files="26" classes="26"/>
+<coverage generated="1667830402148" clover="3.2.0">
+  <project timestamp="1667830402148" name="All files">
+    <metrics statements="427" coveredstatements="242" conditionals="75" coveredconditionals="27" methods="42" coveredmethods="25" elements="544" coveredelements="294" complexity="0" loc="427" ncloc="427" packages="7" files="26" classes="26"/>
     <package name="services">
       <metrics statements="17" coveredstatements="17" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
       <file name="app.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\app.js">
@@ -35,7 +35,7 @@
       </file>
     </package>
     <package name="services.controller">
-      <metrics statements="218" coveredstatements="50" conditionals="36" coveredconditionals="9" methods="19" coveredmethods="2"/>
+      <metrics statements="216" coveredstatements="59" conditionals="36" coveredconditionals="9" methods="19" coveredmethods="3"/>
       <file name="balance.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\controller\balance.js">
         <metrics statements="16" coveredstatements="3" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -56,16 +56,18 @@
         <line num="44" count="1" type="stmt"/>
       </file>
       <file name="courier.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\controller\courier.js">
-        <metrics statements="9" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="6" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="28" count="1" type="stmt"/>
+        <line num="5" count="7" type="stmt"/>
+        <line num="6" count="7" type="stmt"/>
+        <line num="7" count="7" type="stmt"/>
+        <line num="8" count="7" type="stmt"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="16" count="7" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="31" count="3" type="stmt"/>
+        <line num="32" count="3" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
       </file>
       <file name="customer.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\controller\customer.js">
         <metrics statements="8" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -143,7 +145,7 @@
         <line num="93" count="1" type="stmt"/>
       </file>
       <file name="transaction.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\controller\transaction.js">
-        <metrics statements="127" coveredstatements="6" conditionals="22" coveredconditionals="0" methods="11" coveredmethods="0"/>
+        <metrics statements="123" coveredstatements="6" conditionals="22" coveredconditionals="0" methods="11" coveredmethods="0"/>
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
@@ -177,10 +179,6 @@
         <line num="56" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="57" count="0" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="63" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
         <line num="68" count="0" type="stmt"/>
         <line num="89" count="0" type="stmt"/>
         <line num="92" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -245,32 +243,32 @@
         <line num="314" count="0" type="stmt"/>
         <line num="316" count="0" type="stmt"/>
         <line num="320" count="0" type="stmt"/>
-        <line num="326" count="0" type="stmt"/>
+        <line num="321" count="0" type="stmt"/>
         <line num="327" count="0" type="stmt"/>
         <line num="328" count="0" type="stmt"/>
-        <line num="330" count="0" type="stmt"/>
-        <line num="337" count="0" type="stmt"/>
-        <line num="343" count="0" type="stmt"/>
+        <line num="329" count="0" type="stmt"/>
+        <line num="336" count="0" type="stmt"/>
+        <line num="342" count="0" type="stmt"/>
+        <line num="344" count="0" type="stmt"/>
         <line num="345" count="0" type="stmt"/>
-        <line num="346" count="0" type="stmt"/>
+        <line num="350" count="0" type="stmt"/>
         <line num="351" count="0" type="stmt"/>
-        <line num="353" count="0" type="stmt"/>
-        <line num="354" count="0" type="stmt"/>
-        <line num="361" count="0" type="stmt"/>
+        <line num="352" count="0" type="stmt"/>
+        <line num="359" count="0" type="stmt"/>
+        <line num="365" count="0" type="stmt"/>
         <line num="367" count="0" type="stmt"/>
-        <line num="369" count="0" type="stmt"/>
+        <line num="372" count="0" type="stmt"/>
+        <line num="373" count="0" type="stmt"/>
         <line num="374" count="0" type="stmt"/>
-        <line num="375" count="0" type="stmt"/>
-        <line num="376" count="0" type="stmt"/>
-        <line num="383" count="0" type="stmt"/>
+        <line num="381" count="0" type="stmt"/>
+        <line num="386" count="0" type="stmt"/>
+        <line num="387" count="0" type="stmt"/>
         <line num="388" count="0" type="stmt"/>
         <line num="389" count="0" type="stmt"/>
-        <line num="390" count="0" type="stmt"/>
-        <line num="391" count="0" type="stmt"/>
+        <line num="394" count="0" type="stmt"/>
         <line num="396" count="0" type="stmt"/>
-        <line num="398" count="0" type="stmt"/>
-        <line num="399" count="0" type="stmt"/>
-        <line num="403" count="1" type="stmt"/>
+        <line num="397" count="0" type="stmt"/>
+        <line num="401" count="1" type="stmt"/>
       </file>
     </package>
     <package name="services.helper">
@@ -280,15 +278,15 @@
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="5" count="2" type="stmt"/>
+        <line num="5" count="6" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
       </file>
     </package>
     <package name="services.middleware">
-      <metrics statements="67" coveredstatements="33" conditionals="28" coveredconditionals="10" methods="4" coveredmethods="2"/>
+      <metrics statements="67" coveredstatements="40" conditionals="28" coveredconditionals="11" methods="4" coveredmethods="3"/>
       <file name="authenCourier.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\middleware\authenCourier.js">
         <metrics statements="13" coveredstatements="4" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -306,32 +304,32 @@
         <line num="24" count="1" type="stmt"/>
       </file>
       <file name="authentication.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\middleware\authentication.js">
-        <metrics statements="13" coveredstatements="4" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="13" coveredstatements="11" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="6" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="5" count="7" type="stmt"/>
+        <line num="6" count="7" type="stmt"/>
+        <line num="7" count="7" type="stmt"/>
+        <line num="8" count="7" type="stmt"/>
+        <line num="9" count="7" type="cond" truecount="1" falsecount="1"/>
         <line num="10" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
+        <line num="13" count="7" type="stmt"/>
+        <line num="19" count="7" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
         <line num="25" count="1" type="stmt"/>
       </file>
       <file name="handleError.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\middleware\handleError.js">
         <metrics statements="37" coveredstatements="21" conditionals="24" coveredconditionals="10" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="2" count="9" type="stmt"/>
-        <line num="3" count="9" type="stmt"/>
-        <line num="4" count="9" type="stmt"/>
-        <line num="6" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="10" count="5" type="stmt"/>
-        <line num="11" count="5" type="stmt"/>
-        <line num="12" count="5" type="stmt"/>
-        <line num="13" count="5" type="stmt"/>
+        <line num="2" count="12" type="stmt"/>
+        <line num="3" count="12" type="stmt"/>
+        <line num="4" count="12" type="stmt"/>
+        <line num="6" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
         <line num="15" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="16" count="2" type="stmt"/>
         <line num="17" count="2" type="stmt"/>
@@ -358,7 +356,7 @@
         <line num="38" count="0" type="stmt"/>
         <line num="39" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="40" count="0" type="stmt"/>
-        <line num="42" count="9" type="stmt"/>
+        <line num="42" count="12" type="stmt"/>
         <line num="47" count="1" type="stmt"/>
       </file>
       <file name="multer.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\middleware\multer.js">
@@ -370,7 +368,7 @@
       </file>
     </package>
     <package name="services.models">
-      <metrics statements="59" coveredstatements="57" conditionals="9" coveredconditionals="6" methods="15" coveredmethods="14"/>
+      <metrics statements="59" coveredstatements="58" conditionals="9" coveredconditionals="6" methods="15" coveredmethods="15"/>
       <file name="atk.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\models\atk.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="2" count="1" type="stmt"/>
@@ -390,16 +388,16 @@
         <line num="65" count="1" type="stmt"/>
       </file>
       <file name="courier.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\models\courier.js">
-        <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
-        <line num="89" count="1" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="96" count="4" type="stmt"/>
+        <line num="98" count="1" type="stmt"/>
       </file>
       <file name="index.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\models\index.js">
         <metrics statements="21" coveredstatements="20" conditionals="9" coveredconditionals="6" methods="3" coveredmethods="3"/>
@@ -450,7 +448,7 @@
       </file>
     </package>
     <package name="services.routes">
-      <metrics statements="56" coveredstatements="56" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="57" coveredstatements="57" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="balance.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\routes\balance.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -460,11 +458,12 @@
         <line num="7" count="1" type="stmt"/>
       </file>
       <file name="courier.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\routes\courier.js">
-        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
       </file>
       <file name="customer.js" path="D:\Hacktiv8\Phase3\FinalProject\fotomag-server\services\routes\customer.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -521,12 +520,12 @@
         <line num="22" count="1" type="stmt"/>
         <line num="26" count="1" type="stmt"/>
         <line num="33" count="1" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="42" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
         <line num="43" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
       </file>
     </package>
   </project>

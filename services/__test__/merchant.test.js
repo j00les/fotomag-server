@@ -76,7 +76,7 @@ beforeAll(async () => {
   const payload = {
     id: testUser.id,
   };
-  let testUser2 = await User.findByPk(3);
+  let testUser2 = await User.findByPk(2);
   const payload2 = {
     id: testUser2.id,
   };
@@ -384,20 +384,139 @@ describe("Login to app as a merchant", () => {
   });
 })
 
-// describe("Merchant register a new courier", () => {
-//   return request(app)
-//   .post('/courier/register/1')
-//   .send({
-//     name: 'kurirUcok',
-//     email: 'kurirUcok@mail.com',
-//     location: Sequelize.fn(
-//       "ST_GeomFromText",
-//       "POINT(107.59422277037818 -6.937911900280693)"
-//     ),
-//     AtkId: 1
-//   })
-//   .then((response) => {
-//     expect(response.statusCode).toBe(201)
-//     expect(response)
-//   })
-// })
+describe("Merchant register a new courier", () => {
+  test("Register courier with correct input", () => {
+    return request(app)
+    .post('/courier/register')
+    .set("access_token", accessToken2)
+    .send({
+      name: 'kurirUcok',
+      email: 'kurirUcok@mail.com',
+      password: "asd13",
+      location: sequelize.fn(
+        "ST_GeomFromText",
+        "POINT(37.4220936 -122.083922)"
+      ),
+      AtkId: 1
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(201)
+      // expect(response)
+    })
+  })
+
+  test("Register courier without name", () => {
+    return request(app)
+    .post('/courier/register')
+    .set("access_token", accessToken2)
+    .send({
+      email: 'kurirUcok@mail.com',
+      password: "asd13",
+      location: sequelize.fn(
+        "ST_GeomFromText",
+        "POINT(37.4220936 -122.083922)"
+      ),
+      AtkId: 1
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.message).toEqual(["Name is required"]);
+    });
+  })
+
+  test("Register courier without email", () => {
+    return request(app)
+    .post('/courier/register')
+    .set("access_token", accessToken2)
+    .send({
+      name: 'kurirUcok',
+      password: "asd13",
+      location: sequelize.fn(
+        "ST_GeomFromText",
+        "POINT(37.4220936 -122.083922)"
+      ),
+      AtkId: 1
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.message).toEqual(["Email is required"]);
+    });
+  })
+
+  test("Register courier without password", () => {
+    return request(app)
+    .post('/courier/register')
+    .set("access_token", accessToken2)
+    .send({
+      name: 'kurirUcok',
+      email: 'kurirUcok@mail.com',
+      location: sequelize.fn(
+        "ST_GeomFromText",
+        "POINT(37.4220936 -122.083922)"
+      ),
+      AtkId: 1
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.message).toEqual(["Password is required"]);
+    });
+  })
+
+  test("Register courier without location", () => {
+    return request(app)
+    .post('/courier/register')
+    .set("access_token", accessToken2)
+    .send({
+      name: 'kurirUcok',
+      email: 'kurirUcok@mail.com',
+      password: "asd13",
+      AtkId: 1
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.message).toEqual(["Location is required"]);
+    })
+  })
+
+  test("Register courier with existing email", () => {
+    return request(app)
+    .post('/courier/register')
+    .set("access_token", accessToken2)
+    .send({
+      name: 'kurirUcok',
+      email: 'kurirUcok@mail.com',
+      password: "asd13",
+      location: sequelize.fn(
+        "ST_GeomFromText",
+        "POINT(37.4220936 -122.083922)"
+      ),
+      AtkId: 1
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.message).toEqual(["Email must be Unique"]);
+    });
+  })
+
+  test("Register courier without email format", () => {
+    return request(app)
+    .post('/courier/register')
+    .set("access_token", accessToken2)
+    .send({
+      name: 'kurirUcok',
+      email: 'kurirUcok@mail.com',
+      password: "asd13",
+      AtkId: 1
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.message).toEqual(["Format email is required"]);
+    });
+  })
+})

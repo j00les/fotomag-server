@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.72% </span>
+                <span class="strong">4.87% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/127</span>
+                <span class='fraction'>6/123</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.72% </span>
+                <span class="strong">4.87% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/127</span>
+                <span class='fraction'>6/123</span>
             </div>
         
             
@@ -464,9 +464,7 @@
 <a name='L399'></a><a href='#L399'>399</a>
 <a name='L400'></a><a href='#L400'>400</a>
 <a name='L401'></a><a href='#L401'>401</a>
-<a name='L402'></a><a href='#L402'>402</a>
-<a name='L403'></a><a href='#L403'>403</a>
-<a name='L404'></a><a href='#L404'>404</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L402'></a><a href='#L402'>402</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -527,12 +525,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -785,6 +783,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -795,13 +794,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -817,7 +814,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -930,10 +926,10 @@ class Controller {
 &nbsp;
       // mendapatkan total price
       let totalPrice = <span class="cstat-no" title="statement not covered" >pdfPages * harga + hargaJilid;</span>
-<span class="cstat-no" title="statement not covered" >      console.log(pdfPages);</span>
-<span class="cstat-no" title="statement not covered" >      console.log(harga);</span>
-<span class="cstat-no" title="statement not covered" >      console.log(hargaJilid);</span>
-<span class="cstat-no" title="statement not covered" >      console.log(totalPrice);</span>
+      // console.log(pdfPages);
+      // console.log(harga);
+      // console.log(hargaJilid);
+      // console.log(totalPrice);
 &nbsp;
       // create transaction
       const dataTransaction = <span class="cstat-no" title="statement not covered" >await Transaction.create(</span>
@@ -1188,23 +1184,22 @@ class Controller {
         message: `Transaction is Success`,
       });
     } catch (error) {
+<span class="cstat-no" title="statement not covered" >      console.log(error)</span>
 <span class="cstat-no" title="statement not covered" >      next(error);</span>
     }
   }
 &nbsp;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  st</span>atic async history(req, res, next) {
+<span class="fstat-no" title="function not covered" >  st</span>atic async historyTransactionMerchant(req, res, next) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { id } = <span class="cstat-no" title="statement not covered" >req.user;</span>
-<span class="cstat-no" title="statement not covered" >      console.log(id, ".. aidi yg toko yg login");</span>
-&nbsp;
       const dataUser = <span class="cstat-no" title="statement not covered" >await User.findOne({</span>
         where: {
           id,
         },
         include: ATK,
       });
-      // console.log(dataUser.ATK);
+&nbsp;
       const data = <span class="cstat-no" title="statement not covered" >await Transaction.findAll({</span>
         where: {
           status: ["Success", "Reject"],
@@ -1218,9 +1213,8 @@ class Controller {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  st</span>atic async listTransaction(req, res, next) {
+<span class="fstat-no" title="function not covered" >  st</span>atic async listTransactionMerchant(req, res, next) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      // const { id } = req.params;
       const { id } = <span class="cstat-no" title="statement not covered" >req.user;</span>
       const dataUser = <span class="cstat-no" title="statement not covered" >await User.findOne({</span>
         where: {
@@ -1241,7 +1235,7 @@ class Controller {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  st</span>atic async listCourier(req, res, next) {
+<span class="fstat-no" title="function not covered" >  st</span>atic async listTransactionCourier(req, res, next) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { id } = <span class="cstat-no" title="statement not covered" >req.user;</span>
       const data = <span class="cstat-no" title="statement not covered" >await Transaction.findAll({</span>
@@ -1255,7 +1249,7 @@ class Controller {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  st</span>atic async listCustomer(req, res, next) {
+<span class="fstat-no" title="function not covered" >  st</span>atic async listTransactionCustomer(req, res, next) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { id } = <span class="cstat-no" title="statement not covered" >req.user;</span>
 <span class="cstat-no" title="statement not covered" >      console.log(id);</span>
@@ -1279,7 +1273,7 @@ module.exports = Controller;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-11-07T11:53:29.668Z
+                at 2022-11-07T14:13:22.097Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -24,7 +24,7 @@ transactionRouter.patch(
   Controller.changeStatusDelivered
 );
 transactionRouter.patch(
-  "/success/:transactionId",
+  "/success/:transactionId", Authentication,
   Controller.changeStatusSuccess
 );
 

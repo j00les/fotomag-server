@@ -317,6 +317,7 @@ class Controller {
         message: `Transaction is Success`,
       });
     } catch (error) {
+      console.log(error)
       next(error);
     }
   }

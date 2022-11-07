@@ -168,6 +168,8 @@ afterAll(async () => {
   })
 });
 
+jest.setTimeout(30000)
+
 describe("Register new customer", () => {
   test("POST new customer with correct input", () => {
     return request(app)
@@ -363,7 +365,7 @@ describe("Updating customer balance", () => {
       .post("/balance/pay")
       .set("access_token", accessToken)
       .send({
-        nominal: 100000,
+        nominal: 1000000,
       })
       .then((response) => {
         expect(response.statusCode).toBe(201);
@@ -540,12 +542,11 @@ describe("Customer create a new transaction", () => {
 describe("Customer changes status transaction", () => {
   test("Change status from delivered to success", () => {
     return request(app)
-    .patch('/transaction/succcess/1')
-    // .set("access_token", accessToken)
+    .patch('/transaction/success/1')
+    .set("access_token", accessToken)
     .then((response) => {
       expect(response.statusCode).toBe(200)
       expect(response.body).toHaveProperty("message", 'Transaction is Success')
-      // expect(response.body).toHaveProperty("message", "Transaction is Success")
     })
 
   })
