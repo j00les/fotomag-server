@@ -3,7 +3,7 @@ const { Courier, Sequelize } = require("../models/index");
 class Controller {
   static async register(req, res, next) {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, location } = req.body;
       const { id } = req.params
       const dataKurir = await Courier.create({
         name,
