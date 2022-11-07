@@ -28,25 +28,19 @@ class Controller {
       const dataBuffer = fs.readFileSync(req.file.path);
       const pdfData = await pdf(dataBuffer);
       const pdfPages = pdfData.numpages;
-      // console.log(pdfPages, '@@@@@@@@@ JUMLAH HALAMAN PDF')
+
       let uploadedFile = UploadApiResponse;
-      // uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-      //   folder: 'fotomagPDF',
-      //   resource_type: 'auto'
-      // })
       try {
         uploadedFile = await cloudinary.uploader.upload(req.file.path, {
           folder: "fotomagPDF",
           resource_type: "auto",
         });
-        // console.log('UPLOAD KE CLOUDINARY SUKSES [[[[[[[[[[[]]]]]]]]]]')
       } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Internal Server Error" });
       }
-      const { originalname } = req.file;
-      const { secure_url, bytes, format } = uploadedFile;
-      // let totalPages = 100; //masih hardcode
+
+      const { secure_url } = uploadedFile;
 
       const dataATK = await ATK.findByPk(atkId); // untuk mendapatkan harga dari ATK nya supaya dinamis
 
@@ -54,18 +48,21 @@ class Controller {
       if (colorVariant === "Berwarna") {
         harga = harga + dataATK.priceColor;
       } else if (colorVariant === "Hitamputih") {
-        // dinamis
         harga = harga + dataATK.priceBlack; // dinamis
       }
 
       let hargaJilid = 0;
-      if (isJilid === true) {
+      if (isJilid === "true") {
         hargaJilid = hargaJilid + dataATK.priceJilid;
       } else {
         hargaJilid = hargaJilid + 0;
       }
       // mendapatkan total price
       let totalPrice = pdfPages * harga + hargaJilid;
+      console.log(pdfPages);
+      console.log(harga);
+      console.log(hargaJilid);
+      console.log(totalPrice);
 
       // create transaction
       const dataTransaction = await Transaction.create(
@@ -109,9 +106,7 @@ class Controller {
       );
 
       await t.commit();
-      res.status(201).json({
-        trasactionId: dataTransaction.id,
-      });
+      res.status(201).json(dataTransaction);
     } catch (error) {
       await t.rollback();
       // console.log(error);

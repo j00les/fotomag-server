@@ -6,6 +6,7 @@ class Controller {
     try {
       const { email, password } = req.body;
       let dataPayload = {};
+      let data = {};
       if (!email) {
         throw { name: "Email is required" };
       }
@@ -25,6 +26,7 @@ class Controller {
           id: dataUser.id,
         };
         dataPayload = payload;
+        data = dataUser;
       } else {
         const dataCourier = await Courier.findOne({
           where: { email },
@@ -39,10 +41,12 @@ class Controller {
           id: dataCourier.id,
         };
         dataPayload = payload;
+        data = { role: "Courier" };
       }
       const access_token = createAccessToken(dataPayload);
       res.status(200).json({
         access_token: access_token,
+        role: data.role,
       });
     } catch (error) {
       console.log(error, "errornya");
