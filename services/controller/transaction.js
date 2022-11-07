@@ -325,12 +325,17 @@ class Controller {
   static async historyTransactionMerchant(req, res, next) {
     try {
       const { id } = req.user;
+      console.log(id);
       const dataUser = await User.findOne({
         where: {
           id,
         },
         include: ATK,
       });
+      console.log(dataUser);
+      if (!dataUser || dataUser.ATK === null) {
+        throw { name: "Transaction not found" };
+      }
 
       const data = await Transaction.findAll({
         where: {
@@ -369,13 +374,17 @@ class Controller {
 
   static async listTransactionCourier(req, res, next) {
     try {
-      const { id } = req.user;
+      const { CourierId } = req.user;
+      console.log(CourierId);
+      const dataCourier = await Courier.findByPk(CourierId);
+      console.log(dataCourier.AtkId);
       const data = await Transaction.findAll({
         where: {
           status: ["Done", "Delivery", "Delivered"],
-          CourierId: id,
+          AtkId: dataCourier.AtkId,
         },
       });
+      res.status(200).json(data);
     } catch (error) {
       next(error);
     }
@@ -384,12 +393,17 @@ class Controller {
   static async listTransactionCustomer(req, res, next) {
     try {
       const { id } = req.user;
-      console.log(id);
+
       const data = await Transaction.findAll({
         where: {
-          CourierId: id,
+          UserId: id,
         },
       });
+      const dataUser = await User.findByPk(id);
+
+      if (dataUser.role === undefined) {
+        throw { name: "Transaction not found" };
+      }
       res.status(200).json(data);
     } catch (error) {
       console.log(error);

@@ -42,7 +42,10 @@ const handleErrors = (err, req, res, next) => {
     (code = 401), (message = "This is not your transaction");
   } else if (err.name === "This is not your jurisdiction") {
     (code = 401), (message = "This is not your jurisdiction");
+  } else if (err.name === "Transaction not found") {
+    (code = 400), (message = "Transaction not found");
   }
+
   res.status(code).json({
     message: message,
   });
