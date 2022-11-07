@@ -11,6 +11,7 @@ class Controller {
           UserId: id,
         },
       });
+
       const dataKurir = await Courier.create({
         name,
         email,
