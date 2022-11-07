@@ -3,9 +3,8 @@ const midtransClient = require("midtrans-client");
 class Controller {
   static async changeBalance(req, res, next) {
     try {
-      let { id } = req.params;
       let { topUp } = req.body;
-      //   let { id } = req.user;
+      let { id } = req.user;
       const dataUser = await User.findOne({
         where: {
           id,

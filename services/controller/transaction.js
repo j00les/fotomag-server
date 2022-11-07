@@ -18,8 +18,8 @@ class Controller {
     const t = await sequelize.transaction();
     try {
       const { id } = req.user;
-      // console.log(id, '<><><><><><> INI ID');
-      let { idAtk } = req.params;
+      let { atkId } = req.params;
+
       let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
       if (!req.file) {
         return res.status(400).json({ message: "Uploaded PDF is required" });
@@ -28,44 +28,41 @@ class Controller {
       const dataBuffer = fs.readFileSync(req.file.path);
       const pdfData = await pdf(dataBuffer);
       const pdfPages = pdfData.numpages;
-      // console.log(pdfPages, '@@@@@@@@@ JUMLAH HALAMAN PDF')
+
       let uploadedFile = UploadApiResponse;
-      // uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-      //   folder: 'fotomagPDF',
-      //   resource_type: 'auto'
-      // })
       try {
         uploadedFile = await cloudinary.uploader.upload(req.file.path, {
           folder: "fotomagPDF",
           resource_type: "auto",
         });
-        // console.log('UPLOAD KE CLOUDINARY SUKSES [[[[[[[[[[[]]]]]]]]]]')
       } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Internal Server Error" });
       }
-      const { originalname } = req.file;
-      const { secure_url, bytes, format } = uploadedFile;
-      // let totalPages = 100; //masih hardcode
 
-      const dataATK = await ATK.findByPk(idAtk); // untuk mendapatkan harga dari ATK nya supaya dinamis
+      const { secure_url } = uploadedFile;
+
+      const dataATK = await ATK.findByPk(atkId); // untuk mendapatkan harga dari ATK nya supaya dinamis
 
       let harga = 0;
       if (colorVariant === "Berwarna") {
         harga = harga + dataATK.priceColor;
       } else if (colorVariant === "Hitamputih") {
-        // dinamis
         harga = harga + dataATK.priceBlack; // dinamis
       }
 
       let hargaJilid = 0;
-      if (isJilid === true) {
+      if (isJilid === "true") {
         hargaJilid = hargaJilid + dataATK.priceJilid;
       } else {
         hargaJilid = hargaJilid + 0;
       }
       // mendapatkan total price
       let totalPrice = pdfPages * harga + hargaJilid;
+      console.log(pdfPages);
+      console.log(harga);
+      console.log(hargaJilid);
+      console.log(totalPrice);
 
       // create transaction
       const dataTransaction = await Transaction.create(
@@ -83,7 +80,7 @@ class Controller {
           ),
           UserId: id,
           totalPrice: totalPrice,
-          AtkId: idAtk,
+          AtkId: atkId,
         },
         { transaction: t }
       );
@@ -109,9 +106,7 @@ class Controller {
       );
 
       await t.commit();
-      res.status(201).json({
-        trasactionId: dataTransaction.id,
-      });
+      res.status(201).json(dataTransaction);
     } catch (error) {
       await t.rollback();
       // console.log(error);
@@ -121,8 +116,8 @@ class Controller {
 
   static async changeStatus(req, res, next) {
     try {
-      let { id } = req.params;
-      let { status } = req.query; // string (Reject atau Progres)
+      let id = req.params.transactionId;
+      let { status } = req.query;
 
       // ubah status progress
       if (status === "Progress") {
@@ -308,8 +303,7 @@ class Controller {
 
   static async listCourier(req, res, next) {
     try {
-      // const { id } = req.params;
-      // const { id } = req.user;
+      const { id } = req.user;
       const data = await Transaction.findAll({
         where: {
           status: ["Done", "Delivery", "Delivered"],
@@ -323,13 +317,16 @@ class Controller {
 
   static async listCustomer(req, res, next) {
     try {
-      // const { id } = req.user;
+      const { id } = req.user;
+      console.log(id);
       const data = await Transaction.findAll({
         where: {
-          id,
+          CourierId: id,
         },
       });
+      res.status(200).json(data);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
