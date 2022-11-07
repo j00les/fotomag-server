@@ -12,13 +12,12 @@ class Controller {
     const t = await sequelize.transaction();
     try {
       const { id } = req.user;
-      console.log(id);
-      let { idAtk } = req.params;
+      let { atkId } = req.params;
       let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
 
       let totalPages = 100; //masih hardcode
 
-      const dataATK = await ATK.findByPk(idAtk); // untuk mendapatkan harga dari ATK nya supaya dinamis
+      const dataATK = await ATK.findByPk(atkId); // untuk mendapatkan harga dari ATK nya supaya dinamis
 
       let harga = 0;
       if (colorVariant === "Berwarna") {
@@ -53,7 +52,7 @@ class Controller {
           ),
           UserId: id,
           totalPrice: totalPrice,
-          AtkId: idAtk,
+          AtkId: atkId,
         },
         { transaction: t }
       );
@@ -92,7 +91,7 @@ class Controller {
   static async changeStatus(req, res, next) {
     try {
       let id = req.params.transactionId;
-      let { status } = req.query; // string (Reject atau Progres)
+      let { status } = req.query;
 
       // ubah status progress
       if (status === "Progress") {
