@@ -24,20 +24,32 @@ transactionRouter.patch(
   Controller.changeStatusDelivered
 );
 transactionRouter.patch(
-  "/succcess/:transactionId",
+  "/success/:transactionId",
   Controller.changeStatusSuccess
 );
 
 // transactionRouter.patch("/:id", Controller.changeStatus);
 
-transactionRouter.get("/history", Authentication, Controller.history);
+transactionRouter.get(
+  "/history",
+  Authentication,
+  Controller.historyTransactionMerchant
+);
 transactionRouter.get(
   "/listTransaction/",
   Authentication,
-  Controller.listTransaction
+  Controller.listTransactionMerchant
 );
-transactionRouter.get("/courier", AuthenCourier, Controller.listCourier);
-transactionRouter.get("/customer", Authentication, Controller.listCustomer);
+transactionRouter.get(
+  "/courier",
+  AuthenCourier,
+  Controller.listTransactionCourier
+);
+transactionRouter.get(
+  "/customer",
+  Authentication,
+  Controller.listTransactionCustomer
+);
 
 transactionRouter.use(Authentication);
 transactionRouter.post(

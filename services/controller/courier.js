@@ -1,10 +1,17 @@
-const { Courier, Sequelize } = require("../models/index");
+const { Courier, Sequelize, ATK } = require("../models/index");
 
 class Controller {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-      const { atkId } = req.params;
+      const { id } = req.user;
+
+      const dataATK = await ATK.findOne({
+        where: {
+          UserId: id,
+        },
+      });
+
       const dataKurir = await Courier.create({
         name,
         email,
@@ -13,7 +20,7 @@ class Controller {
           "ST_GeomFromText",
           "POINT(107.59422277037818 -6.937911900280693)"
         ),
-        AtkId: atkId,
+        AtkId: dataATK.id,
       });
       res.status(201).json({
         id: dataKurir.id,
