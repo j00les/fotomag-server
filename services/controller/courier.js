@@ -13,7 +13,7 @@ class Controller {
           "ST_GeomFromText",
           "POINT(107.59422277037818 -6.937911900280693)"
         ),
-        AtkId: id,
+        AtkId: atkId,
       });
       res.status(201).json({
         id: dataKurir.id,

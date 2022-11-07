@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.14% </span>
+                <span class="strong">42.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/28</span>
+                <span class='fraction'>12/28</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.14% </span>
+                <span class="strong">42.85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/28</span>
+                <span class='fraction'>12/28</span>
             </div>
         
             
@@ -160,8 +160,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,8 +172,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -182,7 +182,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,15 +197,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -252,9 +252,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">let { User, ATK, sequelize } = require("../models/index");
 &nbsp;
 class Controller {
-<span class="fstat-no" title="function not covered" >  st</span>atic async register(req, res, next) {
-    const t = <span class="cstat-no" title="statement not covered" >await sequelize.transaction();</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
+  static async register(req, res, next) {
+    const t = await sequelize.transaction();
+    try {
       let {
         name,
         email,
@@ -265,8 +265,8 @@ class Controller {
         priceColor,
         priceBlack,
         priceJilid,
-      } = <span class="cstat-no" title="statement not covered" >req.body;</span>
-      const dataUser = <span class="cstat-no" title="statement not covered" >await User.create({</span>
+      } = req.body;
+      const dataUser = await User.create({
         name,
         email,
         password,
@@ -275,7 +275,7 @@ class Controller {
         role: "Merchant",
       });
 &nbsp;
-      const dataAtk = <span class="cstat-no" title="statement not covered" >await ATK.create(</span>
+      const dataAtk = await ATK.create(
         {
           name: atkName,
           address: atkAddress,
@@ -290,15 +290,15 @@ class Controller {
         },
         { transaction: t }
       );
-<span class="cstat-no" title="statement not covered" >      res.status(201).json({</span>
-        nameCustomet: dataUser.name,
-        namaToko: dataAtk.name,
+      res.status(201).json({
+        merchantName: dataUser.name,
+        shopName: dataAtk.name,
       });
-<span class="cstat-no" title="statement not covered" >      await t.commit();</span>
+      await t.commit();
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.log(error);</span>
-<span class="cstat-no" title="statement not covered" >      await t.rollback();</span>
-<span class="cstat-no" title="statement not covered" >      next(error);</span>
+      console.log(error);
+      await t.rollback();
+      next(error);
     }
   }
 &nbsp;
@@ -349,7 +349,7 @@ module.exports = Controller;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-11-07T08:37:48.396Z
+                at 2022-11-07T11:53:29.668Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
