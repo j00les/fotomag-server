@@ -40,8 +40,8 @@ class Controller {
         { transaction: t }
       );
       res.status(201).json({
-        nameCustomet: dataUser.name,
-        namaToko: dataAtk.name,
+        merchantName: dataUser.name,
+        shopName: dataAtk.name,
       });
       await t.commit();
     } catch (error) {

@@ -54,7 +54,7 @@ transactionRouter.get(
 transactionRouter.use(Authentication);
 transactionRouter.post(
   "/:atkId",
-  upload.single("fileName"),
+  upload.single("fileURL"),
   Controller.createTransaction
 );
 
