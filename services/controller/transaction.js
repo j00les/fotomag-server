@@ -18,8 +18,8 @@ class Controller {
     const t = await sequelize.transaction();
     try {
       const { id } = req.user;
-      // console.log(id, '<><><><><><> INI ID');
-      let { idAtk } = req.params;
+      let { atkId } = req.params;
+
       let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
       if (!req.file) {
         return res.status(400).json({ message: "Uploaded PDF is required" });
@@ -48,7 +48,7 @@ class Controller {
       const { secure_url, bytes, format } = uploadedFile;
       // let totalPages = 100; //masih hardcode
 
-      const dataATK = await ATK.findByPk(idAtk); // untuk mendapatkan harga dari ATK nya supaya dinamis
+      const dataATK = await ATK.findByPk(atkId); // untuk mendapatkan harga dari ATK nya supaya dinamis
 
       let harga = 0;
       if (colorVariant === "Berwarna") {
@@ -83,7 +83,7 @@ class Controller {
           ),
           UserId: id,
           totalPrice: totalPrice,
-          AtkId: idAtk,
+          AtkId: atkId,
         },
         { transaction: t }
       );
@@ -121,8 +121,8 @@ class Controller {
 
   static async changeStatus(req, res, next) {
     try {
-      let { id } = req.params;
-      let { status } = req.query; // string (Reject atau Progres)
+      let id = req.params.transactionId;
+      let { status } = req.query;
 
       // ubah status progress
       if (status === "Progress") {
@@ -308,8 +308,7 @@ class Controller {
 
   static async listCourier(req, res, next) {
     try {
-      // const { id } = req.params;
-      // const { id } = req.user;
+      const { id } = req.user;
       const data = await Transaction.findAll({
         where: {
           status: ["Done", "Delivery", "Delivered"],
@@ -323,13 +322,16 @@ class Controller {
 
   static async listCustomer(req, res, next) {
     try {
-      // const { id } = req.user;
+      const { id } = req.user;
+      console.log(id);
       const data = await Transaction.findAll({
         where: {
-          id,
+          CourierId: id,
         },
       });
+      res.status(200).json(data);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
