@@ -1,6 +1,17 @@
 const { User } = require("../models/index");
 
 class Controller {
+  static async getCustomer(req, res, next) {
+    try {
+      const dataCustomer = await User.findAll({
+        where: {
+          role: "Customer",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
   static async register(req, res, next) {
     try {
       console.log("register");

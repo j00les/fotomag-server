@@ -13,6 +13,15 @@ const UploadApiResponse = require("cloudinary").v2;
 const fs = require("fs");
 
 class Controller {
+  static async getTransaction(req, res, next) {
+    try {
+      const dataTransaction = await Transaction.findAll();
+      res.status(200).json(dataTransaction);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // buat transaction atau order
   static async createTransaction(req, res, next) {
     const t = await sequelize.transaction();
