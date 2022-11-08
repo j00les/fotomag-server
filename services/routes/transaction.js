@@ -7,6 +7,8 @@ const merchanAuthor = require("../middleware/merchantAuthor");
 const upload = require("../middleware/multer");
 const transactionRouter = require("express").Router();
 
+transactionRouter.get("/", Controller.getTransaction);
+
 transactionRouter.patch(
   "/progress/:transactionId",
   Authentication,

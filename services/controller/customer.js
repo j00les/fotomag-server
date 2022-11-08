@@ -1,6 +1,14 @@
 const { User } = require("../models/index");
 
 class Controller {
+  static async getCustomer(req, res, next) {
+    try {
+      const dataCustomer = await User.findAll();
+      res.status(200).json(dataCustomer);
+    } catch (error) {
+      next(error);
+    }
+  }
   static async register(req, res, next) {
     try {
       console.log("register");

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest --verbose --runInBand --forceExit --coverage",
-    "seed": "npx sequelize-cli db:drop  && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize db:seed:all "
+    "seed": "npx sequelize-cli db:drop  && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize db:seed:all ",
+    "dev": "NODE_ENV=development npx nodemon app.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
