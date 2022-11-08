@@ -560,7 +560,7 @@ describe("Merchant register a new courier", () => {
 describe("Merchant fetch list transaction", () => {
   test('Merchant fetching list transaction with status: Pending, Done, Delivery, Delivered', () => {
     return request (app)
-    .get('/transaction/listTransaction')
+    .get('/transaction/listTransactionMerchant')
     .set("access_token", accessToken2)
     .then((response) => {
       expect(response.statusCode).toBe(200)
@@ -571,7 +571,7 @@ describe("Merchant fetch list transaction", () => {
   })
   test("Merchant fetching list transaction but without access token", () => {
     return request(app)
-    .get('/transaction/listTransaction')
+    .get('/transaction/listTransactionMerchant')
     .then((response) => {
       expect(response.statusCode).toBe(401)
       expect(response.body).toHaveProperty("message", "Invalid token")
@@ -580,7 +580,7 @@ describe("Merchant fetch list transaction", () => {
 
   test("Merchant fetching list transaction but still data still empty", () => {
     return request (app)
-    .get('/transaction/listTransaction')
+    .get('/transaction/listTransactionMerchant')
     .set("access_token", accessToken3)
     .then((response) => {
       expect(response.statusCode).toBe(200)
@@ -635,6 +635,7 @@ describe("Merchant updating status in transaction", () => {
   test("Changes status from pending to progress", () => {
     return request(app)
     .patch('/transaction/progress/1')
+    .set("access_token", accessToken2)
     .then((response) => {
       expect(response.statusCode).toBe(200)
       expect(response.body).toHaveProperty('message', 'Transaction is Progress')
@@ -644,6 +645,7 @@ describe("Merchant updating status in transaction", () => {
   test("Changes status from progress to done", () => {
     return request(app)
     .patch('/transaction/done/1')
+    .set("access_token", accessToken2)
     .then((response) => {
       expect(response.statusCode).toBe(200)
       expect(response.body).toHaveProperty('message', 'Transaction is Done')
@@ -653,6 +655,7 @@ describe("Merchant updating status in transaction", () => {
   test("Changes status from pending to reject", () => {
     return request(app)
     .patch('/transaction/reject/1')
+    .set("access_token", accessToken2)
     .then((response) => {
       expect(response.statusCode).toBe(200)
       expect(response.body).toHaveProperty('message', 'Transaction is Reject')
@@ -663,8 +666,9 @@ describe("Merchant updating status in transaction", () => {
   test("Changes status transaction to progress but incorrect transactionId", () => {
     return request(app)
     .patch('/transaction/progress/100')
+    .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(401)
       expect(response.body).toHaveProperty('message', 'Data transaction not found')
     })
   })
@@ -673,8 +677,9 @@ describe("Merchant updating status in transaction", () => {
   test("Changes status transaction to reject but incorrect transactionId", () => {
     return request(app)
     .patch('/transaction/reject/100')
+    .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(401)
       expect(response.body).toHaveProperty('message', 'Data transaction not found')
     })
   })
@@ -682,9 +687,10 @@ describe("Merchant updating status in transaction", () => {
   //BELOM DI HANDLE
   test("Changes status transaction to done but incorrect transactionId", () => {
     return request(app)
-    .patch('/transaction/reject/100')
+    .patch('/transaction/done/100')
+    .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(401)
       expect(response.body).toHaveProperty('message', 'Data transaction not found')
     })
   })
@@ -693,11 +699,11 @@ describe("Merchant updating status in transaction", () => {
 describe("Merchant fetching history transaction data", () => {
   test("fetching history transaction with correct access token", () => {
     return request(app)
-    .get('/transaction/history')
+    .get('/transaction/historyTransactionMerchant')
     .set('access_token', accessToken2)
     .then((response) => {
       expect(response.statusCode).toBe(200)
-      expect(response.body.length).toBeGreaterThan(0)
+      // expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(expect.arrayContaining([expect.any(Object)]))
       expect(response.body[0].status).toEqual(expect.any(String))
     })
@@ -705,7 +711,7 @@ describe("Merchant fetching history transaction data", () => {
 
   test("fetching history data but data still empty", () => {
     return request(app)
-    .get('/transaction/history')
+    .get('/transaction/historyTransactionMerchant')
     .set("access_token", accessToken3)
     .then((response) => {
       expect(response.statusCode).toBe(200)
@@ -716,10 +722,13 @@ describe("Merchant fetching history transaction data", () => {
 
   test("fetching history data but without access token", () => {
     return request(app)
-    .get('/transaction/history')
+    .get('/transaction/historyTransactionMerchant')
     .then((response) => {
       expect(response.statusCode).toBe(401)
       expect(response.body).toHaveProperty("message", "Invalid token")
     })
   })
 })
+
+//pindah ke branch testing6
+//ini spasi
