@@ -3,11 +3,8 @@ const { User } = require("../models/index");
 class Controller {
   static async getCustomer(req, res, next) {
     try {
-      const dataCustomer = await User.findAll({
-        where: {
-          role: "Customer",
-        },
-      });
+      const dataCustomer = await User.findAll();
+      res.status(200).json(dataCustomer);
     } catch (error) {
       next(error);
     }
