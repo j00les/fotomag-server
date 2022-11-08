@@ -318,6 +318,7 @@ class Controller {
         message: `Transaction is Success`,
       });
     } catch (error) {
+      console.log(error)
       next(error);
     }
   }
@@ -359,7 +360,6 @@ class Controller {
         },
         include: ATK,
       });
-
       const data = await Transaction.findAll({
         where: {
           status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
