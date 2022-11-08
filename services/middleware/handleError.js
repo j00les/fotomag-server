@@ -27,7 +27,7 @@ const handleErrors = (err, req, res, next) => {
   } else if (err.name === "JsonWebTokenError") {
     code = 401;
     message = "Invalid token";
-  } else if (err.name === "Forbidden") {
+  } else if (err.name === "Forbiden") {
     code = 403;
     message = "You are not authorized";
   } else if (err.name === "Phone Number is required") {
@@ -38,7 +38,16 @@ const handleErrors = (err, req, res, next) => {
     (code = 400), (message = "Your balance is less");
   } else if (err.name === "Nominal is required") {
     (code = 400), (message = "Nominal is required");
+  } else if (err.name === "This is not your transaction") {
+    (code = 401), (message = "This is not your transaction");
+  } else if (err.name === "This is not your jurisdiction") {
+    (code = 401), (message = "This is not your jurisdiction");
+  } else if (err.name === "Transaction not found") {
+    (code = 400), (message = "Transaction not found");
+  } else if (err.name === "Toko not found") {
+    (code = 404), (message = "Toko not found");
   }
+
   res.status(code).json({
     message: message,
   });
