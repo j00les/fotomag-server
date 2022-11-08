@@ -36,21 +36,21 @@ app.use(cloudinary.config);
 
 io.on("connection", (socket) => {
   socket.on("dapet", (dape) => {
-  console.log(dape);
+    console.log(dape);
   });
 
   socket.on("join-room", (customerId) => {
-    socket.join(customerId)
-  })
-  
-  socket.on("updateLocation", ({location, userId}) => {
-    socket.to(userId).emit("sendLocation", location)
+    socket.join(customerId);
+  });
+
+  socket.on("updateLocation", ({ location, userId }) => {
+    socket.to(userId).emit("sendLocation", location);
     console.log(location, "<<<<<<< update location");
   });
 
   socket.on("nyoba", (location) => {
     console.log(location, "<<<<< masuk client dapet location");
-  })
+  });
 
   socket.on("loc", (get, lol) => {
     console.log(lol);
@@ -59,7 +59,7 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000);
+httpServer.listen(3001);
 
 app.listen(port, () => {
   console.log(`Bisa bisa`);
