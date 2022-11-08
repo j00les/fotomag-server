@@ -130,7 +130,7 @@ class Controller {
       );
 
       res.status(200).json({
-        message: `Transaction is Progress}`,
+        message: `Transaction is Progress`,
       });
     } catch (error) {
       next(error);
@@ -355,7 +355,6 @@ class Controller {
         },
         include: ATK,
       });
-
       const data = await Transaction.findAll({
         where: {
           status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
