@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest --verbose --runInBand --forceExit --coverage",
-    "seed": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate "
+    "seed": "npx sequelize-cli db:drop  && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize db:seed:all "
   },
   "keywords": [],
   "author": "",
