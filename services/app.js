@@ -6,6 +6,8 @@ const express = require("express");
 const handleErrors = require("./middleware/handleError");
 const router = require("./routes");
 const dotenv = require("dotenv");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 const app = express();
 const port = 3000;
 // const cloudinary = require('cloudinary').v2
@@ -14,6 +16,13 @@ const cloudinary = require("./config/cloudinaryConfig");
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUDINARY_API_CLOUDNAME,
@@ -24,6 +33,33 @@ app.use(express.json());
 app.use("/", router);
 app.use(handleErrors);
 app.use(cloudinary.config);
+
+io.on("connection", (socket) => {
+  socket.on("dapet", (dape) => {
+  console.log(dape);
+  });
+
+  socket.on("join-room", (customerId) => {
+    socket.join(customerId)
+  })
+  
+  socket.on("updateLocation", ({location, userId}) => {
+    socket.to(userId).emit("sendLocation", location)
+    console.log(location, "<<<<<<< update location");
+  });
+
+  socket.on("nyoba", (location) => {
+    console.log(location, "<<<<< masuk client dapet location");
+  })
+
+  socket.on("loc", (get, lol) => {
+    console.log(lol);
+    console.log(get);
+    socket.join(get);
+  });
+});
+
+httpServer.listen(3000);
 
 app.listen(port, () => {
   console.log(`Bisa bisa`);

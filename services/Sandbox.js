@@ -28,7 +28,12 @@ io.on("connection", (socket) => {
   
   socket.on("updateLocation", ({location, userId}) => {
     socket.to(userId).emit("sendLocation", location)
+    console.log(location, "<<<<<<< update location");
   });
+
+  socket.on("nyoba", (location) => {
+    console.log(location, "<<<<< masuk client dapet location");
+  })
 
   socket.on("loc", (get, lol) => {
     console.log(lol);
