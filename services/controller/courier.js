@@ -4,7 +4,6 @@ class Controller {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-      console.log(req.user, '<><><><><><><>')
       const { id } = req.user;
 
       const dataATK = await ATK.findOne({

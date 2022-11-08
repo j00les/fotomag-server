@@ -46,8 +46,108 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: "Taufik",
+        email: "taufik@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Fadil",
+        email: "fadil@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Nabil",
+        email: "nabil@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Sukarman",
+        email: "sukarman@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Agung",
+        email: "agung@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Fahrul",
+        email: "fahrul@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Adib",
+        email: "adib@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Wandi",
+        email: "wandi@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Melisa",
+        email: "melisa@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
+
+  // * 4. taufik
+  // * fadil
+  // * nabil
+  // * sukarman
+  // * agung
+  // * fahrul
+  // * adib
+  // * wandi
+  // * melisa
 
   async down(queryInterface, Sequelize) {
     /**
