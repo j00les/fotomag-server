@@ -424,17 +424,17 @@ describe("Merchant register a new courier", () => {
     .set("access_token", accessToken2)
     .send({
       name: 'kurirUcok',
-      email: 'kurirUcok@mail.com',
+      email: 'kurirUcok1@mail.com',
       password: "asd13",
-      location: sequelize.fn(
-        "ST_GeomFromText",
-        "POINT(37.4220936 -122.083922)"
-      ),
-      AtkId: 1
+      // location: sequelize.fn(
+      //   "ST_GeomFromText",
+      //   "POINT(37.4220936 -122.083922)"
+      // ),
     })
     .then((response) => {
       expect(response.statusCode).toBe(201)
-      // expect(response)
+      expect(response.body).toHaveProperty("id", expect.any(Number))
+      expect(response.body).toHaveProperty("name", expect.any(String))
     })
   })
 
@@ -668,8 +668,8 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/progress/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(401)
-      expect(response.body).toHaveProperty('message', 'Data transaction not found')
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
 
@@ -679,8 +679,8 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/reject/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(401)
-      expect(response.body).toHaveProperty('message', 'Data transaction not found')
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
 
@@ -690,8 +690,8 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/done/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(401)
-      expect(response.body).toHaveProperty('message', 'Data transaction not found')
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
 })
