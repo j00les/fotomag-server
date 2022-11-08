@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for services/controller/courier.js</title>
+    <title>Code coverage report for services/middleware/authorStatusSuccess.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/controller</a> courier.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/middleware</a> authorStatusSuccess.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">13.63% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/11</span>
+                <span class='fraction'>3/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">13.63% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/11</span>
+                <span class='fraction'>3/22</span>
             </div>
         
             
@@ -96,81 +96,72 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { Courier, Sequelize, ATK } = require("../models/index");
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { User, Transaction, Courier } = require("../models/index");
 &nbsp;
-class Controller {
-<span class="fstat-no" title="function not covered" >  st</span>atic async register(req, res, next) {
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const { name, email, password } = <span class="cstat-no" title="statement not covered" >req.body;</span>
-<span class="cstat-no" title="statement not covered" >      console.log(req.user, '&lt;&gt;&lt;&gt;&lt;&gt;&lt;&gt;&lt;&gt;&lt;&gt;&lt;&gt;')</span>
-      const { id } = <span class="cstat-no" title="statement not covered" >req.user;</span>
+const authorStatusSuccess = <span class="fstat-no" title="function not covered" >as</span>ync (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const { id } = <span class="cstat-no" title="statement not covered" >req.user;</span>
+    const idT = <span class="cstat-no" title="statement not covered" >req.params.transactionId;</span>
 &nbsp;
-      const dataATK = <span class="cstat-no" title="statement not covered" >await ATK.findOne({</span>
-        where: {
-          UserId: id,
-        },
-      });
+    const dataUser = <span class="cstat-no" title="statement not covered" >await User.findByPk(id);</span>
+    const dataCourier = <span class="cstat-no" title="statement not covered" >await Courier.findByPk(id);</span>
+    const dataTransaction = <span class="cstat-no" title="statement not covered" >await Transaction.findByPk(idT);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(id);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(idT);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(dataUser.role);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(dataUser.id);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(dataTransaction.UserId);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(dataTransaction.CourierId);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(dataCourier.id);</span>
 &nbsp;
-      const dataKurir = <span class="cstat-no" title="statement not covered" >await Courier.create({</span>
-        name,
-        email,
-        password,
-        location: Sequelize.fn(
-          "ST_GeomFromText",
-          "POINT(107.59422277037818 -6.937911900280693)"
-        ),
-        AtkId: dataATK.id,
-      });
-<span class="cstat-no" title="statement not covered" >      res.status(201).json({</span>
-        id: dataKurir.id,
-        name: dataKurir.name,
-      });
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.log(error);</span>
-<span class="cstat-no" title="statement not covered" >      next(error);</span>
+<span class="cstat-no" title="statement not covered" >    if (dataUser.id != dataTransaction.UserId) {</span>
+<span class="cstat-no" title="statement not covered" >      throw { name: "This is not your transaction" };</span>
+    } else <span class="cstat-no" title="statement not covered" >if (</span>
+      dataUser.role === "Merchant" ||
+      dataCourier.id !== dataTransaction.CourierId
+    ) {
+<span class="cstat-no" title="statement not covered" >      throw { name: "This is not your jurisdiction" };</span>
     }
+<span class="cstat-no" title="statement not covered" >    next();</span>
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
-}
-module.exports = Controller;
+};
+&nbsp;
+module.exports = authorStatusSuccess;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

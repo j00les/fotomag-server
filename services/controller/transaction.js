@@ -118,6 +118,10 @@ class Controller {
   static async changeStatusProgress(req, res, next) {
     try {
       let id = req.params.transactionId;
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
 
       const dataTransaction = await Transaction.update(
         {
@@ -147,6 +151,11 @@ class Controller {
       // untuk mendapatkan customer id nya => cari transaction nya, dari req.params.id
       /// kemudian ambil UserId nya, dan find mutasinya dengan UserId
 
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
+
       const dataTransaction = await Transaction.update(
         {
           status: "Reject",
@@ -157,6 +166,7 @@ class Controller {
           },
         }
       );
+
       // untuk medapatkan nominal nya
       const dataMutasi = await BalanceMutation.findOne({
         where: {
@@ -191,6 +201,10 @@ class Controller {
   static async changeStatusDone(req, res, next) {
     try {
       let id = req.params.transactionId;
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
 
       const dataTransaction = await Transaction.update(
         {
@@ -216,6 +230,11 @@ class Controller {
     try {
       let id = req.params.transactionId;
       const { CourierId } = req.user;
+
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
 
       const dataTransaction = await Transaction.update(
         {
@@ -244,6 +263,10 @@ class Controller {
   static async changeStatusDelivered(req, res, next) {
     try {
       let id = req.params.transactionId;
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
 
       const dataTransaction = await Transaction.update(
         {
@@ -271,6 +294,12 @@ class Controller {
   static async changeStatusSuccess(req, res, next) {
     try {
       let id = req.params.transactionId;
+
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
+
       const dataTransaction = await Transaction.update(
         {
           status: "Success",
@@ -318,7 +347,7 @@ class Controller {
         message: `Transaction is Success`,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       next(error);
     }
   }
