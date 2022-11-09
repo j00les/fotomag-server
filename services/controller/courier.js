@@ -12,7 +12,9 @@ class Controller {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-
+      if (!email) {
+        throw {name: "Email is required"}
+      }
       const { id } = req.user;
 
       const dataATK = await ATK.findOne({
@@ -35,10 +37,7 @@ class Controller {
         name,
         email,
         password,
-        location: Sequelize.fn(
-          "ST_GeomFromText",
-          "POINT(107.59422277037818 -6.937911900280693)"
-        ),
+        location: Sequelize.fn("ST_GeomFromText", "POINT(107.59422277037818 -6.937911900280693)"),
         AtkId: dataATK.id,
       });
       res.status(201).json({

@@ -15,6 +15,9 @@ class Controller {
         priceBlack,
         priceJilid,
       } = req.body;
+      if (!email) {
+        throw {name: "Email is required"}
+      }
       const dataCourier = await Courier.findOne({
         where: {
           email,
@@ -38,6 +41,7 @@ class Controller {
         {
           name: atkName,
           address: atkAddress,
+
           priceColor: +priceColor,
           priceBlack: +priceBlack,
           priceJilid: +priceJilid,
@@ -45,6 +49,7 @@ class Controller {
             "ST_GeomFromText",
             "POINT(37.4220936 -122.083922)"
           ),
+
           UserId: dataUser.id,
         },
         { transaction: t }
@@ -92,10 +97,7 @@ class Controller {
       const { atkId } = req.params;
       let { priceColor, priceBlack, priceJilid } = req.body;
 
-      await ATK.update(
-        { priceColor, priceBlack, priceJilid },
-        { where: { id: atkId } }
-      );
+      await ATK.update({ priceColor, priceBlack, priceJilid }, { where: { id: atkId } });
 
       const dataATK = await ATK.findOne({
         where: {

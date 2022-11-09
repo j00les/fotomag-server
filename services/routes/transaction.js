@@ -1,7 +1,7 @@
 const Controller = require("../controller/transaction");
 const AuthenCourier = require("../middleware/authenCourier");
 const Authentication = require("../middleware/authentication");
-const authorStatusSuccess = require("../middleware/authorStatusSuccess");
+const authorStatusSuccess = require("../helper/authorStatusSuccess");
 const courierAuthor = require("../middleware/courierAuthor");
 const merchanAuthor = require("../middleware/merchantAuthor");
 const upload = require("../middleware/multer");
@@ -68,6 +68,7 @@ transactionRouter.get(
 );
 
 transactionRouter.use(Authentication);
+
 transactionRouter.post(
   "/:atkId",
   upload.single("fileURL"),
