@@ -425,7 +425,7 @@ class Controller {
     console.log(req.user, "============");
     try {
       const { id } = req.user;
-      console.log(req.user, "<><><>< INI REQ.USER");
+      // console.log(req.user, "<><><>< INI REQ.USER");
       const data = await Transaction.findAll({
         where: {
           UserId: id,
@@ -433,9 +433,9 @@ class Controller {
         include: Courier,
       });
       const dataUser = await User.findByPk(id);
-      console.log(dataUser, "<><><><><> INI DATA USER");
+      // console.log(dataUser, "<><><><><> INI DATA USER");
 
-      if (req.user.role === "Courier") {
+      if (dataUser.role === "Courier") {
         throw { name: "Transaction not found" };
       }
       res.status(200).json(data);
