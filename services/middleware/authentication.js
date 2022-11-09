@@ -6,7 +6,12 @@ const Authentication = async (req, res, next) => {
     console.log(req.headers);
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
-    let dataUser = await User.findByPk(payload.id);
+    console.log(payload, '<><><><><><> INI PAYLOAD DARI AUTHEN')
+    let dataUser = await User.findOne({
+      where: {
+        email: payload.email,
+      },
+    });
     if (!dataUser) {
       throw { name: 'Invalid access_token' };
     }

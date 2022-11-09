@@ -4,17 +4,23 @@ const {
   Transaction,
   BalanceMutation,
   ATK,
-  Courier
+  Courier,
 } = require("../models");
 const { queryInterface } = sequelize;
 const request = require("supertest");
 const app = require("../app");
-const { createAccessToken, verifyAccessToken } = require("../helper/helper");
+const {
+  createAccessToken,
+  verifyAccessToken,
+  hashingPassword,
+} = require("../helper/helper");
 
 let accessToken;
 let signedAccessToken;
 let accessToken2;
 let signedAccessToken2;
+let accessToken3;
+let signedAccessToken3;
 
 beforeAll(async () => {
   await queryInterface.bulkInsert(
@@ -23,7 +29,7 @@ beforeAll(async () => {
       {
         name: "ucok1", //ID : 1
         email: "ucok1@mail.com",
-        password: "asd123",
+        password: hashingPassword("asd123"),
         // balance: 0,
         address:
           "Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
@@ -34,7 +40,7 @@ beforeAll(async () => {
       {
         name: "ucok2", //ID : 2
         email: "ucok2@mail.com",
-        password: "asd123",
+        password: hashingPassword("asd123"),
         // balance: 0,
         address:
           "Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
@@ -45,7 +51,7 @@ beforeAll(async () => {
       {
         name: "ucokKismin", //ID: 3
         email: "ucokKismin@mail.com",
-        password: "asd123",
+        password: hashingPassword("asd123"),
         // balance: 0,
         address:
           "Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
@@ -75,10 +81,12 @@ beforeAll(async () => {
   let testUser = await User.findByPk(1);
   const payload = {
     id: testUser.id,
+    email: testUser.email
   };
   let testUser2 = await User.findByPk(3);
   const payload2 = {
     id: testUser2.id,
+    email: testUser2.email
   };
 
   accessToken = createAccessToken(payload);
@@ -88,22 +96,31 @@ beforeAll(async () => {
 
   await queryInterface.bulkInsert("Couriers", [
     {
-      name: 'kurirUcok', //ID : 1
-      email: 'kurirUcok@mail.com',
-      password: 'asd123',
+      name: "kurirUcok", //ID : 1
+      email: "kurirUcok@mail.com",
+      password: hashingPassword("asd123"),
       location: sequelize.fn(
         "ST_GeomFromText",
         "POINT(37.4220936 -122.083922)"
       ),
       AtkId: 1,
       createdAt: new Date(),
-      updatedAt: new Date()
-    }
-  ])
+      updatedAt: new Date(),
+    },
+  ]);
+  let testKurir = await Courier.findByPk(1);
+  const payload3 = {
+    id: testKurir.id,
+    email: testUser.email
+  }
+  accessToken3 = createAccessToken(payload3)
+  signedAccessToken3 = verifyAccessToken(accessToken3)
 
   await queryInterface.bulkInsert("Transactions", [
-    { //ID: 1
-      fileURL: "https://res.cloudinary.com/dz0nxnyqq/image/upload/v1667553102/fotomagPDF/dlbzejujhyf5ruic1tm2.pdf",
+    {
+      //ID: 1
+      fileURL:
+        "https://res.cloudinary.com/dz0nxnyqq/image/upload/v1667553102/fotomagPDF/dlbzejujhyf5ruic1tm2.pdf",
       totalPages: 13,
       colorVariant: "Berwarna",
       duplicate: 2,
@@ -119,20 +136,18 @@ beforeAll(async () => {
       UserId: 1,
       CourierId: 1,
       createdAt: new Date(),
-      updatedAt: new Date()
-    }
-  ])
+      updatedAt: new Date(),
+    },
+  ]);
   await queryInterface.bulkInsert("BalanceMutations", [
     {
       nominal: 62000,
       UserId: 1,
       TransactionId: 1,
       createdAt: new Date(),
-      updatedAt: new Date()
-    }
-  ])
-
-  
+      updatedAt: new Date(),
+    },
+  ]);
 });
 
 afterAll(async () => {
@@ -159,16 +174,16 @@ afterAll(async () => {
   await queryInterface.bulkDelete("Couriers", null, {
     truncate: true,
     restartIdentity: true,
-    cascade: true
-  })
+    cascade: true,
+  });
   await queryInterface.bulkDelete("BalanceMutations", null, {
     truncate: true,
     restartIdentity: true,
-    cascade: true
-  })
+    cascade: true,
+  });
 });
 
-jest.setTimeout(30000)
+jest.setTimeout(30000);
 
 describe("Register new customer", () => {
   test("POST new customer with correct input", () => {
@@ -359,6 +374,26 @@ describe("Login to app as a customer", () => {
   });
 });
 
+describe("Get All Customer", () => {
+  test("Get all customer", () => {
+    return request(app)
+      .get("/customer")
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBeGreaterThan(0)
+      });
+  });
+
+  // test("Get all customer if error server", () => {
+  //   return request(app)
+  //   .get("/customer")
+  //   .then((response) => {
+  //     expect(response.statusCode).toBe(500)
+  //     expect(response.body).toHaveProperty("message", "Internal Server Error");
+  //   })
+  // })
+});
+
 describe("Updating customer balance", () => {
   test("Top up customer's balance", () => {
     return request(app)
@@ -542,12 +577,62 @@ describe("Customer create a new transaction", () => {
 describe("Customer changes status transaction", () => {
   test("Change status from delivered to success", () => {
     return request(app)
-    .patch('/transaction/success/1')
-    .set("access_token", accessToken)
-    .then((response) => {
-      expect(response.statusCode).toBe(200)
-      expect(response.body).toHaveProperty("message", 'Transaction is Success')
-    })
+      .patch("/transaction/success/1")
+      .set("access_token", accessToken)
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction is Success"
+        );
+      });
+  });
+});
 
-  })
-})
+describe("Customer fetch list transaction data", () => {
+  test("Fetch list transaction success", () => {
+    return request(app)
+      .get("/transaction/listTransactionCustomer")
+      .set("access_token", accessToken)
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBeGreaterThan(0);
+        expect(response.body).toEqual(
+          expect.arrayContaining([expect.any(Object)])
+        );
+        expect(response.body[0].status).toEqual(expect.any(String));
+      });
+  });
+
+  test("Fetch list transaction but no transaction added yet", () => {
+    return request(app)
+      .get("/transaction/listTransactionCustomer")
+      .set("access_token", accessToken2)
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toEqual(0);
+        expect(response.body).toEqual(expect.any(Array));
+      });
+  });
+
+  test("Fetch list transaction but no access_token", () => {
+    return request(app)
+      .get("/transaction/listTransactionCustomer")
+      .then((response) => {
+        expect(response.statusCode).toBe(401);
+        expect(response.body).toHaveProperty("message", "Invalid token");
+      });
+  });
+
+
+  //BELOM KE HANDLE
+  test("Fetch list transaction but id's role undefined (login with courier account)", () => {
+    return request(app)
+      .get("/transaction/listTransactionCustomer")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(401);
+        // expect(response.body).toHaveProperty("message", "Invalid token")
+      });
+  });
+});

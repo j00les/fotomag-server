@@ -1,6 +1,14 @@
-const { Courier, Sequelize, ATK } = require("../models/index");
+const { Courier, Sequelize, ATK, User } = require("../models/index");
 
 class Controller {
+  static async getCourier(req, res, next) {
+    try {
+      const dataCourier = await Courier.findAll();
+      res.status(200).json(dataCourier);
+    } catch (error) {
+      next(error);
+    }
+  }
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
@@ -12,6 +20,16 @@ class Controller {
           UserId: id,
         },
       });
+
+      const dataUser = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (dataUser) {
+        throw { name: "Email must be Unique" };
+      }
 
       const dataKurir = await Courier.create({
         name,

@@ -1,4 +1,4 @@
-let { User, ATK, sequelize } = require("../models/index");
+let { User, ATK, sequelize, Courier } = require("../models/index");
 
 class Controller {
   static async register(req, res, next) {
@@ -15,6 +15,16 @@ class Controller {
         priceBlack,
         priceJilid,
       } = req.body;
+      const dataCourier = await Courier.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (dataCourier) {
+        throw { name: "Email must be Unique" };
+      }
+
       const dataUser = await User.create({
         name,
         email,
@@ -28,10 +38,15 @@ class Controller {
         {
           name: atkName,
           address: atkAddress,
-          priceColor,
-          priceBlack,
-          priceJilid,
-          location: sequelize.fn("ST_GeomFromText", "POINT(37.4220936 -122.083922)"),
+
+          priceColor: +priceColor,
+          priceBlack: +priceBlack,
+          priceJilid: +priceJilid,
+          location: sequelize.fn(
+            "ST_GeomFromText",
+            "POINT(37.4220936 -122.083922)"
+          ),
+
           UserId: dataUser.id,
         },
         { transaction: t }
@@ -42,7 +57,6 @@ class Controller {
       });
       await t.commit();
     } catch (error) {
-      console.log(error);
       await t.rollback();
       next(error);
     }
@@ -98,7 +112,6 @@ class Controller {
         priceJilid: dataATK.priceJilid,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
