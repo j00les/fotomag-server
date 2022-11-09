@@ -23,8 +23,8 @@ io.on("connection", (socket) => {
   });
 
   //ini socket room
-  socket.on("join-room", (customerId) => {
-    socket.join(customerId)
+  socket.on("join-room", (transactionId) => {
+    socket.join(transactionId)
   })
   
   socket.on("updateLocation", ({location, userId}) => {
