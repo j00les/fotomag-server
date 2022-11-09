@@ -71,7 +71,7 @@ beforeAll(async () => {
       priceJilid: 10000,
       location: sequelize.fn(
         "ST_GeomFromText",
-        "POINT(37.4220936 -122.083922)"
+        "POINT(106.78284657797572 -6.260860859487839)"
       ),
       UserId: 2,
       createdAt: new Date(),
@@ -81,12 +81,12 @@ beforeAll(async () => {
   let testUser = await User.findByPk(1);
   const payload = {
     id: testUser.id,
-    email: testUser.email
+    email: testUser.email,
   };
   let testUser2 = await User.findByPk(3);
   const payload2 = {
     id: testUser2.id,
-    email: testUser2.email
+    email: testUser2.email,
   };
 
   accessToken = createAccessToken(payload);
@@ -111,10 +111,10 @@ beforeAll(async () => {
   let testKurir = await Courier.findByPk(1);
   const payload3 = {
     id: testKurir.id,
-    email: testUser.email
-}
-  accessToken3 = createAccessToken(payload3)
-  signedAccessToken3 = verifyAccessToken(accessToken3)
+    email: testUser.email,
+  };
+  accessToken3 = createAccessToken(payload3);
+  signedAccessToken3 = verifyAccessToken(accessToken3);
 
   await queryInterface.bulkInsert("Transactions", [
     {
@@ -380,7 +380,7 @@ describe("Get All Customer", () => {
       .get("/customer")
       .then((response) => {
         expect(response.statusCode).toBe(200);
-        expect(response.body.length).toBeGreaterThan(0)
+        expect(response.body.length).toBeGreaterThan(0);
       });
   });
 
@@ -395,7 +395,7 @@ describe("Get All Customer", () => {
 });
 
 describe("Updating customer balance", () => {
-  test.only("Top up customer's balance", () => {
+  test("Top up customer's balance", () => {
     return request(app)
       .post("/balance/pay")
       .set("access_token", accessToken)
@@ -452,7 +452,7 @@ describe("Updating customer balance", () => {
 });
 
 describe("Customer create a new transaction", () => {
-  test.only("Create a new transaction with correct input", () => {
+  test("Create a new transaction with correct input", () => {
     return request(app)
       .post("/transaction/1")
       .set("access_token", accessToken)
@@ -626,7 +626,6 @@ describe("Customer fetch list transaction data", () => {
       });
   });
 
-
   //BELOM KE HANDLE
   test("Fetch list transaction but id's role undefined (login with courier account)", () => {
     return request(app)
@@ -635,6 +634,55 @@ describe("Customer fetch list transaction data", () => {
       .then((response) => {
         expect(response.statusCode).toBe(401);
         // expect(response.body).toHaveProperty("message", "Invalid token")
+      });
+  });
+});
+
+describe("Customer fetching list of nearest shop", () => {
+  test("Fetching list nearest shop with correct customer's location", () => {
+    return request(app)
+      .get("/shop/nearestShop")
+      .set("access_token", accessToken)
+      .send({
+        lat: "106.78284657797572",
+        long: "-6.260860859487839",
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual(
+          expect.arrayContaining([expect.any(Object)])
+        );
+      });
+  });
+
+  test("Fetching list but no shop near customer's location", () => {
+    return request(app)
+      .get("/shop/nearestShop")
+      .set("access_token", accessToken)
+      .send({
+        lat: "110.78284657797572",
+        long: "-6.260860859487839",
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual(
+          expect.any(Array)
+        );
+        expect(response.body.length).toEqual(0)
+      });
+  });
+
+  test("Fetching list but no coordinate", () => {
+    return request(app)
+      .get("/shop/nearestShop")
+      .set("access_token", accessToken)
+      .send({
+        // lat: "110.78284657797572",
+        long: "-6.260860859487839",
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toHaveProperty("message", "Coordinate is required")
       });
   });
 });

@@ -5,6 +5,9 @@ class Controller {
     try {
       const distance = 1000;
       const { long, lat } = req.body;
+      if(!long || !lat) {
+        return res.status(400).json({message: "Coordinate is required"})
+      }
       // const { location } = req.body;
       // const { latitude, longitude } = JSON.parse(location);
 

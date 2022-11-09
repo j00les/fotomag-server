@@ -348,7 +348,7 @@ describe("Courier fetch list transaction", () => {
 });
 
 describe("Courier change status transaction", () => {
-  test.only("Change Status Transaction from done to delivery", () => {
+  test("Change Status Transaction from done to delivery", () => {
     return request(app)
       .patch("/transaction/delivery/1")
       .set("access_token", accessToken3)
@@ -362,7 +362,7 @@ describe("Courier change status transaction", () => {
       });
   });
 
-  test.only("Change Status Transaction from delivery to delivered", () => {
+  test("Change Status Transaction from delivery to delivered", () => {
     return request(app)
     .patch("/transaction/delivered/1")
     .set("access_token", accessToken3)
