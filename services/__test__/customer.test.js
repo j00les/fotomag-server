@@ -690,8 +690,8 @@ describe("Customer fetching list of nearest shop", () => {
       .get("/shop/nearestShop")
       .set("access_token", accessToken)
       .send({
-        lat: "106.78284657797572",
-        long: "-6.260860859487839",
+        latitude: "106.78284657797572",
+        longitude: "-6.260860859487839",
       })
       .then((response) => {
         expect(response.statusCode).toBe(200);
@@ -706,8 +706,8 @@ describe("Customer fetching list of nearest shop", () => {
       .get("/shop/nearestShop")
       .set("access_token", accessToken)
       .send({
-        lat: "110.78284657797572",
-        long: "-6.260860859487839",
+        latitude: "110.78284657797572",
+        longitude: "-6.260860859487839",
       })
       .then((response) => {
         expect(response.statusCode).toBe(200);
@@ -722,7 +722,7 @@ describe("Customer fetching list of nearest shop", () => {
       .set("access_token", accessToken)
       .send({
         // lat: "110.78284657797572",
-        long: "-6.260860859487839",
+        longitude: "-6.260860859487839",
       })
       .then((response) => {
         expect(response.statusCode).toBe(400);
