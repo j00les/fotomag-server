@@ -623,9 +623,9 @@ describe("Customer changes status transaction", () => {
       });
   });
 
-  test("Change status from delivered to success but wrong transaction id", () => {
+  test.only("Change status from delivered to success but wrong transaction id", () => {
     return request(app)
-      .patch("/transaction/success/100")
+      .patch("/transaction/success/50")
       .set("access_token", accessToken)
       .then((response) => {
         expect(response.statusCode).toBe(404);

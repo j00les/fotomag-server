@@ -22,6 +22,7 @@ io.on("connection", (socket) => {
   console.log(dape);
   });
 
+  //ini socket room
   socket.on("join-room", (customerId) => {
     socket.join(customerId)
   })
@@ -35,24 +36,6 @@ io.on("connection", (socket) => {
     console.log(location, "<<<<< masuk client dapet location");
   })
 
-  socket.on("loc", (get, lol) => {
-    console.log(lol);
-    console.log(get);
-    socket.join(get);
-  });
-
-  // io.sockets.on('connection', function(socket) {
-  //   socket.on('create', function(room) {
-  //     socket.join(room);
-  //   });
-
-  // ..
-  // console.log("masuk sini", socket.id);
-
-  // socket.on("updateLocation", (...args) => {
-  //   // ...
-  //   console.log("dapet location", args);
-  // });
 });
 
 httpServer.listen(3000);
