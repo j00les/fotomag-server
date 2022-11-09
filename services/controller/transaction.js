@@ -399,8 +399,18 @@ class Controller {
       });
       const data = await Transaction.findAll({
         where: {
-          status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
+          status: [
+            "Pending",
+            "Progress",
+            "Done",
+            "Delivery",
+            "Delivered",
+            "Rejetc",
+          ],
           AtkId: dataUser.ATK.id,
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
         },
       });
       res.status(200).json(data);
@@ -428,17 +438,17 @@ class Controller {
   }
 
   static async listTransactionCustomer(req, res, next) {
-    console.log(req.user, '============')
+    console.log(req.user, "============");
     try {
       const { id } = req.user;
-      console.log(req.user, '<><><>< INI REQ.USER')
+      console.log(req.user, "<><><>< INI REQ.USER");
       const data = await Transaction.findAll({
         where: {
           UserId: id,
         },
       });
       const dataUser = await User.findByPk(id);
-      console.log(dataUser, '<><><><><> INI DATA USER')
+      console.log(dataUser, "<><><><><> INI DATA USER");
 
       if (req.user.role === "Courier") {
         throw { name: "Transaction not found" };
