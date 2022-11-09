@@ -406,14 +406,7 @@ class Controller {
       });
       const data = await Transaction.findAll({
         where: {
-          status: [
-            "Pending",
-            "Progress",
-            "Done",
-            "Delivery",
-            "Delivered",
-            "Reject",
-          ],
+          status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
           AtkId: dataUser.ATK.id,
         },
       });
