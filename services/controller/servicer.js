@@ -125,33 +125,6 @@ class Controller {
       next(error);
     }
   }
-
-  static async updatedLocation(req, res, next) {
-    try {
-      let { longitude, latitude } = req.body;
-      const { id } = req.user;
-      const dataUser = await User.update(
-        {
-          location: Sequelize.fn(
-            "ST_GeomFromText",
-            `POINT(${longitude} ${latitude})`
-          ),
-        },
-        {
-          where: {
-            id: id,
-          },
-        }
-      );
-
-      res.status(200).json({
-        message: `Success Updated location User Merchant`,
-      });
-    } catch (error) {
-      next(error);
-      console.log(error);
-    }
-  }
 }
 
 module.exports = Controller;
