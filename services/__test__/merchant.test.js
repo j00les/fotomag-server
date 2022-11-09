@@ -652,6 +652,16 @@ describe("Merchant updating status in transaction", () => {
     })
   })
 
+  test.only("Changes status transaction but transaction id not exist", () => {
+    return request(app)
+    .patch('/transaction/done/100')
+    .set("access_token", accessToken2)
+    .then((response) => {
+      expect(response.statusCode).toBe(404)
+      expect(response.body).toHaveProperty('message', 'Transaction not found')
+    })
+  })
+
   test("Changes status from pending to reject", () => {
     return request(app)
     .patch('/transaction/reject/1')

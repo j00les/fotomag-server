@@ -561,7 +561,7 @@ describe("Customer changes status transaction", () => {
 })
 
 describe("Customer fetch list transaction data", () => {
-  test.only("Fetch list transaction success", () => {
+  test("Fetch list transaction success", () => {
     return request(app)
     .get('/transaction/listTransactionCustomer')
     .set("access_token", accessToken)
@@ -573,7 +573,7 @@ describe("Customer fetch list transaction data", () => {
     })
   })
 
-  test.only("Fetch list transaction but no transaction added yet", () => {
+  test("Fetch list transaction but no transaction added yet", () => {
     return request(app)
     .get('/transaction/listTransactionCustomer')
     .set("access_token", accessToken2)
@@ -584,7 +584,7 @@ describe("Customer fetch list transaction data", () => {
     })
   })
 
-  test.only("Fetch list transaction but no access_token", () => {
+  test("Fetch list transaction but no access_token", () => {
     return request(app)
     .get('/transaction/listTransactionCustomer')
     .then((response) => {
@@ -593,7 +593,7 @@ describe("Customer fetch list transaction data", () => {
     })
   })
 
-  test.only("Fetch list transaction but id's role undefined (login with courier account)", () => {
+  test("Fetch list transaction but id's role undefined (login with courier account)", () => {
     return request(app)
     .get('/transaction/listTransactionCustomer')
     .set('access_token', accessToken3)
