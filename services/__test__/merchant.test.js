@@ -205,6 +205,52 @@ afterAll(async () => {
   });
 });
 
+describe("Get data merchant", () => {
+  test("Get all merchant", () => {
+    request(app)
+      .get("/merchant")
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBeGreaterThan(0);
+      });
+  });
+
+  test("Get all merchant with params id", () => {
+    request(app)
+      .get("/merchant/1")
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("id", expect.any(Number));
+        expect(response.body).toHaveProperty("name", expect.any(String));
+        expect(response.body).toHaveProperty("address", expect.any(String));
+        expect(response.body).toHaveProperty("priceColor", expect.any(Number));
+        expect(response.body).toHaveProperty("priceBlack", expect.any(Number));
+        expect(response.body).toHaveProperty("priceJilid", expect.any(Number));
+        expect(response.body).toHaveProperty("location", expect.any(Object));
+        expect(response.body).toHaveProperty("UserId", expect.any(Number));
+      });
+  });
+
+  test("Get all merchant with params id data not found", () => {
+    request(app)
+      .get("/merchant/100")
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty("message", "Toko not found");
+      });
+  });
+
+  test("Edit merchant with params id data not found", () => {
+    request(app)
+      .patch("/merchant/100")
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty("message", "Toko not found");
+      });
+  });
+
+})
+
 describe("Register new merchant", () => {
   test("Register new merchant with correct input", () => {
     return request(app)

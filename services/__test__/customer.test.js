@@ -395,7 +395,7 @@ describe("Get All Customer", () => {
 });
 
 describe("Updating customer balance", () => {
-  test.only("Top up customer's balance", () => {
+  test("Top up customer's balance", () => {
     return request(app)
       .post("/balance/pay")
       .set("access_token", accessToken)
@@ -452,7 +452,7 @@ describe("Updating customer balance", () => {
 });
 
 describe("Customer create a new transaction", () => {
-  test.only("Create a new transaction with correct input", () => {
+  test("Create a new transaction with correct input", () => {
     return request(app)
       .post("/transaction/1")
       .set("access_token", accessToken)
