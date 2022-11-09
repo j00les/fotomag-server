@@ -1,4 +1,4 @@
-const { User, Courier } = require("../models/index");
+const { User, Courier, Sequelize } = require("../models/index");
 
 class Controller {
   static async getCustomer(req, res, next) {
@@ -12,8 +12,8 @@ class Controller {
   static async register(req, res, next) {
     try {
       let { name, email, password, address } = req.body;
-      if(!email) {
-        throw { name: "Email is required" }
+      if (!email) {
+        throw { name: "Email is required" };
       }
       const dataCourier = await Courier.findOne({
         where: {
@@ -39,6 +39,33 @@ class Controller {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async updatedLocation(req, res, next) {
+    try {
+      let { longitude, latitude } = req.body;
+      const { id } = req.user;
+      const dataUser = await User.update(
+        {
+          location: Sequelize.fn(
+            "ST_GeomFromText",
+            `POINT(${longitude} ${latitude})`
+          ),
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+
+      res.status(200).json({
+        message: `Success Updated location User Merchant`,
+      });
+    } catch (error) {
+      next(error);
+      console.log(error);
     }
   }
 }

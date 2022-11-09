@@ -690,8 +690,8 @@ describe("Customer fetching list of nearest shop", () => {
       .get("/shop/nearestShop")
       .set("access_token", accessToken)
       .send({
-        lat: "106.78284657797572",
-        long: "-6.260860859487839",
+        latitude: "106.78284657797572",
+        longitude: "-6.260860859487839",
       })
       .then((response) => {
         expect(response.statusCode).toBe(200);
@@ -706,8 +706,8 @@ describe("Customer fetching list of nearest shop", () => {
       .get("/shop/nearestShop")
       .set("access_token", accessToken)
       .send({
-        lat: "110.78284657797572",
-        long: "-6.260860859487839",
+        latitude: "110.78284657797572",
+        longitude: "-6.260860859487839",
       })
       .then((response) => {
         expect(response.statusCode).toBe(200);
@@ -722,7 +722,7 @@ describe("Customer fetching list of nearest shop", () => {
       .set("access_token", accessToken)
       .send({
         // lat: "110.78284657797572",
-        long: "-6.260860859487839",
+        longitude: "-6.260860859487839",
       })
       .then((response) => {
         expect(response.statusCode).toBe(400);
@@ -746,3 +746,18 @@ describe("Fetch all transaction data", () => {
       });
   });
 });
+
+describe("Patching customer location", () => {
+  test("Patch with correct input", () => {
+    return request (app)
+    .patch('/customer')
+    .set("access_token", accessToken)
+    .send({
+      latitude: "106.82715279748577",
+      longitude: "-6.175115064376317" 
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(200)
+    })
+  })
+})
