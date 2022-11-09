@@ -1,13 +1,14 @@
-const { verifyAccessToken } = require("../helper/helper");
-const { User } = require("../models/index");
+const { verifyAccessToken } = require('../helper/helper');
+const { User } = require('../models/index');
 
 const Authentication = async (req, res, next) => {
   try {
+    console.log(req.headers);
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
     let dataUser = await User.findByPk(payload.id);
     if (!dataUser) {
-      throw { name: "Invalid access_token" };
+      throw { name: 'Invalid access_token' };
     }
 
     req.user = {
