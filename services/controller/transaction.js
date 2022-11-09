@@ -29,7 +29,12 @@ class Controller {
       const { id } = req.user;
       let { atkId } = req.params;
 
-      let { colorVariant, duplicate, isJilid, address } = req.body;
+      // console.log(req.file, 'req file');
+
+      let { colorVariant, duplicate, isJilid, address, location } = req.body;
+      const { latitude, longitude } = JSON.parse(location);
+      // console.log(latitude, longitude, 'loooocation');
+
       if (!req.file) {
         return res.status(400).json({ message: "Uploaded PDF is required" });
       }
@@ -39,15 +44,16 @@ class Controller {
       const pdfPages = pdfData.numpages;
 
       let uploadedFile = UploadApiResponse;
-      try {
-        uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-          folder: "fotomagPDF",
-          resource_type: "auto",
-        });
-      } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Cloudinary Server Error" });
-      }
+      // try {
+      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+        folder: "fotomagPDF",
+        resource_type: "auto",
+      });
+      // console.log(uploadedFile, 'cloooooooud');
+      // } catch (error) {
+      // console.log(error);
+      // return res.status(500).json({ message: 'Cloudinary Server Error' });
+      // }
 
       const { secure_url } = uploadedFile;
 
@@ -84,10 +90,7 @@ class Controller {
           isJilid,
           address,
           status: "Pending",
-          location: Sequelize.fn(
-            "ST_GeomFromText",
-            "POINT(107.59422277037818 -6.937911900280693)"
-          ),
+          location: Sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitude})`),
           UserId: id,
           totalPrice: totalPrice,
           AtkId: atkId,
@@ -98,7 +101,7 @@ class Controller {
       // mengurangi balance dari user yg melakukan transaction
       const dataUser = await User.findByPk(id); //  ini dapat dari req.user.id dari authen
 
-      // nge cek, apabila uang nya kurang dari total harga yg harus dibayar, maka akan error
+      // // nge cek, apabila uang nya kurang dari total harga yg harus dibayar, maka akan error
       if (dataUser.balance < totalPrice) {
         throw { name: "Your balance is less" };
       }
@@ -118,6 +121,7 @@ class Controller {
       await t.commit();
       res.status(201).json(dataTransaction);
     } catch (error) {
+      console.log(error);
       await t.rollback();
       next(error);
     }

@@ -1,7 +1,7 @@
 const handleErrors = (err, req, res, next) => {
   let code = 500;
   let message = "Internal Server Error";
-  console.log(err);
+  console.log(err, 'ini errro');
 
   if (
     err.name === "SequelizeValidationError" ||
@@ -30,10 +30,6 @@ const handleErrors = (err, req, res, next) => {
   } else if (err.name === "Forbiden") {
     code = 403;
     message = "You are not authorized";
-  } else if (err.name === "Phone Number is required") {
-    (code = 400), (message = "Phone Number is required");
-  } else if (err.name === "Invalid phoneNumber") {
-    (code = 400), (message = "Invalid phoneNumber");
   } else if (err.name === "Your balance is less") {
     (code = 400), (message = "Your balance is less");
   } else if (err.name === "Nominal is required") {
@@ -48,6 +44,8 @@ const handleErrors = (err, req, res, next) => {
     (code = 404), (message = "Toko not found");
   } else if (err.name === "Email must be Unique") {
     (code = 400), (message = "Email must be Unique");
+  } else if (err.name === "Courier not found") {
+    (code = 404), (message = "Driver not found")
   }
 
   res.status(code).json({

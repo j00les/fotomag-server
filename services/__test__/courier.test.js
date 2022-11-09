@@ -9,8 +9,11 @@ const {
 const { queryInterface } = sequelize;
 const request = require("supertest");
 const app = require("../app");
-const { createAccessToken, verifyAccessToken, hashingPassword } = require("../helper/helper");
-
+const {
+  createAccessToken,
+  verifyAccessToken,
+  hashingPassword,
+} = require("../helper/helper");
 
 let accessToken;
 let signedAccessToken;
@@ -108,7 +111,7 @@ beforeAll(async () => {
   const payload2 = {
     id: testUser2.id,
   };
-  
+
   accessToken = createAccessToken(payload);
   signedAccessToken = verifyAccessToken(accessToken);
   accessToken2 = createAccessToken(payload2);
@@ -118,7 +121,7 @@ beforeAll(async () => {
     {
       name: "kurirUcok", //ID : 1
       email: "kurirUcok@mail.com",
-      password: hashingPassword('asd123'),
+      password: hashingPassword("asd123"),
       location: sequelize.fn(
         "ST_GeomFromText",
         "POINT(37.4220936 -122.083922)"
@@ -127,14 +130,14 @@ beforeAll(async () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-  ]);
+  ], {});
   let testUser3 = await Courier.findByPk(1);
-  console.log(testUser3);
+  // console.log(testUser3);
   const payload3 = {
     id: testUser3.id,
   };
   accessToken3 = createAccessToken(payload3);
-  signedAccessToken3 = verifyAccessToken(accessToken3)
+  signedAccessToken3 = verifyAccessToken(accessToken3);
 
   await queryInterface.bulkInsert("Transactions", [
     {
@@ -203,6 +206,17 @@ afterAll(async () => {
   });
 });
 
+describe("Get All Courier", () => {
+  test("Get all courier", () => {
+    return request(app)
+      .get("/courier")
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body.length).toBeGreaterThan(0)
+      });
+  });
+});
+
 describe("Courier login to app", () => {
   test("Login with correct input", () => {
     return request(app)
@@ -218,7 +232,7 @@ describe("Courier login to app", () => {
           "access_token",
           expect.any(String)
         );
-        expect(response.body).toHaveProperty("role", "Courier")
+        expect(response.body).toHaveProperty("role", "Courier");
       });
   });
 
@@ -254,7 +268,7 @@ describe("Courier login to app", () => {
           "Invalid email/password"
         );
       });
-  })
+  });
 
   test("Login without email input", () => {
     return request(app)
@@ -265,10 +279,7 @@ describe("Courier login to app", () => {
       .then((response) => {
         // console.log(response);
         expect(response.statusCode).toBe(400);
-        expect(response.body).toHaveProperty(
-          "message",
-          "Email is required"
-        );
+        expect(response.body).toHaveProperty("message", "Email is required");
       });
   });
 
@@ -281,59 +292,71 @@ describe("Courier login to app", () => {
       .then((response) => {
         // console.log(response);
         expect(response.statusCode).toBe(400);
-        expect(response.body).toHaveProperty(
-          "message",
-          "Password is required"
-        );
+        expect(response.body).toHaveProperty("message", "Password is required");
       });
-  })
+  });
 });
 
 describe("Courier fetch list transaction", () => {
-    test("Courier fetching list transaction based on status done", () => {
-        return request (app)
-        .get('/transaction/listTransactionCourier')
-        .set("access_token", accessToken3)
-        .then((response) => {
-          expect(response.statusCode).toBe(200)
-          expect.arrayContaining(response.body)
-          expect(response.body.length).toEqual(1)
-        })
-      })
-})
+  test("Courier fetching list transaction based on status done", () => {
+    return request(app)
+      .get("/transaction/listTransactionCourier")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect.arrayContaining(response.body);
+        expect(response.body.length).toEqual(1);
+      });
+  });
+
+  test("Courier fetching list transaction without access token is wrong based on status done", () => {
+    return request(app)
+      .get("/transaction/listTransactionCourier")
+      .set("access_token", accessToken2)
+      .then((response) => {
+        expect(response.statusCode).toBe(401);
+        expect(response.body).toHaveProperty("message", "Unauthorized");
+      });
+  });
+});
 
 describe("Courier change status transaction", () => {
-    test("Change Status Transaction from done to delivery", () => {
-        return request(app)
-        .patch('/transaction/delivery/1')
-        .set("access_token", accessToken3)
-        .then((response) => {
-            expect(response.statusCode).toBe(200)
-            expect(response.body).toHaveProperty("message", "Transaction is Delivery")
-            expect(response.body).toHaveProperty("CourierName", expect.any(String))
-        })
-    })
+  test("Change Status Transaction from done to delivery", () => {
+    return request(app)
+      .patch("/transaction/delivery/1")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction is Delivery"
+        );
+        expect(response.body).toHaveProperty("CourierName", expect.any(String));
+      });
+  });
 
-    test("Change Status Transaction from delivery to delivered", () => {
-        return request(app)
-        .patch('/transaction/delivered/1')
-        .set("access_token", accessToken3)
-        .then((response) => {
-            expect(response.statusCode).toBe(200)
-            expect(response.body).toHaveProperty("message", "Transaction is Delivered")
-            // expect(response.body).toHaveProperty("CourierName", expect.any(String))
-        })
-    })
-})
+  test("Change Status Transaction from delivery to delivered", () => {
+    return request(app)
+      .patch("/transaction/delivered/1")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction is Delivered"
+        );
+        // expect(response.body).toHaveProperty("CourierName", expect.any(String))
+      });
+  });
+});
 
-// describe("Courier fetching list transaction", () => {
-//     test("Fetching transaction with status done, delivery, delivered", () => {
-//         return request(app)
-//         .get('/transaction/listTransactionCourier')
-//         .set("access_token", accessToken3)
-//         .then((response) => {
-//             expect(response.statusCode).toBe(200)
-//         })
-//     })
-// })
-
+describe("Courier fetching list transaction", () => {
+  test("Fetching transaction with status done, delivery, delivered", () => {
+    return request(app)
+      .get("/transaction/listTransactionCourier")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+      });
+  });
+});
