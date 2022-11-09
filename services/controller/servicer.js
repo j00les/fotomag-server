@@ -31,10 +31,7 @@ class Controller {
           priceColor,
           priceBlack,
           priceJilid,
-          location: sequelize.fn(
-            "ST_GeomFromText",
-            "POINT(37.4220936 -122.083922)"
-          ),
+          location: sequelize.fn("ST_GeomFromText", "POINT(37.4220936 -122.083922)"),
           UserId: dataUser.id,
         },
         { transaction: t }
@@ -83,10 +80,7 @@ class Controller {
       const { atkId } = req.params;
       let { priceColor, priceBlack, priceJilid } = req.body;
 
-      await ATK.update(
-        { priceColor, priceBlack, priceJilid },
-        { where: { id: atkId } }
-      );
+      await ATK.update({ priceColor, priceBlack, priceJilid }, { where: { id: atkId } });
 
       const dataATK = await ATK.findOne({
         where: {

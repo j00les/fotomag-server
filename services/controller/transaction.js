@@ -6,11 +6,11 @@ const {
   ATK,
   Courier,
   sequelize,
-} = require('../models/index');
-const pdf = require('pdf-page-counter');
-const cloudinary = require('cloudinary').v2;
-const UploadApiResponse = require('cloudinary').v2;
-const fs = require('fs');
+} = require("../models/index");
+const pdf = require("pdf-page-counter");
+const cloudinary = require("cloudinary").v2;
+const UploadApiResponse = require("cloudinary").v2;
+const fs = require("fs");
 
 class Controller {
   // buat transaction atau order
@@ -27,7 +27,7 @@ class Controller {
       // console.log(latitude, longitude, 'loooocation');
 
       if (!req.file) {
-        return res.status(400).json({ message: 'Uploaded PDF is required' });
+        return res.status(400).json({ message: "Uploaded PDF is required" });
       }
 
       const dataBuffer = fs.readFileSync(req.file.path);
@@ -37,8 +37,8 @@ class Controller {
       let uploadedFile = UploadApiResponse;
       // try {
       uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-        folder: 'fotomagPDF',
-        resource_type: 'auto',
+        folder: "fotomagPDF",
+        resource_type: "auto",
       });
       // console.log(uploadedFile, 'cloooooooud');
       // } catch (error) {
@@ -51,16 +51,16 @@ class Controller {
       const dataATK = await ATK.findByPk(atkId); // untuk mendapatkan harga dari ATK nya supaya dinamis
 
       let harga = 0;
-      if (colorVariant === 'Berwarna') {
+      if (colorVariant === "Berwarna") {
         harga = harga + dataATK.priceColor;
-      } else if (colorVariant === 'Hitamputih') {
+      } else if (colorVariant === "Hitamputih") {
         harga = harga + dataATK.priceBlack; // dinamis
       }
 
       let hargaJilid = 0;
-      if (isJilid === 'YES') {
+      if (isJilid === "YES") {
         hargaJilid = hargaJilid + dataATK.priceJilid;
-      } else if (isJilid === 'NO') {
+      } else if (isJilid === "NO") {
         hargaJilid = hargaJilid + 0;
       }
 
@@ -80,8 +80,8 @@ class Controller {
           duplicate,
           isJilid,
           address,
-          status: 'Pending',
-          location: Sequelize.fn('ST_GeomFromText', `POINT(${longitude} ${latitude})`),
+          status: "Pending",
+          location: Sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitude})`),
           UserId: id,
           totalPrice: totalPrice,
           AtkId: atkId,
@@ -94,10 +94,10 @@ class Controller {
 
       // // nge cek, apabila uang nya kurang dari total harga yg harus dibayar, maka akan error
       if (dataUser.balance < totalPrice) {
-        throw { name: 'Your balance is less' };
+        throw { name: "Your balance is less" };
       }
       // proses pengurangan uang
-      await dataUser.decrement('balance', { by: totalPrice });
+      await dataUser.decrement("balance", { by: totalPrice });
 
       // menambahakand uang yg di kurangi ke mutasi dlu
       const dataMutasi = await BalanceMutation.create(
@@ -124,12 +124,12 @@ class Controller {
       let id = req.params.transactionId;
       const data = await Transaction.findByPk(id);
       if (!data) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
 
       const dataTransaction = await Transaction.update(
         {
-          status: 'Progress',
+          status: "Progress",
         },
         {
           where: {
@@ -157,12 +157,12 @@ class Controller {
 
       const data = await Transaction.findByPk(id);
       if (!data) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
 
       const dataTransaction = await Transaction.update(
         {
-          status: 'Reject',
+          status: "Reject",
         },
         {
           where: {
@@ -191,7 +191,7 @@ class Controller {
           id: dataCustomer.UserId,
         },
       });
-      await dataReject.increment('balance', { by: dataMutasi.nominal });
+      await dataReject.increment("balance", { by: dataMutasi.nominal });
 
       res.status(200).json({
         message: `Transaction is Reject`,
@@ -207,12 +207,12 @@ class Controller {
       let id = req.params.transactionId;
       const data = await Transaction.findByPk(id);
       if (!data) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
 
       const dataTransaction = await Transaction.update(
         {
-          status: 'Done',
+          status: "Done",
         },
         {
           where: {
@@ -237,12 +237,12 @@ class Controller {
 
       const data = await Transaction.findByPk(id);
       if (!data) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
 
       const dataTransaction = await Transaction.update(
         {
-          status: 'Delivery',
+          status: "Delivery",
           CourierId: CourierId,
         },
         {
@@ -269,12 +269,12 @@ class Controller {
       let id = req.params.transactionId;
       const data = await Transaction.findByPk(id);
       if (!data) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
 
       const dataTransaction = await Transaction.update(
         {
-          status: 'Delivered',
+          status: "Delivered",
         },
         {
           where: {
@@ -283,7 +283,7 @@ class Controller {
         }
       );
       if (!dataTransaction) {
-        return res.status(400).json({ message: 'ERROR DI DATA TRANSACTION' });
+        return res.status(400).json({ message: "ERROR DI DATA TRANSACTION" });
       }
 
       res.status(200).json({
@@ -301,12 +301,12 @@ class Controller {
 
       const data = await Transaction.findByPk(id);
       if (!data) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
 
       const dataTransaction = await Transaction.update(
         {
-          status: 'Success',
+          status: "Success",
         },
         {
           where: {
@@ -321,7 +321,7 @@ class Controller {
         },
       });
       if (!dataMutasi) {
-        return res.status(400).json({ message: 'ERROR DI DATA MUTASI' });
+        return res.status(400).json({ message: "ERROR DI DATA MUTASI" });
       }
 
       const dataCustomer = await Transaction.findOne({
@@ -330,7 +330,7 @@ class Controller {
         },
       });
       if (!dataCustomer) {
-        return res.status(400).json({ message: 'ERROR DI DATA CUSTOMER' });
+        return res.status(400).json({ message: "ERROR DI DATA CUSTOMER" });
       }
 
       const dataAtk = await ATK.findOne({
@@ -339,13 +339,13 @@ class Controller {
         },
       });
       if (!dataAtk) {
-        return res.status(400).json({ message: 'ERROR DI DATA ATK' });
+        return res.status(400).json({ message: "ERROR DI DATA ATK" });
       }
       const dataUserAtk = await User.findByPk(dataAtk.UserId);
       if (!dataUserAtk) {
-        return res.status(400).json({ message: 'ERROR DI DATA USER ATK' });
+        return res.status(400).json({ message: "ERROR DI DATA USER ATK" });
       }
-      await dataUserAtk.increment('balance', { by: dataMutasi.nominal });
+      await dataUserAtk.increment("balance", { by: dataMutasi.nominal });
 
       res.status(200).json({
         message: `Transaction is Success`,
@@ -367,12 +367,12 @@ class Controller {
       });
       console.log(dataUser);
       if (!dataUser || dataUser.ATK === null) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
 
       const data = await Transaction.findAll({
         where: {
-          status: ['Success', 'Reject'],
+          status: ["Success", "Reject"],
           AtkId: dataUser.ATK.id,
         },
       });
@@ -394,7 +394,7 @@ class Controller {
       });
       const data = await Transaction.findAll({
         where: {
-          status: ['Pending', 'Progress', 'Done', 'Delivery', 'Delivered'],
+          status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
           AtkId: dataUser.ATK.id,
         },
       });
@@ -412,7 +412,7 @@ class Controller {
       console.log(dataCourier.AtkId);
       const data = await Transaction.findAll({
         where: {
-          status: ['Done', 'Delivery', 'Delivered'],
+          status: ["Done", "Delivery", "Delivered"],
           AtkId: dataCourier.AtkId,
         },
       });
@@ -434,7 +434,7 @@ class Controller {
       const dataUser = await User.findByPk(id);
 
       if (dataUser.role === undefined) {
-        throw { name: 'Transaction not found' };
+        throw { name: "Transaction not found" };
       }
       res.status(200).json(data);
     } catch (error) {
