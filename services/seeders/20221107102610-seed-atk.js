@@ -177,6 +177,34 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: "Toko Frataf",
+        address: "Tanggerang",
+        priceColor: 3000,
+        priceBlack: 2000,
+        priceJilid: 9000,
+        UserId: 13,
+        location: Sequelize.fn(
+          "ST_GeomFromText",
+          "POINT(106.63415572806501 -6.191345155768045)"
+        ),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Toko Reza",
+        address: "Bogor",
+        priceColor: 3000,
+        priceBlack: 2000,
+        priceJilid: 9000,
+        UserId: 13,
+        location: Sequelize.fn(
+          "ST_GeomFromText",
+          "POINT(106.83845728340563 -6.602018762456079)"
+        ),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

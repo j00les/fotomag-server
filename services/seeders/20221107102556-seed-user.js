@@ -136,6 +136,26 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: "Frataf",
+        email: "frataf@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "Reza",
+        email: "reza@gmail.com",
+        password: hashingPassword("12345"),
+        balance: 0,
+        address: "Jakarta Barat",
+        role: "Merchant",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

@@ -4,12 +4,10 @@ class Controller {
   static async getNearestShop(req, res, next) {
     try {
       const distance = 1000;
-      const { long, lat } = req.body;
-      if(!long || !lat) {
-        return res.status(400).json({message: "Coordinate is required"})
+      const { longitude, latitude } = req.body;
+      if (!longitude || !latitude) {
+        return res.status(400).json({ message: "Coordinate is required" });
       }
-      // const { location } = req.body;
-      // const { latitude, longitude } = JSON.parse(location);
 
       const result = await sequelize.query(
         `select
@@ -20,15 +18,15 @@ class Controller {
                 "ATKs"
               where
                 ST_DWithin(location,
-                ST_MakePoint(:lat,
-                :long),
+                ST_MakePoint(:latitude,
+                :longitude),
                 :distance,
               true) = true;`,
         {
           replacements: {
             distance: +distance,
-            long: parseFloat(long),
-            lat: parseFloat(lat),
+            longitude: parseFloat(longitude),
+            latitude: parseFloat(latitude),
           },
           logging: console.log,
           plain: false,

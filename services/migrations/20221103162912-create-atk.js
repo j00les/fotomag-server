@@ -31,7 +31,6 @@ module.exports = {
       },
       location: {
         type: Sequelize.GEOMETRY,
-        allowNull: false,
       },
       UserId: {
         type: Sequelize.INTEGER,

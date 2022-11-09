@@ -103,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      location: DataTypes.GEOMETRY("POINT"),
     },
     {
       sequelize,

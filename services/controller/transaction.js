@@ -29,11 +29,9 @@ class Controller {
       const { id } = req.user;
       let { atkId } = req.params;
 
-      let { colorVariant, duplicate, isJilid, address, latitude, longitude } = req.body;
-      console.log(req.body, '<><><><> INI REQ BODY')
-      // const { latitude, longitude } = JSON.parse(location);
-      console.log(latitude, '<><><><>< LATITUDE')
-      console.log(longitude, '<><><><>< LONGITUDE')
+      let { colorVariant, duplicate, isJilid, address, latitude, longitude } =
+        req.body;
+
       if (!req.file) {
         return res.status(400).json({ message: "Uploaded PDF is required" });
       }
@@ -432,6 +430,7 @@ class Controller {
         where: {
           UserId: id,
         },
+        include: Courier,
       });
       const dataUser = await User.findByPk(id);
       console.log(dataUser, "<><><><><> INI DATA USER");

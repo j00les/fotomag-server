@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique : {
-          msg : "Email must be Unique"
+        unique: {
+          msg: "Email must be Unique",
         },
         validate: {
           notEmpty: {
@@ -45,9 +45,9 @@ module.exports = (sequelize, DataTypes) => {
           notNull: {
             msg: "Email is required",
           },
-        isEmail : {
-          msg : "Format email is required"
-        }
+          isEmail: {
+            msg: "Format email is required",
+          },
         },
       },
       password: {
@@ -62,18 +62,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      location: {
-        type: DataTypes.GEOMETRY("POINT"),
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Location is required",
-          },
-          notNull: {
-            msg: "Location is required",
-          },
-        },
-      },
+      location: DataTypes.GEOMETRY("POINT"),
       AtkId: {
         type: DataTypes.INTEGER,
         allowNull: false,

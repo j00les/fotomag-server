@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
 const cors = require("cors");
@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 // const cloudinary = require('cloudinary').v2
 
 // const upload = require('../middleware/multer');
-const cloudinary = require('./config/cloudinaryConfig');
+const cloudinary = require("./config/cloudinaryConfig");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -33,7 +33,7 @@ const io = new Server(httpServer, {
 //   api_secret: process.env.CLOUDINARY_API_SECRET
 // })
 
-app.use('/', router);
+app.use("/", router);
 app.use(handleErrors);
 app.use(cloudinary.config);
 
@@ -64,7 +64,7 @@ io.on("connection", (socket) => {
 
 // httpServer.listen(3001);
 
-// app.listen(port, () => {
-//   console.log(`Bisa bisa`);
-// });
-module.exports = app
+app.listen(port, () => {
+  console.log(`Bisa bisa`);
+});
+// module.exports = app
