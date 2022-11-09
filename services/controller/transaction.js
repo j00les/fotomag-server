@@ -29,11 +29,8 @@ class Controller {
       const { id } = req.user;
       let { atkId } = req.params;
 
-      // console.log(req.file, 'req file');
-
       let { colorVariant, duplicate, isJilid, address, location } = req.body;
       const { latitude, longitude } = JSON.parse(location);
-      // console.log(latitude, longitude, 'loooocation');
 
       if (!req.file) {
         return res.status(400).json({ message: "Uploaded PDF is required" });
@@ -49,11 +46,6 @@ class Controller {
         folder: "fotomagPDF",
         resource_type: "auto",
       });
-      // console.log(uploadedFile, 'cloooooooud');
-      // } catch (error) {
-      // console.log(error);
-      // return res.status(500).json({ message: 'Cloudinary Server Error' });
-      // }
 
       const { secure_url } = uploadedFile;
 
@@ -75,10 +67,6 @@ class Controller {
 
       // mendapatkan total price
       let totalPrice = pdfPages * duplicate * harga + hargaJilid;
-      // console.log(pdfPages);
-      // console.log(harga);
-      // console.log(hargaJilid);
-      // console.log(totalPrice);
 
       // create transaction
       const dataTransaction = await Transaction.create(
@@ -104,7 +92,6 @@ class Controller {
       // mengurangi balance dari user yg melakukan transaction
       const dataUser = await User.findByPk(id); //  ini dapat dari req.user.id dari authen
 
-      // // nge cek, apabila uang nya kurang dari total harga yg harus dibayar, maka akan error
       if (dataUser.balance < totalPrice) {
         throw { name: "Your balance is less" };
       }

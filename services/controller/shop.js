@@ -1,16 +1,15 @@
-const { sequelize, ATK } = require('../models')
+const { sequelize, ATK } = require("../models");
 
 class Controller {
-    static async getNearestShop(req, res, next) {
-        try {
-            const  distance = 1000
-            const {long, lat} = req.body
-            // const {long, lat} = req.query
-            // console.log(long, '????????')
-            // console.log(lat, '<><><><>')
+  static async getNearestShop(req, res, next) {
+    try {
+      const distance = 1000;
+      const { long, lat } = req.body;
+      // const { location } = req.body;
+      // const { latitude, longitude } = JSON.parse(location);
 
-            const result = await sequelize.query(
-                `select
+      const result = await sequelize.query(
+        `select
                 id,
                 name,
                 location
@@ -22,24 +21,23 @@ class Controller {
                 :long),
                 :distance,
               true) = true;`,
-                {
-                  replacements: {
-                    distance: +distance,
-                    long: parseFloat(long),
-                    lat: parseFloat(lat),
-                  },
-                  logging: console.log,
-                  plain: false,
-                  raw: false,
-                  type: sequelize.QueryTypes.SELECT,
-                }
-              ); 
-              res.status(200).json(result);
-        } catch (error) {
-            next(error)
+        {
+          replacements: {
+            distance: +distance,
+            long: parseFloat(long),
+            lat: parseFloat(lat),
+          },
+          logging: console.log,
+          plain: false,
+          raw: false,
+          type: sequelize.QueryTypes.SELECT,
         }
+      );
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
     }
+  }
 }
 
-
-module.exports = Controller
+module.exports = Controller;

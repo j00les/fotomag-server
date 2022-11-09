@@ -1,67 +1,79 @@
-const Controller = require('../controller/transaction');
-const AuthenCourier = require('../middleware/authenCourier');
-const Authentication = require('../middleware/authentication');
-const authorStatusSuccess = require('../middleware/authorStatusSuccess');
-const courierAuthor = require('../middleware/courierAuthor');
-const merchanAuthor = require('../middleware/merchantAuthor');
-const upload = require('../middleware/multer');
-const transactionRouter = require('express').Router();
+const Controller = require("../controller/transaction");
+const AuthenCourier = require("../middleware/authenCourier");
+const Authentication = require("../middleware/authentication");
+const authorStatusSuccess = require("../helper/authorStatusSuccess");
+const courierAuthor = require("../middleware/courierAuthor");
+const merchanAuthor = require("../middleware/merchantAuthor");
+const upload = require("../middleware/multer");
+const transactionRouter = require("express").Router();
 
 transactionRouter.get("/", Controller.getTransaction);
 
 transactionRouter.patch(
-  '/progress/:transactionId',
+  "/progress/:transactionId",
   Authentication,
   merchanAuthor,
   Controller.changeStatusProgress
 );
 
 transactionRouter.patch(
-  '/reject/:transactionId',
+  "/reject/:transactionId",
   Authentication,
   merchanAuthor,
   Controller.changeStatusReject
 );
 
 transactionRouter.patch(
-  '/done/:transactionId',
+  "/done/:transactionId",
   Authentication,
   merchanAuthor,
   Controller.changeStatusDone
 );
-transactionRouter.patch('/delivery/:transactionId', AuthenCourier, Controller.changeStatusDelivery);
 transactionRouter.patch(
-  '/delivered/:transactionId',
+  "/delivery/:transactionId",
+  AuthenCourier,
+  Controller.changeStatusDelivery
+);
+transactionRouter.patch(
+  "/delivered/:transactionId",
   Authentication,
   courierAuthor,
   Controller.changeStatusDelivered
 );
 transactionRouter.patch(
-  '/success/:transactionId',
+  "/success/:transactionId",
   Authentication,
   authorStatusSuccess,
   Controller.changeStatusSuccess
 );
 
 transactionRouter.get(
-  '/historyTransactionMerchant',
+  "/historyTransactionMerchant",
   Authentication,
   Controller.historyTransactionMerchant
 );
 transactionRouter.get(
-  '/listTransactionMerchant',
+  "/listTransactionMerchant",
   Authentication,
   Controller.listTransactionMerchant
 );
-transactionRouter.get('/listTransactionCourier', AuthenCourier, Controller.listTransactionCourier);
 transactionRouter.get(
-  '/listTransactionCustomer',
+  "/listTransactionCourier",
+  AuthenCourier,
+  Controller.listTransactionCourier
+);
+transactionRouter.get(
+  "/listTransactionCustomer",
   Authentication,
   Controller.listTransactionCustomer
 );
 
 transactionRouter.use(Authentication);
 
-transactionRouter.post('/:atkId', upload.single('fileURL'), Controller.createTransaction);
+transactionRouter.post(
+  "/:atkId",
+  upload.single("fileURL"),
+  Controller.createTransaction
+);
 
 module.exports = transactionRouter;
