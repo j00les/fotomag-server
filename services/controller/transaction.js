@@ -90,7 +90,10 @@ class Controller {
           isJilid,
           address,
           status: "Pending",
-          location: Sequelize.fn("ST_GeomFromText", `POINT(${longitude} ${latitude})`),
+          location: Sequelize.fn(
+            "ST_GeomFromText",
+            `POINT(${longitude} ${latitude})`
+          ),
           UserId: id,
           totalPrice: totalPrice,
           AtkId: atkId,
@@ -409,7 +412,7 @@ class Controller {
             "Done",
             "Delivery",
             "Delivered",
-            "Rejetc",
+            "Reject",
           ],
           AtkId: dataUser.ATK.id,
         },
