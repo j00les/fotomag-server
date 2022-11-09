@@ -112,7 +112,7 @@ beforeAll(async () => {
   const payload3 = {
     id: testKurir.id,
     email: testUser.email
-  }
+}
   accessToken3 = createAccessToken(payload3)
   signedAccessToken3 = verifyAccessToken(accessToken3)
 

@@ -250,8 +250,8 @@ describe("Register new merchant", () => {
       })
       .then((response) => {
         expect(response.statusCode).toBe(400);
-        expect(response.body).toBeInstanceOf(Object);
-        expect(response.body.message).toEqual(["Email is required"]);
+        expect(response.body).toHaveProperty("message", "Email is required");
+        // expect(response.body.message).toEqual(["Email is required"]);
       });
   });
 
@@ -477,8 +477,7 @@ describe("Merchant register a new courier", () => {
     })
     .then((response) => {
       expect(response.statusCode).toBe(400);
-      expect(response.body).toBeInstanceOf(Object);
-      expect(response.body.message).toEqual(["Email is required"]);
+      expect(response.body).toHaveProperty("message", "Email is required");
     });
   })
 

@@ -15,6 +15,9 @@ class Controller {
         priceBlack,
         priceJilid,
       } = req.body;
+      if (!email) {
+        throw {name: "Email is required"}
+      }
       const dataCourier = await Courier.findOne({
         where: {
           email,
