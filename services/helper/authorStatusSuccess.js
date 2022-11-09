@@ -8,6 +8,7 @@ const authorStatusSuccess = async (req, res, next) => {
     const dataUser = await User.findByPk(id);
     const dataCourier = await Courier.findByPk(id);
     const dataTransaction = await Transaction.findByPk(idT);
+    console.log(dataTransaction, '<><><><><><><><><><>')
     console.log(id);
     console.log(idT);
     console.log(dataUser.role);

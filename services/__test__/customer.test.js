@@ -243,6 +243,25 @@ describe("Register new customer", () => {
       });
   });
 
+  test("POST new customer with existing email in courier table", () => {
+    return request(app)
+      .post("/customer/register")
+      .send({
+        name: "ucok2",
+        email: "kurirUcok@mail.com",
+        balance: 0,
+        password: "asd123",
+        address:
+          "Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
+        role: "Customer",
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body.message).toEqual("Email must be Unique");
+      });
+  });
+
   test("POST new customer without name", () => {
     return request(app)
       .post("/customer/register")
@@ -491,6 +510,8 @@ describe("Customer create a new transaction", () => {
       .field("duplicate", 4)
       .field("isJilid", "YES")
       .field("address", "Jakarta")
+      .field("latitude", "-6.260634028197951")
+      .field("longitude", "106.78150997516222")
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.body).toHaveProperty(
@@ -508,6 +529,8 @@ describe("Customer create a new transaction", () => {
       .field("duplicate", 4)
       .field("isJilid", "YES")
       .field("address", "Jakarta")
+      .field("latitude", "-6.260634028197951")
+      .field("longitude", "106.78150997516222")
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.body).toBeInstanceOf(Object);
@@ -523,6 +546,8 @@ describe("Customer create a new transaction", () => {
       .field("colorVariant", "Berwarna")
       .field("isJilid", "YES")
       .field("address", "Jakarta")
+      .field("latitude", "-6.260634028197951")
+      .field("longitude", "106.78150997516222")
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.body).toBeInstanceOf(Object);
@@ -538,6 +563,8 @@ describe("Customer create a new transaction", () => {
       .field("colorVariant", "Berwarna")
       .field("duplicate", 4)
       .field("address", "Jakarta")
+      .field("latitude", "-6.260634028197951")
+      .field("longitude", "106.78150997516222")
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.body).toBeInstanceOf(Object);
@@ -553,6 +580,8 @@ describe("Customer create a new transaction", () => {
       .field("colorVariant", "Berwarna")
       .field("duplicate", 4)
       .field("isJilid", "YES")
+      .field("latitude", "-6.260634028197951")
+      .field("longitude", "106.78150997516222")
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.body).toBeInstanceOf(Object);
@@ -569,6 +598,8 @@ describe("Customer create a new transaction", () => {
       .field("duplicate", 4)
       .field("isJilid", "YES")
       .field("address", "Jakarta")
+      .field("latitude", "-6.260634028197951")
+      .field("longitude", "106.78150997516222")
       .then((response) => {
         expect(response.statusCode).toBe(400);
         expect(response.body).toHaveProperty("message", "Your balance is less");
@@ -589,6 +620,20 @@ describe("Customer changes status transaction", () => {
         );
       });
   });
+
+  test("Change status from delivered to success but wrong transaction id", () => {
+    return request(app)
+      .patch("/transaction/success/100")
+      .set("access_token", accessToken)
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction not found"
+        );
+      });
+  });
+  
 });
 
 describe("Customer fetch list transaction data", () => {

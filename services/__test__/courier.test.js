@@ -396,6 +396,32 @@ describe("Courier change status transaction", () => {
       // expect(response.body).toHaveProperty("CourierName", expect.any(String));
       });
   });
+
+  test("Change Status to delivered but transaction id incorrect", () => {
+    return request(app)
+      .patch("/transaction/delivered/100")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction not found"
+        );
+      });
+  });
+
+  test("Change Status to delivery but transaction id incorrect", () => {
+    return request(app)
+      .patch("/transaction/delivered/100")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction not found"
+        );
+      });
+  });
 });
 
 describe("Courier fetching list transaction", () => {

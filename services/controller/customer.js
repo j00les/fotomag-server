@@ -12,6 +12,9 @@ class Controller {
   static async register(req, res, next) {
     try {
       let { name, email, password, address } = req.body;
+      if(!email) {
+        throw { name: "Email is required" }
+      }
       const dataCourier = await Courier.findOne({
         where: {
           email: email,
