@@ -746,3 +746,18 @@ describe("Fetch all transaction data", () => {
       });
   });
 });
+
+describe("Patching customer location", () => {
+  test("Patch with correct input", () => {
+    return request (app)
+    .patch('/customer')
+    .set("access_token", accessToken)
+    .send({
+      latitude: "106.82715279748577",
+      longitude: "-6.175115064376317" 
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(200)
+    })
+  })
+})
