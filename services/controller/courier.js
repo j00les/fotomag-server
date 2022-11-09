@@ -12,7 +12,9 @@ class Controller {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-
+      if (!email) {
+        throw {name: "Email is required"}
+      }
       const { id } = req.user;
 
       const dataATK = await ATK.findOne({

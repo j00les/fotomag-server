@@ -132,10 +132,12 @@ beforeAll(async () => {
     },
   ], {});
   let testUser3 = await Courier.findByPk(1);
-  // console.log(testUser3);
+  console.log(testUser3, '<><><><><><');
   const payload3 = {
     id: testUser3.id,
+    email: testUser3.email
   };
+  console.log(payload3, '============')
   accessToken3 = createAccessToken(payload3);
   signedAccessToken3 = verifyAccessToken(accessToken3);
 
@@ -321,7 +323,7 @@ describe("Courier fetch list transaction", () => {
 });
 
 describe("Courier change status transaction", () => {
-  test("Change Status Transaction from done to delivery", () => {
+  test.only("Change Status Transaction from done to delivery", () => {
     return request(app)
       .patch("/transaction/delivery/1")
       .set("access_token", accessToken3)
@@ -335,7 +337,7 @@ describe("Courier change status transaction", () => {
       });
   });
 
-  test("Change Status Transaction from delivery to delivered", () => {
+  test.only("Change Status Transaction from delivery to delivered", () => {
     return request(app)
       .patch("/transaction/delivered/1")
       .set("access_token", accessToken3)
