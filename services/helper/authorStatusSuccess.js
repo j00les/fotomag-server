@@ -8,14 +8,6 @@ const authorStatusSuccess = async (req, res, next) => {
     const dataUser = await User.findByPk(id);
     const dataCourier = await Courier.findByPk(id);
     const dataTransaction = await Transaction.findByPk(idT);
-    console.log(dataTransaction, '<><><><><><><><><><>')
-    console.log(id);
-    console.log(idT);
-    console.log(dataUser.role);
-    console.log(dataUser.id);
-    console.log(dataTransaction.UserId);
-    console.log(dataTransaction.CourierId);
-    console.log(dataCourier.id);
 
     if (dataUser.id != dataTransaction.UserId) {
       throw { name: "This is not your transaction" };
