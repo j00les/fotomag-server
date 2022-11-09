@@ -2,7 +2,6 @@ const Controller = require("../controller/transaction");
 const AuthenCourier = require("../middleware/authenCourier");
 const Authentication = require("../middleware/authentication");
 const authorStatusSuccess = require("../helper/authorStatusSuccess");
-const courierAuthor = require("../middleware/courierAuthor");
 const merchanAuthor = require("../middleware/merchantAuthor");
 const upload = require("../middleware/multer");
 const transactionRouter = require("express").Router();
