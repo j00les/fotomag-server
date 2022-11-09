@@ -552,7 +552,7 @@ describe("Merchant register a new courier", () => {
     .then((response) => {
       expect(response.statusCode).toBe(400);
       expect(response.body).toBeInstanceOf(Object);
-      expect(response.body.message).toEqual(["Format email is required"]);
+      expect(response.body.message).toEqual(["Email must be Unique"]);
     });
   })
 })
@@ -652,7 +652,7 @@ describe("Merchant updating status in transaction", () => {
     })
   })
 
-  test.only("Changes status transaction but transaction id not exist", () => {
+  test("Changes status transaction but transaction id not exist", () => {
     return request(app)
     .patch('/transaction/done/100')
     .set("access_token", accessToken2)
@@ -678,7 +678,7 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/progress/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(404)
       expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
@@ -689,7 +689,7 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/reject/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(404)
       expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
@@ -700,7 +700,7 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/done/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(404)
       expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })

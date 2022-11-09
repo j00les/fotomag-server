@@ -38,9 +38,9 @@ class Controller {
         {
           name: atkName,
           address: atkAddress,
-          priceColor,
-          priceBlack,
-          priceJilid,
+          priceColor: +priceColor,
+          priceBlack: +priceBlack,
+          priceJilid: +priceJilid,
           location: sequelize.fn(
             "ST_GeomFromText",
             "POINT(37.4220936 -122.083922)"
