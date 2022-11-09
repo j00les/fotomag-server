@@ -36,8 +36,7 @@ transactionRouter.patch(
 );
 transactionRouter.patch(
   "/delivered/:transactionId",
-  Authentication,
-  courierAuthor,
+  AuthenCourier,
   Controller.changeStatusDelivered
 );
 transactionRouter.patch(
