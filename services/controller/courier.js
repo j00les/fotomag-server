@@ -1,4 +1,4 @@
-const { Courier, Sequelize, ATK } = require("../models/index");
+const { Courier, Sequelize, ATK, User } = require("../models/index");
 
 class Controller {
   static async getCourier(req, res, next) {

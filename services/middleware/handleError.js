@@ -46,6 +46,8 @@ const handleErrors = (err, req, res, next) => {
     (code = 404), (message = "Transaction not found");
   } else if (err.name === "Toko not found") {
     (code = 404), (message = "Toko not found");
+  } else if (err.name === "Email must be Unique") {
+    (code = 400), (message = "Email must be Unique");
   }
 
   res.status(code).json({

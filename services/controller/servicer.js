@@ -1,4 +1,4 @@
-let { User, ATK, sequelize } = require("../models/index");
+let { User, ATK, sequelize, Courier } = require("../models/index");
 
 class Controller {
   static async register(req, res, next) {
@@ -15,6 +15,16 @@ class Controller {
         priceBlack,
         priceJilid,
       } = req.body;
+      const dataCourier = await Courier.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (dataCourier) {
+        throw { name: "Email must be Unique" };
+      }
+
       const dataUser = await User.create({
         name,
         email,

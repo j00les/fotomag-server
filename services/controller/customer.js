@@ -1,4 +1,4 @@
-const { User } = require("../models/index");
+const { User, Courier } = require("../models/index");
 
 class Controller {
   static async getCustomer(req, res, next) {
@@ -11,8 +11,16 @@ class Controller {
   }
   static async register(req, res, next) {
     try {
-      console.log("register");
       let { name, email, password, address } = req.body;
+      const dataCourier = await Courier.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (dataCourier) {
+        throw { name: "Email must be Unique" };
+      }
       const dataUser = await User.create({
         name,
         email,
@@ -21,6 +29,7 @@ class Controller {
         balance: 0,
         role: "Customer",
       });
+
       res.status(201).json({
         id: dataUser.id,
         email: dataUser.email,
