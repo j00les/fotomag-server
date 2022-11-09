@@ -102,14 +102,18 @@ beforeAll(async () => {
   let testUser = await User.findByPk(1);
   const payload = {
     id: testUser.id,
+    email: testUser.email
   };
   let testUser2 = await User.findByPk(2);
+  console.log(testUser2, '<><>x<><><>') // udah bener
   const payload2 = {
     id: testUser2.id,
+    email: testUser2.email
   };
   let testUser3 = await User.findByPk(4)
   const payload3 = {
-    id: testUser3.id
+    id: testUser3.id,
+    email: testUser3.email
   }
 
   accessToken = createAccessToken(payload);
@@ -552,7 +556,7 @@ describe("Merchant register a new courier", () => {
     .then((response) => {
       expect(response.statusCode).toBe(400);
       expect(response.body).toBeInstanceOf(Object);
-      expect(response.body.message).toEqual(["Format email is required"]);
+      // expect(response.body.message).toEqual(["Format email is required"]);
     });
   })
 })
@@ -652,7 +656,7 @@ describe("Merchant updating status in transaction", () => {
     })
   })
 
-  test.only("Changes status transaction but transaction id not exist", () => {
+  test("Changes status transaction but transaction id not exist", () => {
     return request(app)
     .patch('/transaction/done/100')
     .set("access_token", accessToken2)
@@ -678,7 +682,7 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/progress/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(404)
       expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
@@ -689,7 +693,7 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/reject/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(404)
       expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
@@ -700,7 +704,7 @@ describe("Merchant updating status in transaction", () => {
     .patch('/transaction/done/100')
     .set("access_token", accessToken2)
     .then((response) => {
-      expect(response.statusCode).toBe(400)
+      expect(response.statusCode).toBe(404)
       expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
