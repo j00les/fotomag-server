@@ -428,17 +428,19 @@ class Controller {
   }
 
   static async listTransactionCustomer(req, res, next) {
+    console.log(req.user, '============')
     try {
-      const { id } = req.user;
-
+      // const { id } = req.user;
+      console.log(req.user, '<><><>< INI REQ.USER')
       const data = await Transaction.findAll({
         where: {
           UserId: id,
         },
       });
       const dataUser = await User.findByPk(id);
+      console.log(dataUser, '<><><><><> INI DATA USER')
 
-      if (dataUser.role === undefined) {
+      if (req.user.role === "Courier") {
         throw { name: "Transaction not found" };
       }
       res.status(200).json(data);

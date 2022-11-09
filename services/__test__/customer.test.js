@@ -9,12 +9,14 @@ const {
 const { queryInterface } = sequelize;
 const request = require("supertest");
 const app = require("../app");
-const { createAccessToken, verifyAccessToken } = require("../helper/helper");
+const { createAccessToken, verifyAccessToken, hashingPassword } = require("../helper/helper");
 
 let accessToken;
 let signedAccessToken;
 let accessToken2;
 let signedAccessToken2;
+let accessToken3
+let signedAccessToken3
 
 beforeAll(async () => {
   await queryInterface.bulkInsert(
@@ -23,7 +25,7 @@ beforeAll(async () => {
       {
         name: "ucok1", //ID : 1
         email: "ucok1@mail.com",
-        password: "asd123",
+        password: hashingPassword("asd123"),
         // balance: 0,
         address:
           "Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
@@ -34,7 +36,7 @@ beforeAll(async () => {
       {
         name: "ucok2", //ID : 2
         email: "ucok2@mail.com",
-        password: "asd123",
+        password: hashingPassword("asd123"),
         // balance: 0,
         address:
           "Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
@@ -45,7 +47,7 @@ beforeAll(async () => {
       {
         name: "ucokKismin", //ID: 3
         email: "ucokKismin@mail.com",
-        password: "asd123",
+        password: hashingPassword("asd123"),
         // balance: 0,
         address:
           "Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Kby. Lama Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240",
@@ -90,7 +92,7 @@ beforeAll(async () => {
     {
       name: 'kurirUcok', //ID : 1
       email: 'kurirUcok@mail.com',
-      password: 'asd123',
+      password: hashingPassword("asd123"),
       location: sequelize.fn(
         "ST_GeomFromText",
         "POINT(37.4220936 -122.083922)"
@@ -100,6 +102,12 @@ beforeAll(async () => {
       updatedAt: new Date()
     }
   ])
+  let testKurir = await Courier.findByPk(1)
+  const payload3 = {
+    id: testKurir
+  }
+  accessToken3 = createAccessToken(payload3)
+  signedAccessToken3 = verifyAccessToken(accessToken3)
 
   await queryInterface.bulkInsert("Transactions", [
     { //ID: 1
@@ -549,5 +557,49 @@ describe("Customer changes status transaction", () => {
       expect(response.body).toHaveProperty("message", 'Transaction is Success')
     })
 
+  })
+})
+
+describe("Customer fetch list transaction data", () => {
+  test.only("Fetch list transaction success", () => {
+    return request(app)
+    .get('/transaction/listTransactionCustomer')
+    .set("access_token", accessToken)
+    .then((response) => {
+      expect(response.statusCode).toBe(200)
+      expect(response.body.length).toBeGreaterThan(0)
+      expect(response.body).toEqual(expect.arrayContaining([expect.any(Object)]))
+      expect(response.body[0].status).toEqual(expect.any(String))
+    })
+  })
+
+  test.only("Fetch list transaction but no transaction added yet", () => {
+    return request(app)
+    .get('/transaction/listTransactionCustomer')
+    .set("access_token", accessToken2)
+    .then((response) => {
+      expect(response.statusCode).toBe(200)
+      expect(response.body.length).toEqual(0)
+      expect(response.body).toEqual(expect.any(Array))
+    })
+  })
+
+  test.only("Fetch list transaction but no access_token", () => {
+    return request(app)
+    .get('/transaction/listTransactionCustomer')
+    .then((response) => {
+      expect(response.statusCode).toBe(401)
+      expect(response.body).toHaveProperty("message", "Invalid token")
+    })
+  })
+
+  test.only("Fetch list transaction but id's role undefined (login with courier account)", () => {
+    return request(app)
+    .get('/transaction/listTransactionCustomer')
+    .set('access_token', accessToken3)
+    .then((response) => {
+      expect(response.statusCode).toBe(401)
+      // expect(response.body).toHaveProperty("message", "Invalid token")
+    })
   })
 })
