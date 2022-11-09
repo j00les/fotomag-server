@@ -5,6 +5,7 @@ const Authentication = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
+    console.log(payload, '<><><><><><> INI PAYLOAD DARI AUTHEN')
     let dataUser = await User.findOne({
       where: {
         email: payload.email,

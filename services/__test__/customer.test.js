@@ -81,10 +81,12 @@ beforeAll(async () => {
   let testUser = await User.findByPk(1);
   const payload = {
     id: testUser.id,
+    email: testUser.email
   };
   let testUser2 = await User.findByPk(3);
   const payload2 = {
     id: testUser2.id,
+    email: testUser2.email
   };
 
   accessToken = createAccessToken(payload);
@@ -108,10 +110,11 @@ beforeAll(async () => {
   ]);
   let testKurir = await Courier.findByPk(1);
   const payload3 = {
-    id: testKurir,
-  };
-  accessToken3 = createAccessToken(payload3);
-  signedAccessToken3 = verifyAccessToken(accessToken3);
+    id: testKurir.id,
+    email: testUser.email
+  }
+  accessToken3 = createAccessToken(payload3)
+  signedAccessToken3 = verifyAccessToken(accessToken3)
 
   await queryInterface.bulkInsert("Transactions", [
     {
@@ -621,6 +624,8 @@ describe("Customer fetch list transaction data", () => {
       });
   });
 
+
+  //BELOM KE HANDLE
   test("Fetch list transaction but id's role undefined (login with courier account)", () => {
     return request(app)
       .get("/transaction/listTransactionCustomer")
