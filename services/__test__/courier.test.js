@@ -383,6 +383,19 @@ describe("Courier change status transaction", () => {
       });
   });
 
+  test("Change Status Transaction from done to delivery with transaction not found", () => {
+    return request(app)
+      .patch("/transaction/delivery/100")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction not found"
+        );
+      });
+  });
+
   test("Change Status Transaction from delivery to delivered", () => {
     return request(app)
     .patch("/transaction/delivered/2")
@@ -394,6 +407,20 @@ describe("Courier change status transaction", () => {
         "Transaction is Delivered"
       );
       // expect(response.body).toHaveProperty("CourierName", expect.any(String));
+      });
+  });
+
+
+  test("Change Status Transaction from delivery to delivered with transaction not found", () => {
+    return request(app)
+      .patch("/transaction/delivered/100")
+      .set("access_token", accessToken3)
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toHaveProperty(
+          "message",
+          "Transaction not found"
+        );
       });
   });
 });
