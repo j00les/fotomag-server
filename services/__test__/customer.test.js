@@ -108,11 +108,13 @@ beforeAll(async () => {
       updatedAt: new Date(),
     },
   ]);
+  
   let testKurir = await Courier.findByPk(1);
   const payload3 = {
     id: testKurir.id,
-    email: testUser.email,
+    email: testKurir.email,
   };
+  console.log(payload3, 'INI PAYLOAD3 DARI TEST<><><><><><><><>')
   accessToken3 = createAccessToken(payload3);
   signedAccessToken3 = verifyAccessToken(accessToken3);
 
@@ -633,7 +635,6 @@ describe("Customer changes status transaction", () => {
         );
       });
   });
-  
 });
 
 describe("Customer fetch list transaction data", () => {
@@ -710,10 +711,8 @@ describe("Customer fetching list of nearest shop", () => {
       })
       .then((response) => {
         expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual(
-          expect.any(Array)
-        );
-        expect(response.body.length).toEqual(0)
+        expect(response.body).toEqual(expect.any(Array));
+        expect(response.body.length).toEqual(0);
       });
   });
 
@@ -727,7 +726,23 @@ describe("Customer fetching list of nearest shop", () => {
       })
       .then((response) => {
         expect(response.statusCode).toBe(400);
-        expect(response.body).toHaveProperty("message", "Coordinate is required")
+        expect(response.body).toHaveProperty(
+          "message",
+          "Coordinate is required"
+        );
+      });
+  });
+});
+
+describe("Fetch all transaction data", () => {
+  test("Get all transaction data", () => {
+    return request(app)
+      .get("/transaction")
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual(
+          expect.arrayContaining([expect.any(Object)])
+        );
       });
   });
 });
