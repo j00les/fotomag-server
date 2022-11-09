@@ -409,9 +409,6 @@ class Controller {
           ],
           AtkId: dataUser.ATK.id,
         },
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
-        },
       });
       res.status(200).json(data);
     } catch (error) {
