@@ -1,7 +1,7 @@
 const handleErrors = (err, req, res, next) => {
   let code = 500;
   let message = "Internal Server Error";
-  console.log(err, 'ini errro');
+  console.log(err, "ini errro");
 
   if (
     err.name === "SequelizeValidationError" ||
@@ -45,7 +45,7 @@ const handleErrors = (err, req, res, next) => {
   } else if (err.name === "Email must be Unique") {
     (code = 400), (message = "Email must be Unique");
   } else if (err.name === "Courier not found") {
-    (code = 404), (message = "Driver not found")
+    (code = 404), (message = "Driver not found");
   }
 
   res.status(code).json({

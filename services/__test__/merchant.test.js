@@ -753,6 +753,16 @@ describe("Merchant updating status in transaction", () => {
       expect(response.body).toHaveProperty('message', 'Transaction not found')
     })
   })
+
+  test("Changes status transaction but wrong access token", () => {
+    return request(app)
+    .patch('/transaction/done/1')
+    .set("access_token", accessToken)
+    .then((response) => {
+      expect(response.statusCode).toBe(403)
+      expect(response.body).toHaveProperty('message', 'You are not authorized')
+    })
+  })
 })
 
 describe("Merchant fetching history transaction data", () => {

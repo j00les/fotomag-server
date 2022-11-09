@@ -1,6 +1,7 @@
-let { User, ATK, sequelize, Courier } = require("../models/index");
+let { User, ATK, sequelize, Courier, Sequelize } = require("../models/index");
 
 class Controller {
+  // register atk
   static async register(req, res, next) {
     const t = await sequelize.transaction();
     try {
@@ -16,7 +17,7 @@ class Controller {
         priceJilid,
       } = req.body;
       if (!email) {
-        throw {name: "Email is required"}
+        throw { name: "Email is required" };
       }
       const dataCourier = await Courier.findOne({
         where: {
@@ -65,6 +66,7 @@ class Controller {
     }
   }
 
+  // get all atk
   static async getServicers(req, res, next) {
     try {
       const dataAtk = await ATK.findAll();
@@ -74,6 +76,7 @@ class Controller {
     }
   }
 
+  // get atk by id
   static async getServicer(req, res, next) {
     try {
       const { atkId } = req.params;
@@ -92,12 +95,16 @@ class Controller {
     }
   }
 
+  // edit harga perlembat (warna atau hitam putih) dan harga jilid
   static async editServicer(req, res, next) {
     try {
       const { atkId } = req.params;
       let { priceColor, priceBlack, priceJilid } = req.body;
 
-      await ATK.update({ priceColor, priceBlack, priceJilid }, { where: { id: atkId } });
+      await ATK.update(
+        { priceColor, priceBlack, priceJilid },
+        { where: { id: atkId } }
+      );
 
       const dataATK = await ATK.findOne({
         where: {
@@ -116,6 +123,33 @@ class Controller {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async updatedLocation(req, res, next) {
+    try {
+      let { longitude, latitude } = req.body;
+      const { id } = req.user;
+      const dataUser = await User.update(
+        {
+          location: Sequelize.fn(
+            "ST_GeomFromText",
+            `POINT(${longitude} ${latitude})`
+          ),
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+
+      res.status(200).json({
+        message: `Success Updated location User Merchant`,
+      });
+    } catch (error) {
+      next(error);
+      console.log(error);
     }
   }
 }
