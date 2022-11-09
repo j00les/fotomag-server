@@ -5,7 +5,11 @@ const AuthenCourier = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
-    let dataUser = await Courier.findByPk(payload.id);
+    let dataUser = await Courier.findOne({
+      where: {
+        email: payload.email,
+      },
+    });
     if (!dataUser) {
       throw { name: "Invalid access_token" };
     }

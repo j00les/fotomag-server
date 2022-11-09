@@ -5,7 +5,11 @@ const Authentication = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
-    let dataUser = await User.findByPk(payload.id);
+    let dataUser = await User.findOne({
+      where: {
+        email: payload.email,
+      },
+    });
     if (!dataUser) {
       throw { name: "Invalid access_token" };
     }

@@ -7,6 +7,7 @@ class Controller {
       const { email, password } = req.body;
       let dataPayload = {};
       let data = {};
+      let dataC = {};
       if (!email) {
         throw { name: "Email is required" };
       }
@@ -18,13 +19,13 @@ class Controller {
           email,
         },
       });
-      console.log(dataUser);
       if (dataUser) {
         if (!comparePassword(password, dataUser.password)) {
           throw { name: "Invalid email/password" };
         }
         const payload = {
           id: dataUser.id,
+          email: dataUser.email,
         };
         dataPayload = payload;
         data = dataUser;
@@ -32,7 +33,6 @@ class Controller {
         const dataCourier = await Courier.findOne({
           where: { email },
         });
-        console.log(dataCourier);
         if (!dataCourier) {
           throw { name: "Invalid email/password" };
         }
@@ -41,17 +41,22 @@ class Controller {
         }
         const payload = {
           id: dataCourier.id,
+          email: dataCourier.email,
         };
         dataPayload = payload;
         data = { role: "Courier" };
+        dataC = dataCourier;
       }
       const access_token = createAccessToken(dataPayload);
+
       res.status(200).json({
         access_token: access_token,
         role: data.role,
+        balance: data.balance,
+        name: data.name,
+        name: dataC.name,
       });
     } catch (error) {
-      console.log(error, "errornya");
       next(error);
     }
   }

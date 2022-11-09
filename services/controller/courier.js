@@ -21,6 +21,16 @@ class Controller {
         },
       });
 
+      const dataUser = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (dataUser) {
+        throw { name: "Email must be Unique" };
+      }
+
       const dataKurir = await Courier.create({
         name,
         email,

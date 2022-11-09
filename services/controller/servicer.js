@@ -45,7 +45,6 @@ class Controller {
       });
       await t.commit();
     } catch (error) {
-      console.log(error);
       await t.rollback();
       next(error);
     }
@@ -104,7 +103,6 @@ class Controller {
         priceJilid: dataATK.priceJilid,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
