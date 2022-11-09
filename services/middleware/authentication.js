@@ -1,8 +1,9 @@
-const { verifyAccessToken } = require("../helper/helper");
-const { User } = require("../models/index");
+const { verifyAccessToken } = require('../helper/helper');
+const { User } = require('../models/index');
 
 const Authentication = async (req, res, next) => {
   try {
+    console.log(req.headers);
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
     console.log(payload, '<><><><><><> INI PAYLOAD DARI AUTHEN')
@@ -12,7 +13,7 @@ const Authentication = async (req, res, next) => {
       },
     });
     if (!dataUser) {
-      throw { name: "Invalid access_token" };
+      throw { name: 'Invalid access_token' };
     }
 
     req.user = {

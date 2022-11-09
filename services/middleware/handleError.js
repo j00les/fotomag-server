@@ -1,7 +1,7 @@
 const handleErrors = (err, req, res, next) => {
   let code = 500;
   let message = "Internal Server Error";
-  console.log(err);
+  console.log(err, 'ini errro');
 
   if (
     err.name === "SequelizeValidationError" ||
