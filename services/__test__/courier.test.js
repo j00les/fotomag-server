@@ -188,6 +188,27 @@ beforeAll(async () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    {
+      //ID: 2
+      fileURL:
+        "https://res.cloudinary.com/dz0nxnyqq/image/upload/v1667553102/fotomagPDF/dlbzejujhyf5ruic1tm2.pdf",
+      totalPages: 13,
+      colorVariant: "Berwarna",
+      duplicate: 2,
+      totalPrice: 62000,
+      isJilid: "YES",
+      address: "Jakarta",
+      status: "Done",
+      location: sequelize.fn(
+        "ST_GeomFromText",
+        "POINT(37.4220936 -122.083922)"
+      ),
+      AtkId: 2,
+      UserId: 2,
+      CourierId: 2,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   ]);
   await queryInterface.bulkInsert("BalanceMutations", [
     {
@@ -336,15 +357,15 @@ describe("Courier fetch list transaction", () => {
       });
   });
 
-  // test("Courier fetching list transaction without access token is wrong based on status done", () => {
-  //   return request(app)
-  //     .get("/transaction/listTransactionCourier")
-  //     .set("access_token", accessToken4)
-  //     .then((response) => {
-  //       expect(response.statusCode).toBe(401);
-  //       expect(response.body).toHaveProperty("message", "Unauthorized");
-  //     });
-  // });
+  test("Courier fetching list transaction without access token is wrong based on status done", () => {
+    return request(app)
+      .get("/transaction/listTransactionCourier")
+      .set("access_token", accessToken2)
+      .then((response) => {
+        expect(response.statusCode).toBe(401);
+        expect(response.body).toHaveProperty("message", "Unauthorized");
+      });
+  });
 });
 
 describe("Courier change status transaction", () => {
@@ -364,7 +385,7 @@ describe("Courier change status transaction", () => {
 
   test("Change Status Transaction from delivery to delivered", () => {
     return request(app)
-    .patch("/transaction/delivered/1")
+    .patch("/transaction/delivered/2")
     .set("access_token", accessToken3)
     .then((response) => {
       expect(response.statusCode).toBe(200);
