@@ -623,7 +623,7 @@ describe("Customer changes status transaction", () => {
       });
   });
 
-  test.only("Change status from delivered to success but wrong transaction id", () => {
+  test("Change status from delivered to success but wrong transaction id", () => {
     return request(app)
       .patch("/transaction/success/50")
       .set("access_token", accessToken)
