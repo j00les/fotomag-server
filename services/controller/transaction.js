@@ -154,8 +154,8 @@ class Controller {
       // untuk mendapatkan customer id nya => cari transaction nya, dari req.params.id
       /// kemudian ambil UserId nya, dan find mutasinya dengan UserId
 
-      const data = await Transaction.findByPk(id);
-      if (!data) {
+      const dataC = await Transaction.findByPk(id);
+      if (!dataC) {
         throw { name: "Transaction not found" };
       }
 
@@ -298,8 +298,8 @@ class Controller {
     try {
       let id = req.params.transactionId;
 
-      const data = await Transaction.findByPk(id);
-      if (!data) {
+      const dataC = await Transaction.findByPk(id);
+      if (!dataC) {
         throw { name: "Transaction not found" };
       }
 

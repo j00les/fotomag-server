@@ -9,6 +9,11 @@ const authorStatusSuccess = async (req, res, next) => {
     const dataCourier = await Courier.findByPk(id);
     const dataTransaction = await Transaction.findByPk(idT);
 
+    if (!dataTransaction || !dataCourier || !dataUser) {
+      throw { name: "Transaction not found" };
+    }
+
+    console.log(dataTransaction, "INI YAAA");
     if (dataUser.id != dataTransaction.UserId) {
       throw { name: "This is not your transaction" };
     } else if (
