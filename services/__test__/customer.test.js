@@ -219,8 +219,8 @@ describe("Register new customer", () => {
       })
       .then((response) => {
         expect(response.statusCode).toBe(400);
-        expect(response.body).toBeInstanceOf(Object);
-        expect(response.body.message).toEqual(["Email is required"]);
+        expect(response.body).toHaveProperty("message", "Email is required");
+        // expect(response.body.message).toEqual(["Email is required"]);
       });
   });
 
@@ -395,7 +395,7 @@ describe("Get All Customer", () => {
 });
 
 describe("Updating customer balance", () => {
-  test("Top up customer's balance", () => {
+  test.only("Top up customer's balance", () => {
     return request(app)
       .post("/balance/pay")
       .set("access_token", accessToken)
@@ -452,7 +452,7 @@ describe("Updating customer balance", () => {
 });
 
 describe("Customer create a new transaction", () => {
-  test("Create a new transaction with correct input", () => {
+  test.only("Create a new transaction with correct input", () => {
     return request(app)
       .post("/transaction/1")
       .set("access_token", accessToken)
@@ -461,6 +461,8 @@ describe("Customer create a new transaction", () => {
       .field("duplicate", 4)
       .field("isJilid", "YES")
       .field("address", "Jakarta")
+      .field("latitude", "-6.260634028197951")
+      .field("longitude", "106.78150997516222")
       .then((response) => {
         expect(response.statusCode).toBe(201);
         expect(response.body).toHaveProperty("id", expect.any(Number));

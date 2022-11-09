@@ -581,7 +581,7 @@ describe("Merchant fetch list transaction", () => {
     })
   })
 
-  test("Merchant fetching list transaction but still data still empty", () => {
+  test("Merchant fetching list transaction but data still empty", () => {
     return request (app)
     .get('/transaction/listTransactionMerchant')
     .set("access_token", accessToken3)
