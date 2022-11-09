@@ -430,7 +430,7 @@ class Controller {
   static async listTransactionCustomer(req, res, next) {
     console.log(req.user, '============')
     try {
-      // const { id } = req.user;
+      const { id } = req.user;
       console.log(req.user, '<><><>< INI REQ.USER')
       const data = await Transaction.findAll({
         where: {

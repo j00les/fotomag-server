@@ -326,14 +326,14 @@ describe("Courier change status transaction", () => {
     })
 })
 
-describe("Courier fetching list transaction", () => {
-    test("Fetching transaction with status done, delivery, delivered", () => {
-        return request(app)
-        .get('/transaction/listTransactionCourier')
-        .set("access_token", accessToken3)
-        .then((response) => {
-            expect(response.statusCode).toBe(200)
-        })
-    })
-})
+// describe("Courier fetching list transaction", () => {
+//     test("Fetching transaction with status done, delivery, delivered", () => {
+//         return request(app)
+//         .get('/transaction/listTransactionCourier')
+//         .set("access_token", accessToken3)
+//         .then((response) => {
+//             expect(response.statusCode).toBe(200)
+//         })
+//     })
+// })
 
