@@ -6,7 +6,6 @@ const cors = require("cors");
 const express = require("express");
 const handleErrors = require("./middleware/handleError");
 const router = require("./routes");
-const dotenv = require("dotenv");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const app = express();
@@ -38,10 +37,6 @@ app.use(handleErrors);
 app.use(cloudinary.config);
 
 io.on("connection", (socket) => {
-  socket.on("dapet", (dape) => {
-    console.log(dape);
-  });
-
   socket.on("join-room", (customerId) => {
     socket.join(customerId);
   });
@@ -50,16 +45,6 @@ io.on("connection", (socket) => {
     socket.to(userId).emit("sendLocation", location);
     console.log(location, "<<<<<<< update location");
   });
-
-  socket.on("nyoba", (location) => {
-    console.log(location, "<<<<< masuk client dapet location");
-  });
-
-  socket.on("loc", (get, lol) => {
-    console.log(lol);
-    console.log(get);
-    socket.join(get);
-  });
 });
 
 // httpServer.listen(3001);
@@ -67,4 +52,4 @@ io.on("connection", (socket) => {
 // app.listen(port, () => {
 //   console.log(`Bisa bisa`);
 // });
-module.exports = app
+module.exports = app;
