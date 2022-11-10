@@ -745,6 +745,18 @@ describe("Fetch all transaction data", () => {
         );
       });
   });
+  test("Mocking get all transaction data", (done) => {
+    jest.spyOn(Transaction, "findAll").mockRejectedValue(new Error("error 500"))
+    request(app)
+    .get('/transaction')
+    .set('access_token', accessToken)
+    .end((err, res) => {
+      if (err) return done(err)
+      const {body, status} = res
+      expect(status).toBe(500)
+      return done()
+    })
+  })
 });
 
 describe("Patching customer location", () => {
