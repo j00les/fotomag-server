@@ -108,10 +108,12 @@ beforeAll(async () => {
   let testUser = await User.findByPk(1);
   const payload = {
     id: testUser.id,
+    email: testUser.email
   };
   let testUser2 = await User.findByPk(2);
   const payload2 = {
     id: testUser2.id,
+    email: testUser2.email
   };
 
   accessToken = createAccessToken(payload);
@@ -357,10 +359,10 @@ describe("Courier fetch list transaction", () => {
       });
   });
 
-  test("Courier fetching list transaction without access token is wrong based on status done", () => {
+  test("Failed fetching transaction list courier because wrong access_token", () => {
     return request(app)
       .get("/transaction/listTransactionCourier")
-      .set("access_token", accessToken2)
+      .set("access_token", accessToken)
       .then((response) => {
         expect(response.statusCode).toBe(401);
         expect(response.body).toHaveProperty("message", "Unauthorized");
@@ -435,3 +437,18 @@ describe("Courier fetching list transaction", () => {
       });
   });
 });
+
+describe("Updating courier location", () => {
+  test("Succesfully updating courier location", () => {
+    return request(app)
+    .patch('/courier')
+    .set("access_token", accessToken3)
+    .send({
+      longitude: "-122.083922",
+      latitude: "37.4220936"
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(200)
+    })
+  })
+})
