@@ -98,17 +98,26 @@ class Controller {
   // edit harga perlembat (warna atau hitam putih) dan harga jilid
   static async editServicer(req, res, next) {
     try {
-      const { atkId } = req.params;
+      const { id } = req.user;
       let { priceColor, priceBlack, priceJilid } = req.body;
+
+      const dataAtk = await ATK.findOne({
+        where: {
+          UserId: id,
+        },
+      });
+
+      console.log(id);
+      console.log(dataAtk.id);
 
       await ATK.update(
         { priceColor, priceBlack, priceJilid },
-        { where: { id: atkId } }
+        { where: { id: dataAtk.id } }
       );
 
       const dataATK = await ATK.findOne({
         where: {
-          id: atkId,
+          id: dataAtk.id,
         },
       });
 
