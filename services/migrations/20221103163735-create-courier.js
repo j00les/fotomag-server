@@ -16,6 +16,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -23,7 +24,6 @@ module.exports = {
       },
       location: {
         type: Sequelize.GEOMETRY,
-        allowNull: false,
       },
       AtkId: {
         type: Sequelize.INTEGER,

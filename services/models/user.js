@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasOne(models.ATK, {
-        foreignKey: "UserId"
-      })
+        foreignKey: "UserId",
+      });
       User.hasOne(models.BalanceMutation, {
-        foreignKey: "UserId"
-      })
+        foreignKey: "UserId",
+      });
       User.hasMany(models.Transaction, {
-        foreignKey: "UserId"
-      })
+        foreignKey: "UserId",
+      });
     }
   }
   User.init(
@@ -103,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      location: DataTypes.GEOMETRY("POINT"),
     },
     {
       sequelize,

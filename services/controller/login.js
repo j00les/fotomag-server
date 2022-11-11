@@ -1,14 +1,13 @@
 const { comparePassword, createAccessToken } = require("../helper/helper");
 let { User, Courier } = require("../models/index");
 
-
 class Controller {
   static async isLogin(req, res, next) {
     try {
-        console.log("masuk sini");
       const { email, password } = req.body;
-      console.log(email, password);
       let dataPayload = {};
+      let data = {};
+      let dataC = {};
       if (!email) {
         throw { name: "Email is required" };
       }
@@ -26,30 +25,38 @@ class Controller {
         }
         const payload = {
           id: dataUser.id,
+          email: dataUser.email,
         };
         dataPayload = payload;
+        data = dataUser;
       } else {
         const dataCourier = await Courier.findOne({
           where: { email },
         });
-        if(!dataCourier) {
-            throw { name: "Invalid email/password" };
+        if (!dataCourier) {
+          throw { name: "Invalid email/password" };
         }
         if (!comparePassword(password, dataCourier.password)) {
           throw { name: "Invalid email/password" };
         }
         const payload = {
           id: dataCourier.id,
+          email: dataCourier.email,
         };
         dataPayload = payload;
+        data = { role: "Courier" };
+        dataC = dataCourier;
       }
-      console.log(dataPayload);
       const access_token = createAccessToken(dataPayload);
+
       res.status(200).json({
         access_token: access_token,
+        role: data.role,
+        balance: data.balance,
+        name: data.name,
+        name: dataC.name,
       });
     } catch (error) {
-        console.log(error);
       next(error);
     }
   }

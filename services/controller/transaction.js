@@ -4,44 +4,75 @@ const {
   BalanceMutation,
   User,
   ATK,
+  Courier,
   sequelize,
 } = require("../models/index");
+const pdf = require("pdf-page-counter");
+const cloudinary = require("cloudinary").v2;
+const UploadApiResponse = require("cloudinary").v2;
+const fs = require("fs");
 
 class Controller {
+  static async getTransaction(req, res, next) {
+    try {
+      const dataTransaction = await Transaction.findAll();
+      res.status(200).json(dataTransaction);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // buat transaction atau order
   static async createTransaction(req, res, next) {
     const t = await sequelize.transaction();
     try {
       const { id } = req.user;
-      console.log(id);
-      let { idAtk } = req.params;
-      let { fileName, colorVariant, duplicate, isJilid, address } = req.body;
+      let { atkId } = req.params;
 
-      let totalPages = 100; //masih hardcode
+      let { colorVariant, duplicate, isJilid, address, latitude, longitude } =
+        req.body;
 
-      const dataATK = await ATK.findByPk(idAtk); // untuk mendapatkan harga dari ATK nya supaya dinamis
+      if (!req.file) {
+        return res.status(400).json({ message: "Uploaded PDF is required" });
+      }
+
+      const dataBuffer = fs.readFileSync(req.file.path);
+      const pdfData = await pdf(dataBuffer);
+      const pdfPages = pdfData.numpages;
+
+      let uploadedFile = UploadApiResponse;
+      // try {
+      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+        folder: "fotomagPDF",
+        resource_type: "auto",
+      });
+
+      const { secure_url } = uploadedFile;
+
+      const dataATK = await ATK.findByPk(atkId); // untuk mendapatkan harga dari ATK nya supaya dinamis
 
       let harga = 0;
       if (colorVariant === "Berwarna") {
         harga = harga + dataATK.priceColor;
       } else if (colorVariant === "Hitamputih") {
-        // dinamis
         harga = harga + dataATK.priceBlack; // dinamis
       }
 
       let hargaJilid = 0;
-      if (isJilid === true) {
+      if (isJilid === "YES") {
         hargaJilid = hargaJilid + dataATK.priceJilid;
-      } else {
+      } else if (isJilid === "NO") {
         hargaJilid = hargaJilid + 0;
       }
+
       // mendapatkan total price
-      let totalPrice = totalPages * harga + hargaJilid;
+      let totalPrice = pdfPages * duplicate * harga + hargaJilid;
 
       // create transaction
       const dataTransaction = await Transaction.create(
         {
-          fileName,
-          totalPages,
+          fileURL: secure_url,
+          totalPages: pdfPages,
           colorVariant,
           duplicate,
           isJilid,
@@ -49,11 +80,11 @@ class Controller {
           status: "Pending",
           location: Sequelize.fn(
             "ST_GeomFromText",
-            "POINT(107.59422277037818 -6.937911900280693)"
+            `POINT(${longitude} ${latitude})`
           ),
           UserId: id,
           totalPrice: totalPrice,
-          AtkId: idAtk,
+          AtkId: atkId,
         },
         { transaction: t }
       );
@@ -61,7 +92,6 @@ class Controller {
       // mengurangi balance dari user yg melakukan transaction
       const dataUser = await User.findByPk(id); //  ini dapat dari req.user.id dari authen
 
-      // nge cek, apabila uang nya kurang dari total harga yg harus dibayar, maka akan error
       if (dataUser.balance < totalPrice) {
         throw { name: "Your balance is less" };
       }
@@ -79,167 +109,266 @@ class Controller {
       );
 
       await t.commit();
-      res.status(201).json({
-        trasactionId: dataTransaction.id,
-      });
+      res.status(201).json(dataTransaction);
     } catch (error) {
+      console.log(error);
       await t.rollback();
-      console.log(error);
       next(error);
     }
   }
 
-  static async changeStatus(req, res, next) {
+  // ubah status jadi Progress
+  static async changeStatusProgress(req, res, next) {
     try {
-      let { id } = req.params;
-      let { status } = req.query; // string (Reject atau Progres)
+      let id = req.params.transactionId;
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
 
-      // ubah status progress
-      if (status === "Progress") {
-        const dataTransaction = await Transaction.update(
-          {
-            status,
-          },
-          {
-            where: {
-              id,
-            },
-          }
-        );
-      }
-      // ubah status jadi reject
-      else if (status === "Reject") {
-        // cari mutasi => where transactionId dari req.params.id
-        // kemudian ambil data nominal nya, dan kirim lagi ke user nya
-        // untuk mendapatkan customer id nya => cari transaction nya, dari req.params.id
-        /// kemudian ambil UserId nya, dan find mutasinya dengan UserId
-        const dataTransaction = await Transaction.update(
-          {
-            status,
-          },
-          {
-            where: {
-              id,
-            },
-          }
-        );
-        // untuk medapatkan nominal nya
-        const dataMutasi = await BalanceMutation.findOne({
+      const dataTransaction = await Transaction.update(
+        {
+          status: "Progress",
+        },
+        {
           where: {
-            TransactionId: id,
+            id,
           },
-        });
+        }
+      );
 
-        // ini untuk dapatin transaksi nya yg mana
-        const dataCustomer = await Transaction.findOne({
-          where: {
-            id: dataMutasi.TransactionId,
-          },
-        });
-
-        const dataReject = await User.findOne({
-          where: {
-            id: dataCustomer.UserId,
-          },
-        });
-        await dataReject.increment("balance", { by: dataMutasi.nominal });
-      }
-      // ubah status jadi done
-      else if (status === "Done") {
-        const dataTransaction = await Transaction.update(
-          {
-            status,
-          },
-          {
-            where: {
-              id,
-            },
-          }
-        );
-      }
-      // ubah status jadi Dilevery
-      else if (status === "Delivery") {
-        // const {id} = req.user
-        const dataTransaction = await Transaction.update(
-          {
-            status,
-            CourierId: 1, // ini dapat dari authenl, dari req.user abang kurir
-          },
-          {
-            where: {
-              id,
-            },
-          }
-        );
-      }
-      // ubah status jadi Delivered
-      else if (status === "Delivered") {
-        const dataTransaction = await Transaction.update(
-          {
-            status,
-          },
-          {
-            where: {
-              id,
-            },
-          }
-        );
-      }
-      // ubah status jadi Success
-      else if (status === "Success") {
-        const dataTransaction = await Transaction.update(
-          {
-            status,
-          },
-          {
-            where: {
-              id,
-            },
-          }
-        );
-        // ini untuk mendapatkan nominal
-        const dataMutasi = await BalanceMutation.findOne({
-          where: {
-            TransactionId: id,
-          },
-        });
-
-        const dataCustomer = await Transaction.findOne({
-          where: {
-            id: dataMutasi.TransactionId,
-          },
-        });
-
-        const dataAtk = await ATK.findOne({
-          where: {
-            id: dataCustomer.UserId,
-          },
-        });
-        const dataUserAtk = await User.findByPk(dataAtk.UserId);
-        await dataUserAtk.increment("balance", { by: dataMutasi.nominal });
-      }
       res.status(200).json({
-        message: `Transaction is ${status}`,
+        message: `Transaction is Progress`,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
 
-  static async history(req, res, next) {
+  // ubah status jadi reject
+  static async changeStatusReject(req, res, next) {
     try {
-      // const { id } = req.params;
-      const { id } = req.user;
-      console.log(id, ".. aidi yg toko yg login");
+      let id = req.params.transactionId;
+      // cari mutasi => where transactionId dari req.params.id
+      // kemudian ambil data nominal nya, dan kirim lagi ke user nya
+      // untuk mendapatkan customer id nya => cari transaction nya, dari req.params.id
+      /// kemudian ambil UserId nya, dan find mutasinya dengan UserId
 
+      const dataC = await Transaction.findByPk(id);
+      if (!dataC) {
+        throw { name: "Transaction not found" };
+      }
+
+      const dataTransaction = await Transaction.update(
+        {
+          status: "Reject",
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      // untuk medapatkan nominal nya
+      const dataMutasi = await BalanceMutation.findOne({
+        where: {
+          TransactionId: id,
+        },
+      });
+
+      // ini untuk dapatin transaksi nya yg mana
+      const dataCustomer = await Transaction.findOne({
+        where: {
+          id: dataMutasi.TransactionId,
+        },
+      });
+
+      // find one dulu, untuk mencari customer mana yg akan dikembalikan uang nya
+      const dataReject = await User.findOne({
+        where: {
+          id: dataCustomer.UserId,
+        },
+      });
+      await dataReject.increment("balance", { by: dataMutasi.nominal });
+
+      res.status(200).json({
+        message: `Transaction is Reject`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // ubah status jadi done
+  static async changeStatusDone(req, res, next) {
+    try {
+      let id = req.params.transactionId;
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
+
+      const dataTransaction = await Transaction.update(
+        {
+          status: "Done",
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      res.status(200).json({
+        message: `Transaction is Done`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // ubah status jadi delivery
+  static async changeStatusDelivery(req, res, next) {
+    try {
+      let id = req.params.transactionId;
+      const { CourierId } = req.user;
+
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
+
+      const dataTransaction = await Transaction.update(
+        {
+          status: "Delivery",
+          CourierId: CourierId,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      const dataCourier = await Courier.findByPk(CourierId);
+
+      res.status(200).json({
+        message: `Transaction is Delivery`,
+        CourierName: dataCourier.name,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // ubah status jadi Delivered
+  static async changeStatusDelivered(req, res, next) {
+    try {
+      let id = req.params.transactionId;
+      const data = await Transaction.findByPk(id);
+      if (!data) {
+        throw { name: "Transaction not found" };
+      }
+
+      const dataTransaction = await Transaction.update(
+        {
+          status: "Delivered",
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      if (!dataTransaction) {
+        return res.status(400).json({ message: "ERROR DI DATA TRANSACTION" });
+      }
+
+      res.status(200).json({
+        message: `Transaction is Delivered`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // ubah status jadi Success
+  static async changeStatusSuccess(req, res, next) {
+    try {
+      let id = req.params.transactionId;
+
+      const dataC = await Transaction.findByPk(id);
+      if (!dataC) {
+        throw { name: "Transaction not found" };
+      }
+
+      const dataTransaction = await Transaction.update(
+        {
+          status: "Success",
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      const dataMutasi = await BalanceMutation.findOne({
+        where: {
+          TransactionId: id,
+        },
+      });
+      if (!dataMutasi) {
+        return res.status(400).json({ message: "ERROR DI DATA MUTASI" });
+      }
+
+      const dataCustomer = await Transaction.findOne({
+        where: {
+          id: dataMutasi.TransactionId,
+        },
+      });
+      if (!dataCustomer) {
+        return res.status(400).json({ message: "ERROR DI DATA CUSTOMER" });
+      }
+
+      const dataAtk = await ATK.findOne({
+        where: {
+          id: dataCustomer.UserId,
+        },
+      });
+      if (!dataAtk) {
+        return res.status(400).json({ message: "ERROR DI DATA ATK" });
+      }
+      const dataUserAtk = await User.findByPk(dataAtk.UserId);
+      if (!dataUserAtk) {
+        return res.status(400).json({ message: "ERROR DI DATA USER ATK" });
+      }
+      await dataUserAtk.increment("balance", { by: dataMutasi.nominal });
+
+      res.status(200).json({
+        message: `Transaction is Success`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async historyTransactionMerchant(req, res, next) {
+    try {
+      const { id } = req.user;
+      console.log(id);
       const dataUser = await User.findOne({
         where: {
           id,
         },
         include: ATK,
       });
-      // console.log(dataUser.ATK);
+      console.log(dataUser);
+      if (!dataUser || dataUser.ATK === null) {
+        throw { name: "Transaction not found" };
+      }
+
       const data = await Transaction.findAll({
         where: {
           status: ["Success", "Reject"],
@@ -253,9 +382,8 @@ class Controller {
     }
   }
 
-  static async listTransaction(req, res, next) {
+  static async listTransactionMerchant(req, res, next) {
     try {
-      // const { id } = req.params;
       const { id } = req.user;
       const dataUser = await User.findOne({
         where: {
@@ -263,7 +391,6 @@ class Controller {
         },
         include: ATK,
       });
-
       const data = await Transaction.findAll({
         where: {
           status: ["Pending", "Progress", "Done", "Delivery", "Delivered"],
@@ -276,30 +403,44 @@ class Controller {
     }
   }
 
-  static async listCourier(req, res, next) {
+  static async listTransactionCourier(req, res, next) {
     try {
-      // const { id } = req.params;
-      // const { id } = req.user;
+      const { CourierId } = req.user;
+      console.log(CourierId);
+      const dataCourier = await Courier.findByPk(CourierId);
+      console.log(dataCourier.AtkId);
       const data = await Transaction.findAll({
         where: {
           status: ["Done", "Delivery", "Delivered"],
-          CourierId: id,
+          AtkId: dataCourier.AtkId,
         },
       });
+      res.status(200).json(data);
     } catch (error) {
       next(error);
     }
   }
 
-  static async listCustomer(req, res, next) {
+  static async listTransactionCustomer(req, res, next) {
+    console.log(req.user, "============");
     try {
-      // const { id } = req.user;
+      const { id } = req.user;
+      // console.log(req.user, "<><><>< INI REQ.USER");
       const data = await Transaction.findAll({
         where: {
-          id,
+          UserId: id,
         },
+        include: Courier,
       });
+      const dataUser = await User.findByPk(id);
+      // console.log(dataUser, "<><><><><> INI DATA USER");
+
+      if (dataUser.role === "Courier") {
+        throw { name: "Transaction not found" };
+      }
+      res.status(200).json(data);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

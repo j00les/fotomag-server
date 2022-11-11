@@ -35,12 +35,18 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: {
+          msg: "Email must be Unique",
+        },
         validate: {
           notEmpty: {
             msg: "Email is required",
           },
           notNull: {
             msg: "Email is required",
+          },
+          isEmail: {
+            msg: "Format email is required",
           },
         },
       },
@@ -56,18 +62,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      location: {
-        type: DataTypes.GEOMETRY("POINT"),
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Location is required",
-          },
-          notNull: {
-            msg: "Location is required",
-          },
-        },
-      },
+      location: DataTypes.GEOMETRY("POINT"),
       AtkId: {
         type: DataTypes.INTEGER,
         allowNull: false,

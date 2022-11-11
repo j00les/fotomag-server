@@ -22,32 +22,20 @@ io.on("connection", (socket) => {
   console.log(dape);
   });
 
-  socket.on("join-room", (customerId) => {
-    socket.join(customerId)
+  //ini socket room
+  socket.on("join-room", (transactionId) => {
+    socket.join(transactionId)
   })
   
   socket.on("updateLocation", ({location, userId}) => {
     socket.to(userId).emit("sendLocation", location)
+    console.log(location, "<<<<<<< update location");
   });
 
-  socket.on("loc", (get, lol) => {
-    console.log(lol);
-    console.log(get);
-    socket.join(get);
-  });
+  socket.on("nyoba", (location) => {
+    console.log(location, "<<<<< masuk client dapet location");
+  })
 
-  // io.sockets.on('connection', function(socket) {
-  //   socket.on('create', function(room) {
-  //     socket.join(room);
-  //   });
-
-  // ..
-  // console.log("masuk sini", socket.id);
-
-  // socket.on("updateLocation", (...args) => {
-  //   // ...
-  //   console.log("dapet location", args);
-  // });
 });
 
 httpServer.listen(3000);

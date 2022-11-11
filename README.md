@@ -71,3 +71,14 @@ Courier =>
     dan tadi udah buat untuk done
     tapi belum ke handle untuk masukin uang nya ke pihak ATK
  -->
+
+<!--
+1. di transaction harus di pisah per customer, user, dan courier karena supaya bisa pasang athen untuk mendapatkan authen
+
+2. untuk multer besok harus udah singkron
+-->
+
+
+<!-- YANG KURANG ERROR HANDLER:
+1. FUNGSI UBAH STATUS
+ -->

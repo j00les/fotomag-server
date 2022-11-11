@@ -1,17 +1,21 @@
 const { verifyAccessToken } = require("../helper/helper");
 const { Courier } = require("../models/index");
 
-const Authentication = async (req, res, next) => {
+const AuthenCourier = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
     let payload = verifyAccessToken(access_token);
-    let dataUser = await Courier.findByPk(payload.id);
+    let dataUser = await Courier.findOne({
+      where: {
+        email: payload.email,
+      },
+    });
     if (!dataUser) {
       throw { name: "Invalid access_token" };
     }
 
     req.user = {
-      id: dataUser.id,
+      CourierId: dataUser.id,
       email: dataUser.email,
     };
 
@@ -21,4 +25,4 @@ const Authentication = async (req, res, next) => {
   }
 };
 
-module.exports = Authentication;
+module.exports = AuthenCourier;
